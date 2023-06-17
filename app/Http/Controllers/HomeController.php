@@ -22,6 +22,11 @@ class HomeController extends Controller
         return view('index2');
     }
 
+    public function dashboard()
+    {
+        return view('custom.profile.dashboard');
+    }
+
     public function export(){
         return view("export");
     }

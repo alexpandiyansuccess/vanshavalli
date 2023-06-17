@@ -31,6 +31,4 @@ Route::patch("manage-chart/update/{id}", [ManagechartController::class, 'update'
 Route::patch("manage-chart/update-second-profile/{id}", [ManagechartController::class, 'update_second_profile']);
 Route::patch("manage-chart/update-image/{id}", [ManagechartController::class, 'updateImage']);
 
-
-Route::get('login', [LoginController::class, 'index'])->name('login');
-Route::get('registration', [LoginController::class, 'registration'])->name('registration');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
