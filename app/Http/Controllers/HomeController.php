@@ -19,12 +19,16 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('index2');
+        return view('index');
     }
 
     public function dashboard()
     {
-        return view('custom.profile.dashboard');
+        if(auth()->user()){
+            return view('custom.profile.dashboard');
+        }else{
+            return redirect('/');
+        }
     }
 
     public function export(){

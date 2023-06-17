@@ -14,7 +14,11 @@ class CreatechartController extends Controller
      */
     public function index()
     {
-        return view('create.index');
+        if(auth()->user()){
+            return view('create.index');
+        }else{
+            return redirect('/');
+        }
     }
     
 

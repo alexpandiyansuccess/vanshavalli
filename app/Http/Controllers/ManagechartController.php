@@ -20,10 +20,14 @@ class ManagechartController extends Controller
     {
         // $profile = Profile::find(1);
         // return $profile->secondProfile;
+        if(auth()->user()){
+            $profiles = Profile::where('root_id', 0)->paginate(4);
 
-        $profiles = Profile::where('root_id', 0)->paginate(4);
+            return view('manage.index', compact('profiles'));
+        }else{
+            return redirect('/');
+        }
 
-        return view('manage.index', compact('profiles'));
     }
 
     /**
