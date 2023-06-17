@@ -1,0 +1,36 @@
+<?php
+
+use App\Http\Controllers\ManagechartController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\OrgController;
+use Illuminate\Database\Capsule\Manager;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| contains the "web" middleware group. Now create something great!
+|
+*/
+Route::post('/org/create', [App\Http\Controllers\OrgController::class, 'create']);
+Route::post('/org/manage', [App\Http\Controllers\OrgController::class, 'getchart']);
+Route::post('/org/delete', [App\Http\Controllers\OrgController::class, 'delete']);
+Route::post('/org/multi-delete', [App\Http\Controllers\OrgController::class, 'multi_delete']);
+Route::post("/org/addparent", [OrgController::class, 'addparent']);
+Route::get('/org/export/{id}', [App\Http\Controllers\OrgController::class, 'exportchart'])->middleware("auth");
+Auth::routes();
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::resource('create-chart', App\Http\Controllers\CreatechartController::class);
+Route::get("manage-chart", [ManagechartController::class, 'index']);
+Route::patch("manage-chart/update/{id}", [ManagechartController::class, 'update']);
+Route::patch("manage-chart/update-second-profile/{id}", [ManagechartController::class, 'update_second_profile']);
+Route::patch("manage-chart/update-image/{id}", [ManagechartController::class, 'updateImage']);
+
+
+Route::get('login', [LoginController::class, 'index'])->name('login');
+Route::get('registration', [LoginController::class, 'registration'])->name('registration');

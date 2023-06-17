@@ -1,0 +1,27 @@
+.manage {
+    color: white;
+}
+#panel2 {
+    display: none;
+}
+#image123 {
+    max-width: 100%;
+}
+#profile_image {
+    max-width: 100%;
+}
+#profile_image_1 {
+    max-width: 100%;
+}
+.btn-upload {
+    margin-bottom: 0rem;
+}
+#errormodal {
+    padding-left: 20%;
+    color: red;
+}
+.btn-outline-ligh {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}

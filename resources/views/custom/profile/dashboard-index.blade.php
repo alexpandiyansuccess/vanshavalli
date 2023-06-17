@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Dashboard - Vanshavali</title>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/iamraghavan/Vanshavali@main/css/ishulove.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('dashboard/profile/css/bootstrap.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('dashboard/profile/vendors/iconly/bold.css') }}">
+
+    <link rel="stylesheet" href="{{ asset('dashboard/profile/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/profile/vendors/bootstrap-icons/bootstrap-icons.css') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/profile/css/app.css') }}">
+    <link rel="shortcut icon" href="{{ asset('dashboard/profile/images/favicon.svg') }}" type="image/x-icon">
+	 <!-- <script src="jquery.js"></script>  -->
+  
+</head>  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+
+    .header-logo-text {
+      font-family: 'Mouse Memoirs', sans-serif;
+      color: #FFF;
+    }
+  </style>
+<body>
+    <div id="app">
+        <div id="sidebar" class="active">
+            <div class="sidebar-wrapper active">
+                <div class="sidebar-header">
+                    <div class="d-flex justify-content-between">
+                        <div class="logo">
+                            <h3 class="header-logo-text">Vanshavali</h3>
+                        </div>
+                        <div class="toggler">
+                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+             
+                <div class="sidebar-menu">
+                    <ul class="menu">
+                        <li class="sidebar-title">Menu</li>
+
+                        <li class="sidebar-item  ">
+                            <a href="{{ route('dashboard-index') }}" class='sidebar-link'>
+                                <i class="bi bi-person-circle"></i>
+                                <span>Profile</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item  ">
+                            <a href="{{ route('family-tree') }}" class='sidebar-link'>
+                                <i class="bi bi-chat-quote-fill"></i>
+                                <span>Foreroom</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item  ">
+                            <a href="{{ route('family-tree') }}" class='sidebar-link'>
+                                <i class="bi bi-option"></i>
+                                <span>Family Tree</span>
+                            </a>
+                        </li>
+ 
+                     
+                    </ul>
+                </div>
+                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
+            </div>
+        </div>
+        <div id="main" class='layout-navbar'>
+            <header class='mb-3'>
+                <nav class="navbar navbar-expand navbar-light ">
+                    <div class="container-fluid">
+                        <a href="#" class="burger-btn d-block">
+                            <i class="bi bi-justify fs-3"></i>
+                        </a>
+
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                
+                                <li class="nav-item dropdown me-3">
+                                    <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                        <li>
+                                            <h6 class="dropdown-header">Notifications</h6>
+                                        </li>
+                                        <li><a class="dropdown-item">No notification available</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <div class="dropdown">
+                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-menu d-flex">
+                                        <div class="user-name text-end me-3">
+                                            <h6 class="mb-0 text-gray-600">Administrator</h6>
+                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">Hello, <email-id></Email-id></span></p>
+                                        </div>
+                                        <div class="user-img d-flex align-items-center">
+                                            <div class="avatar avatar-md">
+                                                <img src="https://kurudhi.netlify.app/admin/images/man.png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                                    <li>
+                                        <h6 class="dropdown-header">Hello, Admin!</h6>
+                                    </li>
+
+                                    <!-- <li class="sidebar-item  ">
+                                        <a href="./index.html" class='sidebar-link'>
+                                            <i class="bi bi-chat-quote-fill"></i>
+                                            <span>Foreroom</span>
+                                        </a>
+                                    </li>
+                                    <li class="sidebar-item  ">
+                                        <a href="./index.html" class='sidebar-link'>
+                                            <i class="bi bi-option"></i>
+                                            <span>Family Tree</span>
+                                        </a>
+                                    </li> -->
+                                    <!-- <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-person me-2"></i> My
+                                            Profile</a></li> -->
+                                    <li><a class="dropdown-item" href="{{ route('family-tree') }}">
+                                        <i class="icon-mid bi bi-chat-quote-fill me-2"></i>
+                                        Foreroom
+                                    </a>
+                                </li>
+                                    <li><a class="dropdown-item" href="{{ route('family-tree') }}"><i class="icon-mid bi bi-option me-2"></i>
+                                            Family Tree</a></li>
+                                    <!-- <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-gear me-2"></i>
+                                            Settings</a></li> -->
+                                    <!-- <li><a class="dropdown-item" href="#"><i class="icon-mid bi bi-wallet me-2"></i>
+                                            Wallet</a></li>
+                                    <li> -->
+                                        <hr class="dropdown-divider">
+                                    </li>
+                                    <li onclick="logout()"><a class="dropdown-item" href="#"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </header>
+            <div id="main-content">
+  
+                <div class="">
+                @if (session('success'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    <div class="collapse-tabs new-property-step">
+                        <div class="tab-content shadow-none p-0">
+                            <div class="page-content">
+                                <div class="form-v10-content">
+                                    <form class="form-detail" action="" method="post" id="registrationform" autocomplete="nope">
+                                        <div class="form-left">
+                                            <h2>General Information</h2>
+                                            <div class="form-group">
+                                                <div class="form-row form-row-1">
+                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
+                                                        name="fullname" inputmode="text" id="id1" class="input-text"
+                                                        placeholder="Full Name" autocomplete="nope" required>
+                                                </div>
+                                                <div class="form-row form-row-2">
+                                                    <select id="id4" name="gender" autocomplete="off">
+                                                        <option value="#">Select Your Gender</option>
+                                                        <option value="MALE">MALE</option>
+                                                        <option value="Female">FEMALE</option>
+                                                        <!-- <option>TRANSGENDER</option> -->
+                                                    </select>
+                                                    <span class="select-btn">
+                                                        <i class="zmdi zmdi-chevron-down"></i>
+                                                    </span>
+        
+        
+                                                </div>
+                                              
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-row form-row-1">
+                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
+                                                        name="fullname" inputmode="text" id="id1" class="input-text"
+                                                        placeholder="Relationship" autocomplete="nope" required>
+                                                </div>
+                                            </div>
+                                            
+        
+                                            <div class="form-group">
+                                                <div class="form-row form-row-1">
+                                                    <!-- <input placeholder="Date of Birth" type="text" onfocus="(this.type='date')" id="date"> -->
+                                                    <input id="TextBox3" runat="server" name="DOB" placeholder="Date Of Birth"
+                                                        type="text" onfocus="(this.type='date')"
+                                                        onchange="DateSelectionChanged()" autocomplete="off">
+        
+                                                </div>
+                                                <div class="form-row form-row-2">
+                                                    <input name="agevalue" placeholder="Age" id="TextBox4" type="text" required
+                                                        disabled autocomplete="off">
+                                                </div>
+                                            </div>
+        
+                                            <h2>Contact Information</h2>
+        
+        
+                                            <div class="form-group">
+                                                <div class="form-row form-row-1">
+                                                    <input inputmode="email" name="mailid" type="email"
+                                                        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
+                                                        id="email_input" class="input-text" placeholder="Email" required
+                                                        autocomplete="off">
+                                                </div>
+                                                <div class="form-row form-row-2">
+                                                    <input inputmode="tel" name="cNumber" type="number" pattern="[0-9]*"
+                                                        inputmode="numeric" id="id6" class="business"
+                                                        placeholder="Contact Number" required autocomplete="off">
+                                                </div>
+        
+                                                <!-- <div class="form-row form-row-2">
+                                                    <input inputmode="tel" name="wNumber" type="number" pattern="[0-9]*" inputmode="numeric" id="id6" class="business" placeholder="Whatsapp Number" required>
+                                                </div> -->
+                                            </div>
+        
+        
+                                            <h2>Location Information</h2>
+                                            <div class="form-group">
+                                                <div class="form-row form-row-1">
+                                                    <input inputmode="tel" type="text" id="zipcode" maxlength="6"
+                                                        name="vPincode" pattern="[0-9]*" inputmode="numeric"
+                                                        placeholder="Pincode" required autocomplete="off">
+                                                </div>
+                                                <div class="form-row form-row-2">
+                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
+                                                        name="vArea" inputmode="text" id="Area" class="input-text"
+                                                        placeholder="Area" readonly required autocomplete="off">
+                                                </div>
+                                            </div>
+        
+                                            <div class="form-group">
+                                                <div class="form-row form-row-1">
+        
+                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
+                                                        name="vDistrict" inputmode="text" id="District" class="input-text"
+                                                        placeholder="District" readonly required autocomplete="off">
+                                                </div>
+                                                <div class="form-row form-row-2">
+                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
+                                                        name="vState" inputmode="text" id="State" class="input-text"
+                                                        placeholder="State" readonly required autocomplete="off">
+                                                </div>
+                                                <div class="form-row form-row-2">
+                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
+                                                        name="vCountry" inputmode="text" id="Country" class="input-text"
+                                                        placeholder="Country" readonly required autocomplete="off">
+                                                </div>
+        
+                                            </div>
+        
+                                            <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+                                            <script>
+                                                $('#zipcode').change(function () {
+                                                    var zipcode = $(this).val();
+                                                    $.ajax({
+                                                        url: 'https://api.postalpincode.in/pincode/' + zipcode,
+                                                        type: 'GET',
+                                                        success: function (response) {
+        
+                                                            let postArea = response[0].PostOffice[0].Name;
+                                                            console.log("Area : " + postArea);
+                                                            $('#Area').val(postArea);
+        
+                                                            let postDistrict = response[0].PostOffice[0].District;
+                                                            console.log(postDistrict);
+                                                            $('#District').val(postDistrict);
+        
+                                                            let postState = response[0].PostOffice[0].State;
+                                                            console.log(postState);
+                                                            $('#State').val(postState);
+        
+                                                            let postCountry = response[0].PostOffice[0].Country;
+                                                            console.log(postCountry);
+                                                            $('#Country').val(postCountry);
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+        
+        
+                                            <div class="form-group">
+                                                <!-- <div class="form-row form-row-1">
+                                                   <button class="btn btn-lg btn-success mr-4 mb-4 ">Get Address</button>
+                                                </div> -->
+        
+                                            </div>
+        
+        
+                                           
+                                            <div class="col-12 d-flex justify-content-center">
+                                                <button class="btn btn-lg bg-btn-submit mr-4 mb-4 hover-success"
+                                                    id=""  onclick="check()" type="submit" name="Submit"
+                                                    value="Submit" sendMessage()>Submit</button>
+        
+        
+        
+                                                <button type="reset"
+                                                    class="btn btn-lg bg-btn-clr mr-4 mb-4 hover-primary">Reset</button>
+                                            </div>
+        
+                                            <br>
+        
+        
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer>
+                    <div class="footer clearfix mb-0 text-muted">
+                        <div class="float-start">
+                            <p> <span id="current-year"></span> &copy; Vanshavali</p>
+                        </div>
+                        
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <link rel="stylesheet" href="{{ asset('dashboard/profile/js/main.js') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/profile/js/bootstrap.bundle.min.js') }}">
+    <link rel="stylesheet" href="{{ asset('dashboard/profile/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}">
+
+
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-app.js"></script>
+
+        <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#available-libraries -->
+        <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-analytics.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.6.7/firebase-auth.js"></script>
+    
+    
+<script src="https://www.gstatic.com/firebasejs/8.9.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.9.0/firebase-auth.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyCJg-eG7QH6yFZRlRA2hjMwiU1Sd8t6Puw",
+  authDomain: "kurudhiweb.firebaseapp.com",
+  databaseURL: "https://kurudhiweb-default-rtdb.firebaseio.com",
+  projectId: "kurudhiweb",
+  storageBucket: "kurudhiweb.appspot.com",
+  messagingSenderId: "993287986742",
+  appId: "1:993287986742:web:3f28546bc8f14e6d190297",
+  measurementId: "G-DVJ5PWQ84Z"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  var auth = firebase.auth();
+
+  firebase.auth().onAuthStateChanged((user)=>{
+    if(!user){
+        // location.replace("../index.html")
+    }else{
+        // document.getElementById("user").innerHTML = "Hello, "+user.email    
+    }
+    
+})
+
+
+function logout(){
+    firebase.auth().signOut()
+}
+
+</script>
+
+
+     
+<script>
+    // Get the current year
+var currentYear = new Date().getFullYear();
+
+// Set the current year in the HTML element with the specified ID
+var currentYearElement = document.getElementById('current-year');
+currentYearElement.textContent = currentYear.toString();
+
+</script>
+
+
+
+            
+
+
+
+</body>
+
+
+</html>

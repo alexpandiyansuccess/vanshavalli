@@ -1,0 +1,449 @@
+
+  .manage-head-card {
+      border: none !important;
+  
+      background-color: #f8f9fa !important;
+  }
+  .manage-header-card {
+      color: #213458;
+      border-bottom: none !important;
+      background-color: #f8f9fa !important;
+      font-weight: bold;
+      letter-spacing: 1.8px;
+      font-size: 27px !important;
+  }
+  
+  .custom-card {
+      border-radius: 20px 20px 20px 20px !important;
+  }
+  
+  .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+  
+  table.test td {
+      background-color: #003366;
+      margin: 12px 12px 12px 12px;
+      padding: 25px 25px 25px 25px;
+      border: 5px solid #fff;
+      border-radius: 12px;
+      border-collapse: separate;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+  }
+  .table-striped > tbody > tr:nth-child(even) > td {
+      background-color: #425271;
+  }
+  table.test td a {
+      text-decoration: none;
+      color: white;
+      cursor: pointer;
+  }
+  table.test th {
+      background-color: #003366;
+      margin: 12px 12px 12px 12px;
+      padding: 25px 25px 25px 25px;
+      border: 5px solid #fff;
+      border-radius: 12px;
+      border-collapse: separate;
+      font-weight: bold;
+      letter-spacing: 1.5px;
+  }
+  
+  .Black-background {
+      background-color: #000000;
+  }
+  .Black-border {
+      border: 5px solid #000000;
+  }
+  .Saddle-Brown-background {
+      background-color: #993300;
+  }
+  .Saddle-Brown-border {
+      border: 5px solid #993300;
+  }
+  .Karaka-background {
+      background-color: #333300;
+  }
+  .Karaka-border {
+      border: 5px solid #333300;
+  }
+  .Navy-background {
+      background-color: #000080;
+  }
+  .Navy-border {
+      border: 5px solid #000080;
+  }
+  .Light-Blue-background {
+      background-color: #333399;
+  }
+  .Light-Blue-border {
+      border: 5px solid #333399;
+  }
+  .Night-Rider-background {
+      background-color: #333333;
+  }
+  .Night-Rider-border {
+      border: 5px solid #333333;
+  }
+  
+  .Maroon-background {
+      background-color: #800000;
+  }
+  .Maroon-border {
+      border: 5px solid #800000;
+  }
+  .orange-background {
+      background-color: #ff6600;
+  }
+  .orange-border {
+      border: 5px solid #ff6600;
+  }
+  .Olive-background {
+      background-color: #808000;
+  }
+  .Olive-border {
+      border: 5px solid #808000;
+  }
+  .Green-background {
+      background-color: #008000;
+  }
+  .Green-border {
+      border: 5px solid #008000;
+  }
+  .Teal-background {
+      background-color: #008080;
+  }
+  .Teal-border {
+      border: 5px solid #008080;
+  }
+  .Scampi-background {
+      background-color: #666699;
+  }
+  .Scampi-border {
+      border: 5px solid #666699;
+  }
+  
+  .Gray-background {
+      background-color: #808080;
+  }
+  .Gray-border {
+      border: 5px solid #808080;
+  }
+  .Red-background {
+      background-color: #ff0000;
+  }
+  .Red-border {
+      border: 5px solid #ff0000;
+  }
+  .Orange-Peel-background {
+      background-color: #ff9900;
+  }
+  .Orange-Peel-border {
+      border: 5px solid #ff9900;
+  }
+  .Citrus-background {
+      background-color: #99cc00;
+  }
+  .Citrus-border {
+      border: 5px solid #99cc00;
+  }
+  .Eucalyptus-background {
+      background-color: #339966;
+  }
+  .Eucalyptus-border {
+      border: 5px solid #339966;
+  }
+  
+  .Tangerine-Yellow-background {
+      background-color: #ffcc00;
+  }
+  .Tangerine-Yellow-border {
+      border: 5px solid #ffcc00;
+  }
+  .Fuchsia-background {
+      background-color: #ff00ff;
+  }
+  .Fuchsia-border {
+      border: 5px solid #ff00ff;
+  }
+  .Nobel-background {
+      background-color: #999999;
+  }
+  .Nobel-border {
+      border: 5px solid #999999;
+  }
+  .Purple-background {
+      background-color: #800080;
+  }
+  .Purple-border {
+      border: 5px solid #800080;
+  }
+  .Royal-Blue-background {
+      background-color: #3366ff;
+  }
+  .Royal-Blue-border {
+      border: 5px solid #3366ff;
+  }
+  .Medium-Turquoise-background {
+      background-color: #33cccc;
+  }
+  .Medium-Turquoise-border {
+      border: 5px solid #33cccc;
+  }
+  
+  .Yellow-background {
+      background-color: #ffff00;
+  }
+  .Yellow-border {
+      border: 5px solid #ffff00;
+  }
+  .Lime-background {
+      background-color: #00ff00;
+  }
+  .Lime-border {
+      border: 5px solid #00ff00;
+  }
+  .Aqua-background {
+      background-color: #00ffff;
+  }
+  .Aqua-border {
+      border: 5px solid #00ffff;
+  }
+  .Deep-Sky-Blue-background {
+      background-color: #00ccff;
+  }
+  .Deep-Sky-Blue-border {
+      border: 5px solid #00ccff;
+  }
+  .stick-background {
+      background-color: #993366;
+  }
+  .stick-border {
+      border: 5px solid #993366;
+  }
+  .Silver-background {
+      background-color: #c0c0c0;
+  }
+  .Silver-border {
+      border: 5px solid #c0c0c0;
+  }
+  .Carnation-Pink-background {
+      background-color: #ff99cc;
+  }
+  .Carnation-Pink-border {
+      border: 5px solid #ff99cc;
+  }
+  .Peach-Orange-background {
+      background-color: #ffcc99;
+  }
+  .Peach-Orange-border {
+      border: 5px solid #ffcc99;
+  }
+  .Canary-background {
+      background-color: #ffff99;
+  }
+  .Canary-border {
+      border: 5px solid #ffff99;
+  }
+  .Light-Cyan-background {
+      background-color: #ccffff;
+  }
+  .Light-Cyan-border {
+      border: 5px solid #ccffff;
+  }
+  .Light-Sky-Blue-background {
+      background-color: #99ccff;
+  }
+  .Light-Sky-Blue-border {
+      border: 5px solid #99ccff;
+  }
+  .white-background {
+      background-color: #ffffff;
+  }
+  .white-border {
+      border: 5px solid #ffffff;
+  }
+  
+  .Blue-background {
+      background-color: #0000ff;
+  }
+  .Blue-border {
+      border: 5px solid #0000ff;
+  }
+  
+  .a000000-background {
+      background-color: black;
+  }
+  .a000000-border {
+      border: 5px solid black;
+  }
+  
+  .nodetext {
+      width: 100%;
+      height: 30px;
+      position: absolute;
+      top: 110px;
+      left: 0px;
+      padding: 10px;
+      color: white;
+      font-weight: bold;
+      font-size: 15px;
+      border-radius: 0px 0px 9px 9px;
+      z-index: 1;
+  }
+  .position {
+      text-align: center;
+      height: 30px;
+      width: 100%;
+      position: absolute;
+      top: 60px;
+      left: 0px;
+      color: black;
+      font-weight: bold;
+      font-size: 19px;
+  }
+  .tree{
+      width: max-content;
+  }
+  .tree_card_body{
+      overflow-x: scroll;
+  }
+  
+  .tree-name {
+      font-weight: bold;
+      text-align: center;
+      color: black;
+      font-size: 25px;
+  }
+  .editpen {
+      display: inline;
+      font-weight: bold;
+      margin-top: 5px;
+      margin-left: 5px;
+      color: black;
+      font-size: 25px;
+  }
+  .btn-tree {
+      border-radius: 7px;
+      margin: 5px;
+      padding: 10px;
+      color: blue;
+      text-decoration: none;
+      border: 1px solid black;
+      background-color: white;
+  }
+  
+ 
+  
+  /* Manage Cards */
+  .manage-card {
+      border-radius: 30px;
+  }
+  .manage-card .card-buttons {
+      display: flex;
+      justify-content: space-around;
+  }
+  
+  .manage-card .delete_button {
+      justify-content: center;
+      position: relative;
+  }
+  .manage-card .edit_icon {
+      font-size: 1em;
+      position: absolute;
+      right: 9px;
+      top: 25px;
+      color: white;
+      border: 2px solid white;
+      border-radius: 6px;
+      padding: 5px;
+      cursor: pointer;
+      height: 2em;
+      width: 2em;
+  }
+  
+  .manage-card .multi_delete{
+      position: absolute;
+      right: 9px;
+      top: 25px;
+      width: 1.4em;
+      height: 1.4em;
+  }
+  
+ 
+  .manage-card .card-title{
+      text-transform: capitalize;
+  }
+  
+ 
+  @media (max-width: 575px) and (min-width: 400px) {
+      .custom-button {
+          width: 30%;
+      }
+      .delete_button div {
+          width: 30%;
+      }
+  }
+  
+  @media(min-width : 994px){
+      .table{
+          display: table;
+      }
+  }
+  @media (max-width: 600px) 
+  {
+      .tree li a{
+      width: 140px;
+      height: 123px;
+      }
+      .position{
+          font-size: 18px;
+      }
+      .node img{
+        
+        width: 68px;
+      }
+      .tree li::before, .tree li::after {
+        content: "";
+        position: absolute;
+        top: -30px;
+        right: 50%;
+        border-top: 5px solid black;
+        width: 50%;
+        height: 50px;
+    }
+  }
+  
+  @media (max-width: 520px) 
+  {
+      .tree li a{
+        width: 110px;
+        height: 125px;
+      }
+      .position{
+        font-size: 17px;
+        top: 55px;
+      }
+      .node img{
+        height: 53px;
+        width: 70px;
+        left: 31px;
+      }
+      .nodetext{
+        top: 95px;
+      }
+      .tree li::after {
+        border-left: 4px solid black;
+        height: 23px;
+      }
+      .tree li::before .tree li::after{
+        top: -29px;
+      }
+      .tree ul ul::before {
+        height: 35px;
+    }
+  }
+ 
