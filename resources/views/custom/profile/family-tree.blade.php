@@ -51,19 +51,19 @@
                         <li class="sidebar-title">Menu</li>
 
                         <li class="sidebar-item  ">
-                            <a href="{{ route('dashboard-index') }}" class='sidebar-link'>
+                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
                                 <i class="bi bi-person-circle"></i>
                                 <span>Profile</span>
                             </a>
                         </li>
                         <li class="sidebar-item  ">
-                            <a href="{{ route('family-tree') }}" class='sidebar-link'>
+                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
                                 <i class="bi bi-chat-quote-fill"></i>
                                 <span>Foreroom</span>
                             </a>
                         </li>
                         <li class="sidebar-item  ">
-                            <a href="{{ route('family-tree') }}" class='sidebar-link'>
+                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
                                 <i class="bi bi-option"></i>
                                 <span>Family Tree</span>
                             </a>
@@ -128,7 +128,7 @@
                                         Foreroom
                                     </a>
                                 </li>
-                                    <li><a class="dropdown-item" href="./family-tree.html"><i class="icon-mid bi bi-option me-2"></i>
+                                    <li><a class="dropdown-item" href="./dashboard.html"><i class="icon-mid bi bi-option me-2"></i>
                                             Family Tree</a></li>
                                         <hr class="dropdown-divider">
                                     </li>

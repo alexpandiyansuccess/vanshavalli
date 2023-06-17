@@ -37,13 +37,4 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
-    public function index()
-    {
-        return view('custom.oauth.login');
-    }  
-
-    public function registration()
-    {
-        return view('custom.oauth.register');
-    }
 }
