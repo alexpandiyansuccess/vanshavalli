@@ -215,7 +215,6 @@
                                                         placeholder="Date Of Birth" type="text"
                                                         onfocus="(this.type='date')" onchange="DateSelectionChanged()"
                                                         autocomplete="off">
-
                                                 </div>
                                                 <div class="form-row form-row-2">
                                                     <input name="age" placeholder="Age" id="age" type="text"
