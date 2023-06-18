@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ManagechartController;
+use App\Http\Controllers\UserDetailController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OrgController;
 use Illuminate\Database\Capsule\Manager;
@@ -32,4 +33,4 @@ Route::patch("manage-chart/update-second-profile/{id}", [ManagechartController::
 Route::patch("manage-chart/update-image/{id}", [ManagechartController::class, 'updateImage']);
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
-Route::get('/createprofile', [App\Http\Controllers\HomeController::class, 'createprofile'])->name('createprofile');
+Route::POST('/createprofile', [App\Http\Controllers\UserDetailController::class, 'createprofile'])->name('createprofile');

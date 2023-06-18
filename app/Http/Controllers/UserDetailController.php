@@ -10,21 +10,20 @@ class UserDetailController extends Controller
 {
     public function createprofile(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
             'full_name' => 'required',
             'gender' => 'required',
             'relationship' => 'required',
             'dob' => 'required',
-            'age' => 'required',
             'email' => 'required',
             'contact_number' => 'required',
+            'pincode' => 'required',
             'area' => 'required',
             'district' => 'required',
             'state' => 'required',
             'country' => 'required'
-
         ]);
-
         if ($validator->fails()) {
             return redirect()
                 ->back()
@@ -48,6 +47,7 @@ class UserDetailController extends Controller
         $userTableObj->country = $request->country ?? "";
         $userTableObj->save();
 
+        return redirect('dashboard')->withSuccess('profile created successfully !');
     }
 
 }
