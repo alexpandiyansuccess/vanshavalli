@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
     <link href="images/favicon.png" rel="icon" />
     <title>Vanshavali - Profile - Signup</title>
-
+{{-- Sample --}}
 
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
