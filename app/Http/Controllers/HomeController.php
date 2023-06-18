@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\UserDetail;
+
+
 class HomeController extends Controller
 {
     /**
@@ -25,7 +28,9 @@ class HomeController extends Controller
     public function dashboard()
     {
         if(auth()->user()){
-            return view('custom.profile.dashboard');
+            $getUserId = auth()->user()->id;
+            $userProfile = UserDetail::where("user_id",$getUserId)->first();
+            return view('custom.profile.dashboard',compact('userProfile'));
         }else{
             return redirect('/');
         }
