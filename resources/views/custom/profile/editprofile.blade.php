@@ -43,36 +43,40 @@
 
 
                 <div class="sidebar-menu">
-                    <ul class="menu">
+                <ul class="menu">
                         <li class="sidebar-title">Menu</li>
 
                         <li class="sidebar-item  ">
-                            <a href="./index.html" class='sidebar-link'>
+                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
                                 <i class="bi bi-person-circle"></i>
                                 <span>Profile</span>
                             </a>
                         </li>
                         <li class="sidebar-item  ">
-                            <a href="./index.html" class='sidebar-link'>
+                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
                                 <i class="bi bi-chat-quote-fill"></i>
                                 <span>Foreroom</span>
                             </a>
                         </li>
                         <li class="sidebar-item  ">
-                            <a href="./family-tree.html" class='sidebar-link'>
+                            <a href="{{ url('/create-chart') }}" class='sidebar-link'>
                                 <i class="bi bi-option"></i>
                                 <span>Family Tree</span>
                             </a>
                         </li>
-
-
+                        <li class="sidebar-item  ">
+                            <a href="{{ url('/manage-chart') }}" class='sidebar-link'>
+                                <i class="bi bi-option"></i>
+                                <span> Manage Chart</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
             </div>
         </div>
         <div id="main" class='layout-navbar'>
-            <header class='mb-3'>
+        <header class='mb-3'>
                 <nav class="navbar navbar-expand navbar-light ">
                     <div class="container-fluid">
                         <a href="#" class="burger-btn d-block">
@@ -104,9 +108,10 @@
                                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-menu d-flex">
                                         <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">Administrator</h6>
-                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">Hello,
-                                                    <email-id></Email-id></span></p>
+                                            <h6 class="mb-0 text-gray-600">Hello, {{ Auth::user()->name }}</h6>
+                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">
+                                                    <email-id>{{ Auth::user()->email }}</Email-id>
+                                                </span></p>
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
@@ -117,22 +122,33 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <h6 class="dropdown-header">Hello, Admin!</h6>
+                                        <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}</h6>
                                     </li>
-
-                                    <li><a class="dropdown-item" href="#">
+                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">
                                             <i class="icon-mid bi bi-chat-quote-fill me-2"></i>
                                             Foreroom
                                         </a>
                                     </li>
-                                    <li><a class="dropdown-item" href="./family-tree.html"><i
+                                    <li><a class="dropdown-item" href="{{ url('/create-chart') }}"><i
                                                 class="icon-mid bi bi-option me-2"></i>
                                             Family Tree</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('/manage-chart') }}"><i
+                                                class="icon-mid bi bi-option me-2"></i>
+                                            Manage Chart</a></li>
 
                                     <hr class="dropdown-divider">
                                     </li>
-                                    <li onclick="logout()"><a class="dropdown-item" href="#"><i
-                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                    <li><a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a>
+                                            
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            
+                        
+                        </li>
                                 </ul>
                             </div>
                         </div>
@@ -152,18 +168,18 @@
                     </div>
                     <section class="section">
                         <div class="card">
-                        @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                    @endif
+                            @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                            @endif
                             <div class="page-content">
                                 <div class="form-v10-content">
-                                    <form class="form-detail" method="POST" action="{{ route('updateprofile') }}" 
+                                    <form class="form-detail" method="POST" action="{{ route('updateprofile') }}"
                                         autocomplete="nope">
                                         @csrf
                                         <div class="form-left">
@@ -171,13 +187,15 @@
                                             <div class="form-group">
                                                 <div class="form-row form-row-1">
                                                     <input type="text" oninput="this.value = this.value.toUpperCase()"
-                                                        name="full_name" value="{{$userProfile->full_name}}" inputmode="text" id="full_name" class="input-text"
+                                                        name="full_name" value="{{$userProfile->full_name}}"
+                                                        inputmode="text" id="full_name" class="input-text"
                                                         placeholder="Full Name" autocomplete="nope" required>
                                                 </div>
                                                 <div class="form-row form-row-2">
-                                                    <select id="gender" name="gender"  autocomplete="off">
+                                                    <select id="gender" name="gender" autocomplete="off">
                                                         @if($userProfile->gender)
-                                                            <option selected value="{{$userProfile->gender}}">{{$userProfile->gender}}</option>
+                                                        <option selected value="{{$userProfile->gender}}">
+                                                            {{$userProfile->gender}}</option>
                                                         @endif
                                                         <option value="#">Select Your Gender</option>
                                                         <option value="MALE">MALE</option>
@@ -200,14 +218,14 @@
                                                 <div class="form-row form-row-1">
                                                     <!-- <input placeholder="Date of Birth" type="text" onfocus="(this.type='date')" id="date"> -->
                                                     <input id="dob" runat="server" name="dob"
-                                                        placeholder="Date Of Birth" value="{{$userProfile->dob}}" type="text"
-                                                        onfocus="(this.type='date')" onchange="DateSelectionChanged()"
-                                                        autocomplete="off">
+                                                        placeholder="Date Of Birth" value="{{$userProfile->dob}}"
+                                                        type="text" onfocus="(this.type='date')"
+                                                        onchange="DateSelectionChanged()" autocomplete="off">
 
                                                 </div>
                                                 <div class="form-row form-row-2">
-                                                    <input name="age" placeholder="Age" id="age" type="text"
-                                                        required disabled autocomplete="off">
+                                                    <input name="age" placeholder="Age" id="age" type="text" required
+                                                        disabled autocomplete="off">
                                                 </div>
                                             </div>
 
@@ -216,13 +234,15 @@
 
                                             <div class="form-group">
                                                 <div class="form-row form-row-1">
-                                                    <input inputmode="email" value="{{$userProfile->email}}" name="email" type="email"
+                                                    <input inputmode="email" value="{{$userProfile->email}}"
+                                                        name="email" type="email"
                                                         pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
                                                         id="email_input" class="input-text" placeholder="Email" required
                                                         autocomplete="off">
                                                 </div>
                                                 <div class="form-row form-row-2">
-                                                    <input inputmode="tel" value="{{$userProfile->contact_number}}" name="contact_number" type="number" pattern="[0-9]*"
+                                                    <input inputmode="tel" value="{{$userProfile->contact_number}}"
+                                                        name="contact_number" type="number" pattern="[0-9]*"
                                                         inputmode="numeric" id="id6" class="business"
                                                         placeholder="Contact Number" required autocomplete="off">
                                                 </div>
@@ -236,13 +256,14 @@
                                             <h2>Location Information</h2>
                                             <div class="form-group ">
                                                 <div class="form-row  form-row-1">
-                                                    <input inputmode="tel" value="{{$userProfile->door_number}}"   name="door_number" type="number" pattern="[0-9]*"
-                                                        inputmode="numeric" 
-                                                        placeholder="Enter Flat / Door / Block No." required
-                                                        autocomplete="off">
+                                                    <input inputmode="tel" value="{{$userProfile->door_number}}"
+                                                        name="door_number" type="number" pattern="[0-9]*"
+                                                        inputmode="numeric" placeholder="Enter Flat / Door / Block No."
+                                                        required autocomplete="off">
                                                 </div>
                                                 <div class="form-row  form-row-2">
-                                                    <input type="text" id="street_name" value="{{$userProfile->street_name}}" name="street_name"
+                                                    <input type="text" id="street_name"
+                                                        value="{{$userProfile->street_name}}" name="street_name"
                                                         placeholder="Enter your Street Name" required
                                                         autocomplete="off">
                                                 </div>
@@ -250,33 +271,37 @@
                                             </div>
                                             <div class="form-group">
                                                 <div class="form-row form-row-1">
-                                                    <input inputmode="tel" type="text" value="{{$userProfile->pincode}}" id="pincode" maxlength="6"
-                                                        name="pincode" pattern="[0-9]*" inputmode="numeric"
-                                                        placeholder="Pincode" required autocomplete="off">
+                                                    <input inputmode="tel" type="text" value="{{$userProfile->pincode}}"
+                                                        id="pincode" maxlength="6" name="pincode" pattern="[0-9]*"
+                                                        inputmode="numeric" placeholder="Pincode" required
+                                                        autocomplete="off">
                                                 </div>
                                                 <div class="form-row form-row-2">
                                                     <input type="text" oninput="this.value = this.value.toUpperCase()"
-                                                        name="area" value="{{$userProfile->area}}" inputmode="text" id="area" class="input-text"
-                                                        placeholder="Area" readonly required autocomplete="off">
+                                                        name="area" value="{{$userProfile->area}}" inputmode="text"
+                                                        id="area" class="input-text" placeholder="Area" readonly
+                                                        required autocomplete="off">
                                                 </div>
                                             </div>
 
                                             <div class="form-group">
                                                 <div class="form-row form-row-1">
 
-                                                    <input type="text" value="{{$userProfile->district}}" oninput="this.value = this.value.toUpperCase()"
-                                                        name="district" inputmode="text" id="district"
-                                                        class="input-text" placeholder="District" readonly required
-                                                        autocomplete="off">
+                                                    <input type="text" value="{{$userProfile->district}}"
+                                                        oninput="this.value = this.value.toUpperCase()" name="district"
+                                                        inputmode="text" id="district" class="input-text"
+                                                        placeholder="District" readonly required autocomplete="off">
                                                 </div>
                                                 <div class="form-row form-row-2">
-                                                    <input type="text" value="{{$userProfile->state}}" oninput="this.value = this.value.toUpperCase()"
-                                                        name="state" inputmode="text" id="state" class="input-text"
+                                                    <input type="text" value="{{$userProfile->state}}"
+                                                        oninput="this.value = this.value.toUpperCase()" name="state"
+                                                        inputmode="text" id="state" class="input-text"
                                                         placeholder="State" readonly required autocomplete="off">
                                                 </div>
                                                 <div class="form-row form-row-2">
                                                     <input type="text" oninput="this.value = this.value.toUpperCase()"
-                                                        name="country" value="{{$userProfile->country}}" inputmode="text" id="country" class="input-text"
+                                                        name="country" value="{{$userProfile->country}}"
+                                                        inputmode="text" id="country" class="input-text"
                                                         placeholder="Country" readonly required autocomplete="off">
                                                 </div>
 
@@ -324,48 +349,50 @@
                                                 <div class="form-row form-row-1">
                                                     <input inputmode="text" name="instagram_username" type="text"
                                                         pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text" placeholder="Instagram"
-                                                        required autocomplete="off" value="{{$userProfile->instagram_username}}">
+                                                        class="input-text" placeholder="Instagram" required
+                                                        autocomplete="off" value="{{$userProfile->instagram_username}}">
                                                 </div>
 
                                                 <div class="form-row form-row-2">
                                                     <input inputmode="text" name="facebook_username" type="text"
                                                         pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text" placeholder="Facebook"
-                                                        required autocomplete="off" value="{{$userProfile->facebook_username}}">
+                                                        class="input-text" placeholder="Facebook" required
+                                                        autocomplete="off" value="{{$userProfile->facebook_username}}">
                                                 </div>
 
                                                 <div class="form-row form-row-2">
                                                     <input inputmode="text" name="website_url" type="text"
                                                         pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text"
-                                                        placeholder="Enter your website" value="{{$userProfile->website_url}}" required autocomplete="off">
+                                                        class="input-text" placeholder="Enter your website"
+                                                        value="{{$userProfile->website_url}}" required
+                                                        autocomplete="off">
                                                 </div>
 
                                             </div>
 
                                             <div class="form-group">
                                                 <div class="form-row form-row-1">
-                                                    <input inputmode="text"  value="{{$userProfile->twitter_username}}" name="twitter_username" type="text"
+                                                    <input inputmode="text" value="{{$userProfile->twitter_username}}"
+                                                        name="twitter_username" type="text"
                                                         pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text" placeholder="Twitter"
-                                                        required autocomplete="off">
+                                                        class="input-text" placeholder="Twitter" required
+                                                        autocomplete="off">
                                                 </div>
 
                                                 <div class="form-row form-row-2">
-                                                    <input inputmode="text" value="{{$userProfile->github_url}}" name="github_url" type="text"
+                                                    <input inputmode="text" value="{{$userProfile->github_url}}"
+                                                        name="github_url" type="text"
                                                         pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text" placeholder="Github"
-                                                        required autocomplete="off">
+                                                        class="input-text" placeholder="Github" required
+                                                        autocomplete="off">
                                                 </div>
 
                                             </div>
 
 
                                             <div class="col-12 d-flex justify-content-center">
-                                                <button class="btn btn-lg bg-btn-submit mr-4 mb-4 hover-success" 
-                                                    type="submit" name="Submit" value="Submit"
-                                                    >Submit</button>
+                                                <button class="btn btn-lg bg-btn-submit mr-4 mb-4 hover-success"
+                                                    type="submit" name="Submit" value="Submit">Submit</button>
 
 
 
@@ -421,10 +448,9 @@
         </script>
 
         <script type="text/javascript">
-
-$(document).ready(function(){
-    DateSelectionChanged();
-});
+        $(document).ready(function() {
+            DateSelectionChanged();
+        });
 
         function DateSelectionChanged() {
             var today = new Date();
@@ -444,8 +470,6 @@ $(document).ready(function(){
             }
 
         }
-
-    
         </script>
 
 

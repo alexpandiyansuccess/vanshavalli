@@ -73,9 +73,6 @@
                                 <span> Manage Chart</span>
                             </a>
                         </li>
-
-
-
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -144,8 +141,17 @@
 
                                     <hr class="dropdown-divider">
                                     </li>
-                                    <li onclick="logout()"><a class="dropdown-item" href="#"><i
-                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                    <li><a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a>
+                                            
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            
+                        
+                        </li>
                                 </ul>
                             </div>
                         </div>

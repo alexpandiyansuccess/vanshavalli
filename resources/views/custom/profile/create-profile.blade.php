@@ -43,36 +43,40 @@
 
 
                 <div class="sidebar-menu">
-                    <ul class="menu">
+                <ul class="menu">
                         <li class="sidebar-title">Menu</li>
 
                         <li class="sidebar-item  ">
-                            <a href="./index.html" class='sidebar-link'>
+                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
                                 <i class="bi bi-person-circle"></i>
                                 <span>Profile</span>
                             </a>
                         </li>
                         <li class="sidebar-item  ">
-                            <a href="./index.html" class='sidebar-link'>
+                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
                                 <i class="bi bi-chat-quote-fill"></i>
                                 <span>Foreroom</span>
                             </a>
                         </li>
                         <li class="sidebar-item  ">
-                            <a href="./family-tree.html" class='sidebar-link'>
+                            <a href="{{ url('/create-chart') }}" class='sidebar-link'>
                                 <i class="bi bi-option"></i>
                                 <span>Family Tree</span>
                             </a>
                         </li>
-
-
+                        <li class="sidebar-item  ">
+                            <a href="{{ url('/manage-chart') }}" class='sidebar-link'>
+                                <i class="bi bi-option"></i>
+                                <span> Manage Chart</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
             </div>
         </div>
         <div id="main" class='layout-navbar'>
-            <header class='mb-3'>
+        <header class='mb-3'>
                 <nav class="navbar navbar-expand navbar-light ">
                     <div class="container-fluid">
                         <a href="#" class="burger-btn d-block">
@@ -104,9 +108,10 @@
                                 <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-menu d-flex">
                                         <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">Administrator</h6>
-                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">Hello,
-                                                    <email-id></Email-id></span></p>
+                                            <h6 class="mb-0 text-gray-600">Hello, {{ Auth::user()->name }}</h6>
+                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">
+                                                    <email-id>{{ Auth::user()->email }}</Email-id>
+                                                </span></p>
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
@@ -117,22 +122,33 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                                     <li>
-                                        <h6 class="dropdown-header">Hello, Admin!</h6>
+                                        <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}</h6>
                                     </li>
-
-                                    <li><a class="dropdown-item" href="#">
+                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">
                                             <i class="icon-mid bi bi-chat-quote-fill me-2"></i>
                                             Foreroom
                                         </a>
                                     </li>
-                                    <li><a class="dropdown-item" href="./family-tree.html"><i
+                                    <li><a class="dropdown-item" href="{{ url('/create-chart') }}"><i
                                                 class="icon-mid bi bi-option me-2"></i>
                                             Family Tree</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('/manage-chart') }}"><i
+                                                class="icon-mid bi bi-option me-2"></i>
+                                            Manage Chart</a></li>
 
                                     <hr class="dropdown-divider">
                                     </li>
-                                    <li onclick="logout()"><a class="dropdown-item" href="#"><i
-                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                    <li><a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a>
+                                            
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            
+                        
+                        </li>
                                 </ul>
                             </div>
                         </div>
