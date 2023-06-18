@@ -293,10 +293,11 @@
         </div>
     </div>
 
-    <link rel="stylesheet" href="{{ asset('js/customjs/profilejs/js/main.js') }}">
-    <link rel="stylesheet" href="{{ asset('js/customjs/profilejs/js/bootstrap.bundle.min.js') }}">
-    <link rel="stylesheet"
-        href="{{ asset('js/customjs/profilejs/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}">
+    
+        <script src="{{ asset('js/customjs/profilejs/js/main.js') }}"></script>
+        <script src="{{ asset('js/customjs/profilejs/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('js/customjs/profilejs/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    
     <script>
     // Get the current year
     var currentYear = new Date().getFullYear();
