@@ -32,3 +32,4 @@ Route::patch("manage-chart/update-second-profile/{id}", [ManagechartController::
 Route::patch("manage-chart/update-image/{id}", [ManagechartController::class, 'updateImage']);
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
+Route::get('/createprofile', [App\Http\Controllers\HomeController::class, 'createprofile'])->name('createprofile');

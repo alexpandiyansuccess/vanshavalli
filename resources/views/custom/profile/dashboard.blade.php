@@ -67,6 +67,13 @@
                                 <span>Family Tree</span>
                             </a>
                         </li>
+                        <li class="sidebar-item  ">
+                            <a href="{{ url('/manage-chart') }}" class='sidebar-link'>
+                                <i class="bi bi-option"></i>
+                                <span> Manage Chart</span>
+                            </a>
+                        </li>
+
 
 
                     </ul>
@@ -109,7 +116,8 @@
                                         <div class="user-name text-end me-3">
                                             <h6 class="mb-0 text-gray-600">Hello, {{ Auth::user()->name }}</h6>
                                             <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">
-                                                    <email-id>{{ Auth::user()->email }}</Email-id></span></p>
+                                                    <email-id>{{ Auth::user()->email }}</Email-id>
+                                                </span></p>
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
@@ -130,6 +138,9 @@
                                     <li><a class="dropdown-item" href="{{ url('/create-chart') }}"><i
                                                 class="icon-mid bi bi-option me-2"></i>
                                             Family Tree</a></li>
+                                    <li><a class="dropdown-item" href="{{ url('/manage-chart') }}"><i
+                                                class="icon-mid bi bi-option me-2"></i>
+                                            Manage Chart</a></li>
 
                                     <hr class="dropdown-divider">
                                     </li>
@@ -147,6 +158,15 @@
                     @if (session('success'))
                     <div class="alert alert-success" role="alert">
                         {{ session('success') }}
+                    </div>
+                    @endif
+                    @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                     @endif
                     <div class="collapse-tabs new-property-step">
@@ -339,7 +359,8 @@
 
     <link rel="stylesheet" href="{{ asset('js/customjs/profilejs/js/main.js') }}">
     <link rel="stylesheet" href="{{ asset('js/customjs/profilejs/js/bootstrap.bundle.min.js') }}">
-    <link rel="stylesheet" href="{{ asset('js/customjs/profilejs/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}">
+    <link rel="stylesheet"
+        href="{{ asset('js/customjs/profilejs/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}">
     <script>
     // Get the current year
     var currentYear = new Date().getFullYear();
@@ -348,4 +369,5 @@
     currentYearElement.textContent = currentYear.toString();
     </script>
 </body>
+
 </html>

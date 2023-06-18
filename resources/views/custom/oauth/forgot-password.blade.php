@@ -1,186 +1,52 @@
+@extends('layouts.app')
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, shrink-to-fit=no">
-<link href="images/favicon.png" rel="icon" />
-<title>Vanshavali - Profile - Login</title>
-<meta name="description" content="Login and Register Form Html Template">
-<meta name="author" content="harnishdesign.net">
+@section('content')
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card custom-card">
+                <div class="card-header custom-header">{{ __('Reset Password') }}</div>
 
-<!-- Web Fonts
-========================= -->
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900' type='text/css'>
+                <div class="card-body custom-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
 
-<!-- Stylesheet
-========================= -->
-<link rel="stylesheet" type="text/css" href="https://harnishdesign.net/demo/html/oxyy/vendor/bootstrap/css/bootstrap.min.css" />
+                    <form method="POST" action="{{ route('password.email') }}">
+                        @csrf
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+                        <div class="form-group row">
+                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+                            <div class="col-md-6">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
 
+                                @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div>
 
-
-<link rel="stylesheet" type="text/css" href="./stylesheet.css" />
-<!-- Colors Css -->
-<link id="color-switcher" type="text/css" rel="stylesheet" href="#" />
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
-
-    .header-logo-text {
-      font-family: 'Mouse Memoirs', sans-serif;
-      color: #FFF;
-    }
-  </style>
-</head>
-<body>
-
-<!-- Preloader -->
-<div class="preloader preloader-dark">
-  <div class="lds-ellipsis">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-</div>
-<!-- Preloader End -->
-
-<div id="main-wrapper" class="oxyy-login-register">
-  <div class="container-fluid px-0">
-    <div class="row g-0 min-vh-100"> 
-      <!-- Welcome Text
-      ========================= -->
-      <div class="col-md-4">
-        <div class="hero-wrap d-flex align-items-center h-100">
-          <div class="hero-mask opacity-5 bg-dark"></div>
-          <div class="hero-bg hero-bg-scroll" style="background-image:url('https://images.unsplash.com/photo-1611024847487-e26177381a3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80');"></div>
-          <div class="hero-content mx-auto w-100 h-100">
-            <div class="container d-flex flex-column h-100">
-              <div class="row g-0">
-                <div class="col-11 col-lg-9 mx-auto">
-                  <div class="logo mt-5 mb-5"> <h3 class="header-logo-text">Vanshavali</h3> </div>
+                        <div class="form-group row mb-0">
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="custom-button-create">
+                                    {{ __('Send Password Reset Link') }}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-              </div>
-              <div class="row g-0 mt-3">
-                <div class="col-11 col-lg-9 mx-auto">
-                  <h1 class="text-9 text-white fw-300 mb-5"><span class="fw-500">Welcome</span>, We are glad to see you again!</h1>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
-      <!-- Welcome Text End --> 
-      
-      
-          <!-- Forgot Password Form
-      ========================= -->
-      <div class="col-md-8 d-flex flex-column align-items-center bg-dark">
-        <div class="container my-auto py-5">
-          <div class="row g-0">
-            <div class="col-11 col-md-8 col-lg-7 col-xl-6 mx-auto">
-              <p class="text-2 text-light">Return to <a class="fw-500" href="./index.html">Login</a></p>
-              <h3 class="text-white mb-4">Forgot password?</h3>
-              <p class="text-muted mb-4">Enter the email address associated with your account.</p>
-              <form id="forgot-password-form" class="form-dark"  method="post">
-                <div class="mb-3">
-                  <label class="form-label text-light" for="emailAddress">Email</label>
-                  <input type="text" class="form-control" id="email" required placeholder="Enter Email">
-                </div>
-                <button class="btn btn-primary mt-2" type="submit">Continue</button>
-              </form>
-              
-              
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Forgot Password Form End --> 
     </div>
-
-
-
-    </div>
-  </div>
 </div>
 
-
-
-<!-- Script --> 
-<script src="https://harnishdesign.net/demo/html/oxyy/vendor/jquery/jquery.min.js"></script> 
-<script src="https://harnishdesign.net/demo/html/oxyy/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> 
-<!-- Style Switcher --> 
-<script src="https://harnishdesign.net/demo/html/oxyy/js/switcher.min.js"></script> 
-<script src="https://harnishdesign.net/demo/html/oxyy/js/theme.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-auth.js"></script>
-<script>
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  var firebaseConfig = {
-    apiKey: "AIzaSyCJg-eG7QH6yFZRlRA2hjMwiU1Sd8t6Puw",
-  authDomain: "kurudhiweb.firebaseapp.com",
-  databaseURL: "https://kurudhiweb-default-rtdb.firebaseio.com",
-  projectId: "kurudhiweb",
-  storageBucket: "kurudhiweb.appspot.com",
-  messagingSenderId: "993287986742",
-  appId: "1:993287986742:web:3f28546bc8f14e6d190297",
-  measurementId: "G-DVJ5PWQ84Z"
-  };
-  
-  firebase.initializeApp(firebaseConfig);
-
-// Get a reference to the Firebase Authentication service
-var auth = firebase.auth();
-
-// Handle form submission
-var form = document.getElementById('forgot-password-form');
-form.addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent form from submitting
-
-  // Get user input
-  var email = document.getElementById('email').value;
-
-  // Send password reset email
-  auth.sendPasswordResetEmail(email)
-    .then(function() {
-      // Password reset email sent
-      console.log('Password reset email sent to:', email);
-      swal('Password reset email has been sent to ' + email + '. Please check your inbox.');
-      form.reset(); // Clear the form
-    })
-    .catch(function(error) {
-      // Error occurred while sending password reset email
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.error('Password reset error:', errorCode, errorMessage);
-      swal('Password reset failed: ' + errorMessage);
-    });
-});
-  
-
-  
-
-
-</script>
-
-
-
-
- 
-
-
-<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
-</body>
-</html>
+<div class="wave wave1"></div>
+    <div class="wave wave2"></div>
+    <div class="wave wave3"></div>
+    <div class="wave wave4"></div>
+@endsection

@@ -120,8 +120,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label text-light" for="password">Password</label>
-                                        <a class="float-end text-2" href="{{ route('password.request') }}">Forgot
-                                            Password ?</a>
+                                        <!-- <a class="float-end text-2" href="{{ route('password.request') }}">Forgot
+                                            Password ?</a> -->
                                         <input type="password" name="password" autocomplete="nope" class="form-control"
                                             id="password" required placeholder="Enter Password">
 
