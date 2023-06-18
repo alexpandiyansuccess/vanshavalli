@@ -143,9 +143,9 @@
     </div>
 
     <!-- Script -->
-    <script src="https://harnishdesign.net/demo/html/oxyy/vendor/jquery/jquery.min.js"></script>
+    <script src="{{ asset('js/customjs/jquery-3.0.0.min.js') }}"></script>
     <!-- Style Switcher -->
-    <script src="https://harnishdesign.net/demo/html/oxyy/js/theme.js"></script>
+    <script src="{{ asset('js/customjs/Form/theme.js') }}"></script>
 
 </body>
 

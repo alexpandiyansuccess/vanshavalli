@@ -9,8 +9,7 @@
     <title>Vanshavali - Profile - Signup</title>
 
 
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
-    </link>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'></link>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.all.min.js"></script>
 
     <!-- Web Fonts
@@ -20,10 +19,9 @@
 
     <!-- Stylesheet
 ========================= -->
-    <link rel="stylesheet" type="text/css"
-        href="https://harnishdesign.net/demo/html/oxyy/vendor/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" href="{{ asset('css/custom/profile/css/bootstrap.css') }}">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset('css/custom/font-awesome/font-awesome.min.css') }}">
 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom/stylesheet.css') }}" />
     <!-- Colors Css -->
@@ -60,7 +58,7 @@
                     <div class="hero-wrap h-100">
                         <div class="hero-mask opacity-5 bg-dark"></div>
                         <div class="hero-bg hero-bg-scroll"
-                            style="background-image:url('https://images.unsplash.com/photo-1602255680702-c47261041a97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80');">
+                            style="background-image:url('{{ asset('images/regimg.avif') }}');">
                         </div>
                         <div class="hero-content mx-auto w-100 h-100">
                             <div class="container d-flex flex-column h-100">
@@ -163,9 +161,9 @@
         </div>
     </div>
     <!-- Script -->
-    <script src="https://harnishdesign.net/demo/html/oxyy/vendor/jquery/jquery.min.js"></script>
+    <script src="{{ asset('js/customjs/jquery-3.0.0.min.js') }}"></script>
     <!-- Style Switcher -->
-    <script src="https://harnishdesign.net/demo/html/oxyy/js/theme.js"></script>
+    <script src="{{ asset('js/customjs/Form/theme.js') }}"></script>
 </body>
 
 </html>

@@ -13,8 +13,6 @@
 
   <!-- Favicon -->
   <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-
-
   <!-- Plugins -->
   <link rel="stylesheet" href="{{ asset('css/custom/plugins.css') }}">
 
@@ -22,7 +20,6 @@
   <link rel="stylesheet" href="{{ asset('css/custom/style.css') }}">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
-
     .header-logo-text {
       font-family: 'Mouse Memoirs', sans-serif;
     }
@@ -30,9 +27,7 @@
 
 
 
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ asset('css/custom/font-awesome/font-awesome.min.css') }}">
 </head>
 
 <body>
@@ -131,7 +126,7 @@
     <div class="swiper-container parallax-slider">
       <div class="swiper-wrapper">
         <div class="swiper-slide">
-          <div class="bg-img valign" data-background="https://images.unsplash.com/photo-1655185497013-db98aca061d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" data-overlay-dark="6">
+          <div class="bg-img valign" data-background="{{ asset('images/1.jfif') }}" data-overlay-dark="6">
             <div class="container">
               <div class="row justify-content-center">
                 <div class="col-lg-7 col-md-9">
@@ -150,7 +145,7 @@
           </div>
         </div>
         <div class="swiper-slide">
-          <div class="bg-img valign" data-background="https://images.unsplash.com/photo-1577897113292-3b95936e5206?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1090&q=80" data-overlay-dark="6">
+          <div class="bg-img valign" data-background="{{ asset('images/2.avif') }}" data-overlay-dark="6">
             <div class="container">
               <div class="row justify-content-center">
                 <div class="col-lg-7 col-md-9">
@@ -167,7 +162,7 @@
           </div>
         </div>
         <div class="swiper-slide">
-          <div class="bg-img valign" data-background="https://images.unsplash.com/photo-1611516818236-8faa056fb659?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" data-overlay-dark="6">
+          <div class="bg-img valign" data-background="{{ asset('images/3.avif') }}" data-overlay-dark="6">
             <div class="container">
               <div class="row justify-content-center">
                 <div class="col-lg-7 col-md-9">
@@ -221,11 +216,8 @@
 
   <!-- jQuery -->
   <script src="{{ asset('js/customjs/jquery-3.0.0.min.js') }}"></script>
-
-
   <!-- plugins -->
   <script src="{{ asset('js/customjs/plugins.js') }}"></script>
-
   <!-- customjs scripts -->
   <script src="{{ asset('js/customjs/scripts.js') }}"></script>
 

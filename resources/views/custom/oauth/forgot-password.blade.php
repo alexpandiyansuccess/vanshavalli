@@ -16,9 +16,9 @@
 
 <!-- Stylesheet
 ========================= -->
-<link rel="stylesheet" type="text/css" href="https://harnishdesign.net/demo/html/oxyy/vendor/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" type="text/css" href="<link rel="stylesheet" href="{{ asset('css/custom/profile/css/bootstrap.css') }}">" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{{ asset('css/custom/font-awesome/font-awesome.min.css') }}">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js" integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -61,7 +61,7 @@
       <div class="col-md-4">
         <div class="hero-wrap d-flex align-items-center h-100">
           <div class="hero-mask opacity-5 bg-dark"></div>
-          <div class="hero-bg hero-bg-scroll" style="background-image:url('https://images.unsplash.com/photo-1611024847487-e26177381a3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80');"></div>
+          <div class="hero-bg hero-bg-scroll" style="background-image:url('{{ asset('images/loginimg.avif') }}');"></div>
           <div class="hero-content mx-auto w-100 h-100">
             <div class="container d-flex flex-column h-100">
               <div class="row g-0">
@@ -119,7 +119,7 @@
 <script src="https://harnishdesign.net/demo/html/oxyy/vendor/bootstrap/js/bootstrap.bundle.min.js"></script> 
 <!-- Style Switcher --> 
 <script src="https://harnishdesign.net/demo/html/oxyy/js/switcher.min.js"></script> 
-<script src="https://harnishdesign.net/demo/html/oxyy/js/theme.js"></script>
+<script src="{{ asset('js/customjs/Form/theme.js') }}"></script>
 
 <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-auth.js"></script>
