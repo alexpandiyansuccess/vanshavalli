@@ -289,6 +289,8 @@
                                 <button type="button" class="btn btn-outline-ligh" data-dismiss="modal">Close</button>
                                 <button id="savenodename" type="button" class="btn btn-primary">Save</button>
                                 <button id="addparent" type="button" class="btn btn-primary">Add Parent</button>
+                                <button id="addchild" type="button" class="btn btn-primary">Add Spouse</button>
+
                                 <button id="addchild" type="button" class="btn btn-primary">Add Child</button>
                                 <button id="deletenode" type="button" class="btn btn-danger">Delete</button>
                             </div>

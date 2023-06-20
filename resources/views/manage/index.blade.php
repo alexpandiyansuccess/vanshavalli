@@ -198,14 +198,14 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content tab-content tab-pane show active">
             <div class="modal-header custom-header container">
-                <ul class="nav nav-pills d-flex justify-content-around active"  role="tablist" style="width:100%">
+                <!-- <ul class="nav nav-pills d-flex justify-content-around active"  role="tablist" style="width:100%">
                     <li class="nav-item">
                         <a href="#user-1" class="nav-link active" data-toggle="tab">User 1</a>
                     </li>
                     <li class="nav-item">
                         <a href="#user-2" class="nav-link" data-toggle="tab">User 2</a>
-                    </li>
-                </ul>
+                    </li> 
+                </ul> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span class="modal-close mr-3" aria-hidden="true">&times;</span>
                 </button>
@@ -276,6 +276,7 @@
                 <button type="button" class="btn btn-modal2" data-dismiss="modal">Close</button>
                 <button id="savenodename" type="button" class="btn btn-modal1">Save</button>
                 <button id="addparent" type="button" class="btn btn-modal1">Add Parent</button>
+                <button id="addchild" type="button" class="btn btn-modal1">Add Spouse</button>
                 <button id="addchild" type="button" class="btn btn-modal1">Add Child</button>
                 <button id="deletenode" type="button" class="btn btn-modal2">Delete</button>
             </div>

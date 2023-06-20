@@ -21,7 +21,8 @@ class ManagechartController extends Controller
         // $profile = Profile::find(1);
         // return $profile->secondProfile;
         if(auth()->user()){
-            $profiles = Profile::where('root_id', 0)->paginate(4);
+            $getUserId =  Auth::user()->id;
+            $profiles = Profile::where('root_id', 0)->where("user_id",$getUserId)->paginate(4);
 
             return view('manage.index', compact('profiles'));
         }else{
@@ -149,6 +150,7 @@ class ManagechartController extends Controller
         $message = [];
         if ($profile) {
             $profile->profile_name = $request->profile_name;
+            $profile->user_id = Auth::user() ? Auth::user()->id : null;
             $profile->designation = $request->designation;
             $profile->color_code = Config::get('color.' . $request['color']);
             $profile->save();
