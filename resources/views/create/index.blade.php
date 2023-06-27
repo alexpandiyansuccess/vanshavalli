@@ -162,7 +162,11 @@
                 </nav>
             </header>
             <div id="main-content">
-
+            @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                    @endif
                 <div class="container mt-5">
                     <div id="panel1" class="row justify-content-center">
                         <div class="col-md-12">

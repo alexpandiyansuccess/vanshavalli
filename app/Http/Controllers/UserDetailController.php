@@ -112,14 +112,16 @@ class UserDetailController extends Controller
       }
 
       public function familyTree(){
-        // $filePath = public_path('json/file.json');
-
-        // $fileContents = File::get($filePath);
-        // $jsonData = json_decode($fileContents);
         $getUserId = auth()->user()->id;
         $fileContents = Nodes::where("user_id",$getUserId)->first();
-        $jsonData = json_decode($fileContents->node_array);
-        return view('custom.profile.family-tree',compact('jsonData'));
+        if($fileContents){
+            $jsonData = json_decode($fileContents->node_array);
+            return view('custom.profile.family-tree',compact('jsonData'));
+        }else{
+            return redirect('create-chart')->withSuccess('Kindly create node then proceed !');
+            
+        }
+
       }
     
       
@@ -164,10 +166,14 @@ class UserDetailController extends Controller
         $jsonFilePath = public_path('json/file.json');
 
         // Read the JSON file
-        $jsonData = File::get($jsonFilePath);
+
+        $getUserId = auth()->user()->id;
+        $checkIfExist = Nodes::where("user_id",$getUserId)->first();
+        $jsonData = $checkIfExist->node_array;
 
         // Parse the JSON data into an array
         $nodes = json_decode($jsonData, true);
+
 
         // Add nodes from the request
         foreach ($request->input('addNodesData', []) as $node) {
@@ -193,8 +199,9 @@ class UserDetailController extends Controller
         $jsonData = json_encode($nodes);
 
         $getUserId = auth()->user()->id;
-        $checkIfExist = Nodes::where("user_id",$getUserId)->exists();
-        if($checkIfExist == true){
+        $checkIfExist = Nodes::where("user_id",$getUserId)->first();
+        
+        if($checkIfExist){
             Nodes::where("user_id",$getUserId)->update([
                 "node_array"=>$jsonData
             ]);
