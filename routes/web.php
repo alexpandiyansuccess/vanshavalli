@@ -38,4 +38,10 @@ Route::get('/addprofile', [App\Http\Controllers\UserDetailController::class, 'ad
 Route::get('/editprofile', [App\Http\Controllers\UserDetailController::class, 'editprofile'])->name('editprofile');
 Route::POST('/updateprofile', [App\Http\Controllers\UserDetailController::class, 'updateprofile'])->name('updateprofile');
 
+Route::POST('/createNode', [App\Http\Controllers\UserDetailController::class, 'createNode'])->name('createNode');
+Route::get('/familyTree', [App\Http\Controllers\UserDetailController::class, 'familyTree'])->name('familyTree');
+Route::POST('/onUpdateNodeData', [App\Http\Controllers\UserDetailController::class, 'onUpdateNodeData'])->name('onUpdateNodeData');
+Route::get('/manageTree', [App\Http\Controllers\UserDetailController::class, 'manageTree'])->name('manageTree');
+
+
 

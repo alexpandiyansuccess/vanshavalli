@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserDetail;
+use App\Models\Nodes;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\File;
+use Auth;
 
 class UserDetailController extends Controller
 {
@@ -97,6 +100,7 @@ class UserDetailController extends Controller
             "twitter_username" => $request->twitter_username ?? "",
             "github_url" => $request->github_url ?? ""
         ];
+        
 
         $userProfile = UserDetail::where("user_id",$getUserId)->update($getUserData);
         return redirect('dashboard')->withSuccess('updated created successfully !');
@@ -106,6 +110,104 @@ class UserDetailController extends Controller
     public function addprofile(){
         return view('custom.profile.create-profile');
       }
-    
 
+      public function familyTree(){
+        // $filePath = public_path('json/file.json');
+
+        // $fileContents = File::get($filePath);
+        // $jsonData = json_decode($fileContents);
+        $getUserId = auth()->user()->id;
+        $fileContents = Nodes::where("user_id",$getUserId)->first();
+        $jsonData = json_decode($fileContents->node_array);
+        return view('custom.profile.family-tree',compact('jsonData'));
+      }
+    
+      
+    public function createNode(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'node_name' => 'required',
+            'node_gender' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $validator->errors()->add('code', 0);
+
+            return response()->json($validator->messages(), 200);
+        }
+
+        $createJson = [
+                        [
+                            "gender" => $request->node_gender,
+                            "id" => "1",
+                            "name" => $request->node_name
+                        ]
+                    ];
+        $fileContents = json_encode($createJson);
+        $getUserId = auth()->user()->id;
+        $checkIfExist = Nodes::where("user_id",$getUserId)->exists();
+        if($checkIfExist == false){
+            $createNode = new Nodes;
+            $createNode->user_id = auth()->user()->id  ?? "";
+            $createNode->node_array = $fileContents;
+            $createNode->save();
+            return redirect('familyTree')->withSuccess('Node created successfully !');
+        }else{
+            return redirect('familyTree')->withSuccess('Node already created successfully !');
+        }
+        
+    }
+
+    public function onUpdateNodeData(Request $request)
+    {
+ 
+        $jsonFilePath = public_path('json/file.json');
+
+        // Read the JSON file
+        $jsonData = File::get($jsonFilePath);
+
+        // Parse the JSON data into an array
+        $nodes = json_decode($jsonData, true);
+
+        // Add nodes from the request
+        foreach ($request->input('addNodesData', []) as $node) {
+            $nodes[] = $node;
+        }
+
+        // Update nodes from the request
+        foreach ($request->input('updateNodesData', []) as $node) {
+            $index = array_search($node['id'], array_column($nodes, 'id'));
+
+            if ($index !== false) {
+                $nodes[$index] = $node;
+            }
+        }
+
+        // Remove nodes based on the condition
+        $removeNodeId = $request->input('removeNodeId');
+        $nodes = array_filter($nodes, function ($node) use ($removeNodeId) {
+            return $node['id'] !== $removeNodeId;
+        });
+
+        // Convert the array back to JSON
+        $jsonData = json_encode($nodes);
+
+        $getUserId = auth()->user()->id;
+        $checkIfExist = Nodes::where("user_id",$getUserId)->exists();
+        if($checkIfExist == true){
+            Nodes::where("user_id",$getUserId)->update([
+                "node_array"=>$jsonData
+            ]);
+        }
+
+        $getData = Nodes::where("user_id",$getUserId)->first();
+        // Write the JSON data back to the file
+        // File::put($jsonFilePath, $jsonData);
+
+        return response()->json($getData->node_array);
+    }
+
+    public function manageTree(){
+        return view('custom.profile.create-profile');
+      }
 }

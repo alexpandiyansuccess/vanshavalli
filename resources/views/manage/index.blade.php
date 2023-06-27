@@ -26,7 +26,7 @@
                         <a class="nav-link navbtn" href="{{ url('/create-chart') }}"><img class="mt-2 mb-3" src="{{asset('images/nav1.png')}}" alt=""><br>Create Chart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link navbtn" href="{{ url('/manage-chart') }}"><img class="mt-2 manage-link" src="{{asset('images/nav2.png')}}" alt=""><br>Manage Chart</a>
+                        <a class="nav-link navbtn" href="{{ url('/familyTree') }}"><img class="mt-2 manage-link" src="{{asset('images/nav2.png')}}" alt=""><br>Manage Chart</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -37,7 +37,7 @@
                         <a class="nav-link navbtn2" href="{{ url('/create-chart') }}"><img src="{{asset('images/nav1.png')}}" alt="">&emsp;Create Chart</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link navbtn2" href="{{ url('/manage-chart') }}"><img src="{{asset('images/nav2.png')}}" alt="">&emsp;Manage Chart</a>
+                        <a class="nav-link navbtn2" href="{{ url('/familyTree') }}"><img src="{{asset('images/nav2.png')}}" alt="">&emsp;Manage Chart</a>
                     </li>
                 </ul>
 

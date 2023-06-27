@@ -75,7 +75,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item  ">
-                            <a href="{{ url('/manage-chart') }}" class='sidebar-link'>
+                            <a href="{{ url('/familyTree') }}" class='sidebar-link'>
                                 <i class="bi bi-option"></i>
                                 <span> Manage Chart</span>
                             </a>
@@ -170,7 +170,7 @@
                                 <div class="card-header custom-header">{{ __('Create Chart') }}</div>
 
                                 <div class="card-body custom-body">
-                                    <form method="POST" action="{{ route('login') }}">
+                                    <form method="POST" action="{{ route('createNode') }}">
                                         @csrf
 
                                         <div class="form-group row mt-4">
@@ -188,14 +188,36 @@
                                                 </span>
                                                 @enderror
                                             </div>
+
+                                            
+                                        </div>
+
+                                        <div class="form-group row mt-4">
+                                            <label for="node_gender" class="col-md-4 col-form-label text-md-right">
+                                                Select Gender : </label>
+
+                                            <div class="col-md-6">
+                                                <select class="form-control @error('node_gender') is-invalid @enderror custom-form"
+                                                    name="node_gender"  required autofocus>
+                                                    <option hidden>--Select Gender--</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="felmale">Felmale</option>
+                                                </select>
+                                               
+                                                @error('node_gender')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+
+                                            
                                         </div>
 
                                         <div class="form-group row mb-0">
-                                            <div id="createButton" class="col-md-8 offset-md-4">
 
-
-
-                                            </div>
+                                        <button class="btn btn-primary" type="submit">Log in</button>
+                                            <!-- <div id="createButton" class="col-md-8 offset-md-4"></div> -->
 
                                         </div>
                                     </form>

@@ -65,7 +65,7 @@
                             </a>
                         </li>
                         <li class="sidebar-item  ">
-                            <a href="{{ url('/manage-chart') }}" class='sidebar-link'>
+                            <a href="{{ url('/familyTree') }}" class='sidebar-link'>
                                 <i class="bi bi-option"></i>
                                 <span> Manage Chart</span>
                             </a>
@@ -132,7 +132,7 @@
                                     <li><a class="dropdown-item" href="{{ url('/create-chart') }}"><i
                                                 class="icon-mid bi bi-option me-2"></i>
                                             Family Tree</a></li>
-                                    <li><a class="dropdown-item" href="{{ url('/manage-chart') }}"><i
+                                    <li><a class="dropdown-item" href="{{ url('/familyTree') }}"><i
                                                 class="icon-mid bi bi-option me-2"></i>
                                             Manage Chart</a></li>
 
