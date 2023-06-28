@@ -6,7 +6,7 @@
 <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
 <link type="text/css" rel="stylesheet" href="{{ asset('css/bcPicker.css') }}" />
-<script src="https://balkan.app/js/FamilyTree.js"></script> 
+<script src="{{ asset('js/familyTree/FamilyTree.js') }}"></script> 
 @endsection
 
 @section('content')
