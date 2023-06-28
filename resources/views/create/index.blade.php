@@ -36,6 +36,8 @@
 
 <body>
     <div id="app">
+
+    
         <div id="sidebar" class="active">
             <div class="sidebar-wrapper active">
                 <div class="sidebar-header">
@@ -51,7 +53,7 @@
 
 
                 <div class="sidebar-menu">
-                    <ul class="menu">
+                <ul class="menu">
                         <li class="sidebar-title">Menu</li>
 
                         <li class="sidebar-item  ">
@@ -72,8 +74,12 @@
                                 <span>Family Tree</span>
                             </a>
                         </li>
-
-
+                        <li class="sidebar-item  ">
+                            <a href="{{ url('/familyTree') }}" class='sidebar-link'>
+                                <i class="bi bi-option"></i>
+                                <span> Manage Chart</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
@@ -109,13 +115,12 @@
                                 </li>
                             </ul>
                             <div class="dropdown">
-                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
                                     <div class="user-menu d-flex">
                                         <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">Administrator</h6>
-                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">Hello,
-                                                    <email-id></Email-id>
-                                                </span></p>
+                                            <h6 class="mb-0 text-gray-600">Hello, {{ Auth::user()->name }}</h6>
+                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">
+                                                    <email-id>{{ Auth::user()->email }}</Email-id></span></p>
                                         </div>
                                         <div class="user-img d-flex align-items-center">
                                             <div class="avatar avatar-md">
@@ -139,8 +144,17 @@
 
                                     <hr class="dropdown-divider">
                                     </li>
-                                    <li onclick="logout()"><a class="dropdown-item" href="#"><i
-                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a></li>
+                                    <li><a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();"><i
+                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a>
+                                            
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
+                            
+                        
+                        </li>
                                 </ul>
                             </div>
                         </div>
@@ -148,7 +162,11 @@
                 </nav>
             </header>
             <div id="main-content">
-
+            @if (session('success'))
+                    <div class="alert alert-success" role="alert">
+                        {{ session('success') }}
+                    </div>
+                    @endif
                 <div class="container mt-5">
                     <div id="panel1" class="row justify-content-center">
                         <div class="col-md-12">
@@ -156,7 +174,7 @@
                                 <div class="card-header custom-header">{{ __('Create Chart') }}</div>
 
                                 <div class="card-body custom-body">
-                                    <form method="POST" action="{{ route('login') }}">
+                                    <form method="POST" action="{{ route('createNode') }}">
                                         @csrf
 
                                         <div class="form-group row mt-4">
@@ -174,14 +192,36 @@
                                                 </span>
                                                 @enderror
                                             </div>
+
+                                            
+                                        </div>
+
+                                        <div class="form-group row mt-4">
+                                            <label for="node_gender" class="col-md-4 col-form-label text-md-right">
+                                                Select Gender : </label>
+
+                                            <div class="col-md-6">
+                                                <select class="form-control @error('node_gender') is-invalid @enderror custom-form"
+                                                    name="node_gender"  required autofocus>
+                                                    <option hidden>--Select Gender--</option>
+                                                    <option value="male">Male</option>
+                                                    <option value="felmale">Felmale</option>
+                                                </select>
+                                               
+                                                @error('node_gender')
+                                                <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $message }}</strong>
+                                                </span>
+                                                @enderror
+                                            </div>
+
+                                            
                                         </div>
 
                                         <div class="form-group row mb-0">
-                                            <div id="createButton" class="col-md-8 offset-md-4">
 
-
-
-                                            </div>
+                                        <button class="btn btn-primary" type="submit">Log in</button>
+                                            <!-- <div id="createButton" class="col-md-8 offset-md-4"></div> -->
 
                                         </div>
                                     </form>
@@ -275,6 +315,8 @@
                                 <button type="button" class="btn btn-outline-ligh" data-dismiss="modal">Close</button>
                                 <button id="savenodename" type="button" class="btn btn-primary">Save</button>
                                 <button id="addparent" type="button" class="btn btn-primary">Add Parent</button>
+                                <button id="addchild" type="button" class="btn btn-primary">Add Spouse</button>
+
                                 <button id="addchild" type="button" class="btn btn-primary">Add Child</button>
                                 <button id="deletenode" type="button" class="btn btn-danger">Delete</button>
                             </div>
@@ -292,10 +334,11 @@
         </div>
     </div>
 
-    <link rel="stylesheet" href="{{ asset('js/customjs/profilejs/js/main.js') }}">
-    <link rel="stylesheet" href="{{ asset('js/customjs/profilejs/js/bootstrap.bundle.min.js') }}">
-    <link rel="stylesheet"
-        href="{{ asset('js/customjs/profilejs/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}">
+    
+        <script src="{{ asset('js/customjs/profilejs/js/main.js') }}"></script>
+        <script src="{{ asset('js/customjs/profilejs/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('js/customjs/profilejs/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
+    
     <script>
     // Get the current year
     var currentYear = new Date().getFullYear();

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ManagechartController;
+use App\Http\Controllers\UserDetailController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OrgController;
 use Illuminate\Database\Capsule\Manager;
@@ -32,3 +33,15 @@ Route::patch("manage-chart/update-second-profile/{id}", [ManagechartController::
 Route::patch("manage-chart/update-image/{id}", [ManagechartController::class, 'updateImage']);
 
 Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'dashboard'])->name('dashboard');
+Route::POST('/createprofile', [App\Http\Controllers\UserDetailController::class, 'createprofile'])->name('createprofile');
+Route::get('/addprofile', [App\Http\Controllers\UserDetailController::class, 'addprofile'])->name('addprofile');
+Route::get('/editprofile', [App\Http\Controllers\UserDetailController::class, 'editprofile'])->name('editprofile');
+Route::POST('/updateprofile', [App\Http\Controllers\UserDetailController::class, 'updateprofile'])->name('updateprofile');
+
+Route::POST('/createNode', [App\Http\Controllers\UserDetailController::class, 'createNode'])->name('createNode');
+Route::get('/familyTree', [App\Http\Controllers\UserDetailController::class, 'familyTree'])->name('familyTree');
+Route::POST('/onUpdateNodeData', [App\Http\Controllers\UserDetailController::class, 'onUpdateNodeData'])->name('onUpdateNodeData');
+Route::get('/manageTree', [App\Http\Controllers\UserDetailController::class, 'manageTree'])->name('manageTree');
+
+
+

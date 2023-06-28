@@ -318,6 +318,7 @@ class OrgController extends Controller
 
         $node = new Profile();
         $node->profile_name = $request['node_name'];
+        $node->user_id = Auth::user() ? Auth::user()->id : null;
         $node->root_id = $request['root_id'];
         $node->designation = $request['designation'];
         if ($request['root_id'] != 0) {
