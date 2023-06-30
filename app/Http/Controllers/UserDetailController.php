@@ -8,6 +8,7 @@ use App\Models\Nodes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserDetailController extends Controller
 {
@@ -202,19 +203,33 @@ class UserDetailController extends Controller
         $checkIfExist = Nodes::where("user_id",$getUserId)->first();
         
         if($checkIfExist){
+            if($request->input('removeNodeId')){
+                $nodeArray = $request->input('updateNodesData');
+            }else{
+                if($jsonData == "[]"){
+                    $nodeArray =  $request->input('updateNodesData');
+                }else{
+                    $nodeArray = $jsonData;
+                }
+            }
             Nodes::where("user_id",$getUserId)->update([
-                "node_array"=>$jsonData
+                "node_array"=>$nodeArray
             ]);
         }
 
         $getData = Nodes::where("user_id",$getUserId)->first();
-        // Write the JSON data back to the file
-        // File::put($jsonFilePath, $jsonData);
 
         return response()->json($getData->node_array);
     }
 
     public function manageTree(){
         return view('custom.profile.create-profile');
+      }
+
+      public function deletetree(){
+        $getUserId = auth()->user()->id;
+         Nodes::where('user_id',$getUserId)->delete();
+        return redirect('create-chart')->withSuccess('Deleted successfully.Kindly create node then proceed !');    
+
       }
 }

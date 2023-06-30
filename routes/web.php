@@ -42,6 +42,8 @@ Route::POST('/createNode', [App\Http\Controllers\UserDetailController::class, 'c
 Route::get('/familyTree', [App\Http\Controllers\UserDetailController::class, 'familyTree'])->name('familyTree');
 Route::POST('/onUpdateNodeData', [App\Http\Controllers\UserDetailController::class, 'onUpdateNodeData'])->name('onUpdateNodeData');
 Route::get('/manageTree', [App\Http\Controllers\UserDetailController::class, 'manageTree'])->name('manageTree');
+Route::get('/deletetree', [App\Http\Controllers\UserDetailController::class, 'deletetree'])->name('deletetree');
+
 
 
 
