@@ -1,173 +1,385 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8">
+	
+		<!-- For IE -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- For Resposive Device -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- For Window Tab Color -->
+		<!-- Chrome, Firefox OS and Opera -->
+		<meta name="theme-color" content="#1d2b40">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" integrity="sha512-ZnR2wlLbSbr8/c9AgLg3jQPAattCUImNsae6NHYnS9KrIwRdcY9DxFotXhNAKIKbAXlRnujIqUWoXXwqyFOeIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Dashboard - Vanshavali</title>
+		<!-- Windows Phone -->
+		<meta name="msapplication-navbutton-color" content="#1d2b40">
+		<!-- iOS Safari -->
+		<meta name="apple-mobile-web-app-status-bar-style" content="#1d2b40">
+	
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/iamraghavan/Vanshavali@main/css/ishulove.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/css/bootstrap.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/vendors/iconly/bold.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/vendors/bootstrap-icons/bootstrap-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/css/app.css') }}">
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+            <!-- Basic Page Needs
+        ================================================== -->
+    <title> {{ucfirst(Auth::user()->name) }} - Vanshavali - Profile </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
 
-</head>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+    <!-- icons
+    ================================================== -->
+    <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/icons.css') }}">
 
-.header-logo-text {
-    font-family: 'Mouse Memoirs', sans-serif;
-    color: #FFF;
-}
-</style>
+    <!-- CSS 
+    ================================================== --> 
+    <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/uikit.css') }}">
+    <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/tailwind.css') }}">
 
-<body>
-    <div id="app">
-        <div id="sidebar" class="active">
-            <div class="sidebar-wrapper active">
-                <div class="sidebar-header">
-                    <div class="d-flex justify-content-between">
-                        <div class="logo">
-                            <h3 class="header-logo-text">Vanshavali</h3>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+			*{
+				
+				font-family: 'Comic Neue', cursive;
+
+			}
+		</style>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+		
+			.header-logo-text {
+			  font-family: 'Mouse Memoirs', sans-serif !important;
+              font-size: 2rem;
+			}
+		  </style>
+
+
+<script>
+  
+	// Get user geolocation details without asking for permission
+	function getUserGeolocation() {
+	  if ("geolocation" in navigator) {
+		navigator.geolocation.getCurrentPosition(
+		  position => {
+			const latitude = position.coords.latitude;
+			const longitude = position.coords.longitude;
+  
+			// Fetch the accurate city based on latitude and longitude using reverse geocoding
+			const geocodeAPI = `https://geocode.xyz/${latitude},${longitude}?json=1`;
+			fetch(geocodeAPI)
+			  .then(response => response.json())
+			  .then(data => {
+				const city = data.region;
+				console.log("City:", city);
+				console.log("Latitude:", latitude);
+				console.log("Longitude:", longitude);
+
+  console.log(city);
+				// Call the saveLocation function with the geolocation details
+				saveLocation(latitude, longitude, cityName);
+			  })
+			  .catch(error => {
+				console.error("Error fetching geolocation details:", error);
+			  });
+		  },
+		  error => {
+			console.error("Error retrieving geolocation:", error);
+		  }
+		);
+	  } else {
+		console.error("Geolocation is not supported by this browser.");
+	  }
+	}
+  
+	// Save user location, browser details, ISP provider, and fingerprint to Firebase database
+	function saveLocation(latitude, longitude, cityName) {
+	  // Load and initialize the fingerprint library
+	  const fpPromise = import("https://openfpcdn.io/fingerprintjs/v3").then(
+		FingerprintJS => FingerprintJS.load()
+	  );
+  
+	  fpPromise
+		.then(fp => fp.get())
+		.then(result => {
+		  // This is the visitor identifier (browser fingerprint)
+		  const visitorId = result.visitorId;
+		  console.log(visitorId);
+  
+		  // Get browser details
+		  const browserDetails = {
+			userAgent: navigator.userAgent,
+			language: navigator.language,
+			vendor: navigator.vendor,
+			fingerprint: visitorId
+		  };
+  
+		  // Get ISP provider information
+		  const ipAPI = "https://ipapi.co/json/";
+		  axios
+			.get(ipAPI)
+			.then(response => {
+			  const ispProvider = response.data.org;
+			  console.log(ispProvider);
+  
+			  // Get current date and time
+			  const currentDate = new Date().toLocaleDateString();
+			  const currentTime = new Date().toLocaleTimeString();
+			 
+			})
+			.catch(error => {
+			  console.error("Error fetching ISP provider information:", error);
+			});
+		})
+		.catch(error => {
+		  console.error("Error:", error);
+		});
+	}
+  
+	// Call the getUserGeolocation function
+	getUserGeolocation();
+  
+	// Additional script for weather fetching
+	function fetchWeather(cityName) {
+	  var apiKey = "bce6e2bc48a4404593b32107233006"; // Replace with your free weather API key
+  
+	  var weatherContainer = document.getElementById("weather-container");
+	  weatherContainer.innerHTML = "";
+  
+	//   var weatherContainer2 = document.getElementById("weather-container2");
+	//   weatherContainer2.innerHTML = "";
+  
+	  var weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityName}`;
+  
+	  fetch(weatherUrl)
+		.then(response => response.json())
+		.then(data => {
+		  var weather = data.current.condition.text;
+		  var temperature = data.current.temp_c;
+  
+		  weatherContainer.innerHTML = `
+			<b><i class="bi bi-globe-asia-australia"></i> ${cityName} | <i class="bi bi-thermometer-sun"></i> ${temperature}°C  </b>
+		  `;
+  
+            //   weatherContainer2.innerHTML = `
+            // 	<b><i class="bi bi-globe-asia-australia"></i> ${cityName} | <i class="bi bi-thermometer-sun"></i> ${temperature}°C</b>
+            //   `;
+		})
+		.catch(error => {
+		  console.log("Error:", error);
+		  weatherContainer.innerHTML = "Failed to fetch weather information";
+		});
+	}
+  
+	function fetchCity(latitude, longitude) {
+	  var apiKey = "bce6e2bc48a4404593b32107233006"; // Replace with your free weather API key
+  
+	  var cityUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
+  
+	  fetch(cityUrl)
+		.then(response => response.json())
+		.then(data => {
+		  var cityName = data.location.name;
+		  console.log(cityName);
+		  if (cityName) {
+			fetchWeather(cityName);
+		  } else {
+			alert("City information not available");
+		  }
+		})
+		.catch(error => {
+		  console.log("Error:", error);
+		  alert("Failed to fetch city information");
+		});
+	}
+  
+	function showPosition(position) {
+	  var latitudeElement = document.getElementById("latitude");
+	  var longitudeElement = document.getElementById("longitude");
+  
+	  var latitude = position.coords.latitude;
+	  var longitude = position.coords.longitude;
+  
+	  fetchCity(latitude, longitude);
+	}
+  
+	if (navigator.geolocation) {
+	  navigator.geolocation.getCurrentPosition(showPosition);
+	} else {
+	  alert("Geolocation is not supported by this browser.");
+	}
+  </script>
+	</head>
+
+
+    <body>
+   
+    
+
+
+        <div id="wrapper">
+    
+            <!-- Header -->
+            <header>
+                <div class="header_wrap">
+                    <div class="header_inner mcontainer">
+                        <div class="left_side">
+                            
+                            <span class="slide_menu" uk-toggle="target: #wrapper ; cls: is-collapse is-active">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 4h18v2H3V4zm0 7h12v2H3v-2zm0 7h18v2H3v-2z" fill="currentColor"></path></svg>
+                            </span>
+    
+                            <div id="logo">
+                                <a class="logo" href="javascript:void(0)">
+                                    <h2 class="header-logo-text">Vanshavali</h2>
+                                  </a>
+                            </div>
                         </div>
-                        <div class="toggler">
-                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="sidebar-menu">
-                <ul class="menu">
-                        <li class="sidebar-title">Menu</li>
-
-                        <li class="sidebar-item  ">
-                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
-                                <i class="bi bi-person-circle"></i>
-                                <span>Profile</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item  ">
-                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
-                                <i class="bi bi-chat-quote-fill"></i>
-                                <span>Foreroom</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item  ">
-                            <a href="{{ url('/create-chart') }}" class='sidebar-link'>
-                                <i class="bi bi-option"></i>
-                                <span>Family Tree</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item  ">
-                            <a href="{{ url('/familyTree') }}" class='sidebar-link'>
-                                <i class="bi bi-option"></i>
-                                <span> Manage Chart</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
-            </div>
-        </div>
-        <div id="main" class='layout-navbar'>
-        <header class='mb-3'>
-                <nav class="navbar navbar-expand navbar-light ">
-                    <div class="container-fluid">
-                        <a href="#" class="burger-btn d-block">
-                            <i class="bi bi-justify fs-3"></i>
-                        </a>
-
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-
-                                <li class="nav-item dropdown me-3">
-                                    <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                            <h6 class="dropdown-header">Notifications</h6>
-                                        </li>
-                                        <li><a class="dropdown-item">No notification available</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <div class="dropdown">
-                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div class="user-menu d-flex">
-                                        <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">Hello, {{ Auth::user()->name }}</h6>
-                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">
-                                                    <email-id>{{ Auth::user()->email }}</Email-id>
-                                                </span></p>
-                                        </div>
-                                        <div class="user-img d-flex align-items-center">
-                                            <div class="avatar avatar-md">
-                                                <img src="https://kurudhi.netlify.app/admin/images/man.png">
-                                            </div>
-                                        </div>
-                                    </div>
+                         
+                      <!-- search icon for mobile -->
+                        <div class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"> </div>
+                       
+        
+                        <div class="right_side">
+        
+                            <div class="header_widgets">
+                                
+                                
+    
+                               
+                          
+        
+             
+                                <div id="weather-container" style="display: inline;"></div>
+                                <a href="#">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}</h6>
-                                    </li>
-                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">
-                                            <i class="icon-mid bi bi-chat-quote-fill me-2"></i>
-                                            Foreroom
-                                        </a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="{{ url('/create-chart') }}"><i
-                                                class="icon-mid bi bi-option me-2"></i>
-                                            Family Tree</a></li>
-                                    <li><a class="dropdown-item" href="{{ url('/familyTree') }}"><i
-                                                class="icon-mid bi bi-option me-2"></i>
-                                            Manage Chart</a></li>
-
-                                    <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();"><i
-                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a>
-                                            
-
+                                <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
+    
+                                    <a href="javascript:void(0)" class="user">
+                                        <div class="user_avatar">
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" alt="">
+                                        </div>
+                                        <div class="user_name">
+                                        <div> {{ Auth::user()->name ?? ""}} </div>
+                                            <span> {{$userProfile->email ?? Auth::user()->email}} </span>
+                                        </div>
+                                    </a>
+                                    
+                                
+                                    <a href="#" id="night-mode" class="btn-night-mode">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                                          </svg>
+                                         Night mode
+                                        <span class="btn-night-mode-switch">
+                                            <span class="uk-switch-button"></span>
+                                        </span>
+                                    </a>
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                        </path>
+                                    </svg>
+                                    Log Out
+                                </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                            
-                        
-                        </li>
-                                </ul>
-                            </div>
+    
+                                    
+                                </div>
+    
+                                </div>
+                                
                         </div>
                     </div>
-                </nav>
+                </div>
             </header>
-            <div id="main-content">
+    
+            <!-- sidebar -->
+            <div class="sidebar">
+            
+            <div class="sidebar_inner" data-simplebar>
+        
+                <ul>
+                    <li><a href="{{ route('dashboard') }}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                        </svg>
+                        <span> Profile </span> </a> 
+                    </li>
 
-                <div class="page-heading">
-                    <div class="page-title">
-                        <div class="row">
-                            <div class="col-12 col-md-6 order-md-1 order-last">
+                    <li id="more-veiw"><a href=" {{ url('/forum') }}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
+                            <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+                            <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+                        </svg>
+                       <span> forum</span> </a> 
+                    </li>
+                   
+                    <li><a href="{{  url('/create-chart') }}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-green-500">
+                            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                        </svg>  <span>  Create Family Tree </span></a> 
+                    </li> 
+                    
+                        
+                    <li id="more-veiw"><a href="{{ url('/familyTree') }}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                          </svg>
+                        <span>  Manage Family Tree </span></a> 
+                    </li> 
+                </ul>
 
-                            </div>
+               
+                
+              
+    
+                <ul class="side_links" data-sub-title="Pages">
 
-                        </div>
+                   
+                    <li><a href="javascript:void(0)"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
+                        <ul>
+                            <li><a href="{{ route('editprofile') }}">Profile Settings</a></li>
+                            <li><a href="javascript:void(0)">Gendral Settings</a></li>
+                        </ul>
+                    </li>
+                   
+                
+
+                    
+                </ul>
+
+                <ul class="side_links">
+
+                   
+                    <div class="footer-links">
+                        <a href="#">About</a>
+                        <a href="#">Blog </a>
+                        <a href="#">Contact Us </a>
+                        <a href="#">Terms of service</a>
                     </div>
-                    <section class="section">
-                        <div class="card">
+                   
+                
+
+                    
+                </ul>
+
+                
+ 
+            </div>
+
+            <!-- sidebar overly for mobile -->
+            <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
+
+        </div> 
+    
+            <!-- Main Contents -->
+            <div class="main_content">
+            <!-- <div class="card">
                         @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -177,289 +389,223 @@
                         </ul>
                     </div>
                     @endif
-                            <div class="page-content">
-                                <div class="form-v10-content">
-                                    <form class="form-detail" method="POST" action="{{ route('createprofile') }}" 
+            <div> -->
+                <div class="mcontainer">
+
+                    <div class="mb-6">
+                        <h2 class="text-2xl font-semibold">Profile Setting </h2>
+                       
+                    </div>
+                    <form class="form-detail" method="POST" action="{{ route('createprofile') }}"
                                         autocomplete="nope">
                                         @csrf
-                                        <div class="form-left">
-                                            <h2>General Information</h2>
-                                            <div class="form-group">
-                                                <div class="form-row form-row-1">
-                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
-                                                        name="full_name" inputmode="text" id="full_name" class="input-text"
-                                                        placeholder="Full Name" autocomplete="nope" required>
-                                                </div>
-                                                <div class="form-row form-row-2">
-                                                    <select id="gender" name="gender" autocomplete="off">
-                                                        <option value="#">Select Your Gender</option>
-                                                        <option value="MALE">MALE</option>
-                                                        <option value="Female">FEMALE</option>
-                                                        <!-- <option>TRANSGENDER</option> -->
-                                                    </select>
-                                                    <span class="select-btn">
-                                                        <i class="zmdi zmdi-chevron-down"></i>
-                                                    </span>
-
-
-                                                </div>
-
-                                            </div>
-
-
-
-                                            <div class="form-group">
-                                                <div class="form-row form-row-1">
-                                                    <!-- <input placeholder="Date of Birth" type="text" onfocus="(this.type='date')" id="date"> -->
-                                                    <input id="dob" runat="server" name="dob"
-                                                        placeholder="Date Of Birth" type="text"
-                                                        onfocus="(this.type='date')" onchange="DateSelectionChanged()"
-                                                        autocomplete="off">
-
-                                                </div>
-                                                <div class="form-row form-row-2">
-                                                    <input name="age" placeholder="Age" id="age" type="text"
-                                                        required disabled autocomplete="off">
-                                                </div>
-                                            </div>
-
-                                            <h2>Contact Information</h2>
-
-
-                                            <div class="form-group">
-                                                <div class="form-row form-row-1">
-                                                    <input inputmode="email" name="email" type="email"
-                                                        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                        id="email_input" class="input-text" placeholder="Email" required
-                                                        autocomplete="off">
-                                                </div>
-                                                <div class="form-row form-row-2">
-                                                    <input inputmode="tel" name="contact_number" type="number" pattern="[0-9]*"
-                                                        inputmode="numeric" id="id6" class="business"
-                                                        placeholder="Contact Number" required autocomplete="off">
-                                                </div>
-
-                                                <!-- <div class="form-row form-row-2">
-                                                    <input inputmode="tel" name="wNumber" type="number" pattern="[0-9]*" inputmode="numeric" id="id6" class="business" placeholder="Whatsapp Number" required>
-                                                </div> -->
-                                            </div>
-
-
-                                            <h2>Location Information</h2>
-                                            <div class="form-group ">
-                                                <div class="form-row  form-row-1">
-                                                    <input inputmode="tel" name="door_number" type="number" pattern="[0-9]*"
-                                                        inputmode="numeric" 
-                                                        placeholder="Enter Flat / Door / Block No." required
-                                                        autocomplete="off">
-                                                </div>
-                                                <div class="form-row  form-row-2">
-                                                    <input type="text" id="street_name" name="street_name"
-                                                        placeholder="Enter your Street Name" required
-                                                        autocomplete="off">
-                                                </div>
-
-                                            </div>
-                                            <div class="form-group">
-                                                <div class="form-row form-row-1">
-                                                    <input inputmode="tel" type="text" id="pincode" maxlength="6"
-                                                        name="pincode" pattern="[0-9]*" inputmode="numeric"
-                                                        placeholder="Pincode" required autocomplete="off">
-                                                </div>
-                                                <div class="form-row form-row-2">
-                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
-                                                        name="area" inputmode="text" id="area" class="input-text"
-                                                        placeholder="Area" readonly required autocomplete="off">
-                                                </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <div class="form-row form-row-1">
-
-                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
-                                                        name="district" inputmode="text" id="district"
-                                                        class="input-text" placeholder="District" readonly required
-                                                        autocomplete="off">
-                                                </div>
-                                                <div class="form-row form-row-2">
-                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
-                                                        name="state" inputmode="text" id="state" class="input-text"
-                                                        placeholder="State" readonly required autocomplete="off">
-                                                </div>
-                                                <div class="form-row form-row-2">
-                                                    <input type="text" oninput="this.value = this.value.toUpperCase()"
-                                                        name="country" inputmode="text" id="country" class="input-text"
-                                                        placeholder="Country" readonly required autocomplete="off">
-                                                </div>
-
-                                            </div>
-
-                                            <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-                                            <script>
-                                            $('#pincode').change(function() {
-                                                var zipcode = $(this).val();
-                                                $.ajax({
-                                                    url: 'https://api.postalpincode.in/pincode/' +
-                                                        zipcode,
-                                                    type: 'GET',
-                                                    success: function(response) {
-
-                                                        let postArea = response[0].PostOffice[0]
-                                                            .Name;
-                                                        console.log("Area : " + postArea);
-                                                        $('#area').val(postArea);
-
-                                                        let postDistrict = response[0].PostOffice[0]
-                                                            .District;
-                                                        console.log(postDistrict);
-                                                        $('#district').val(postDistrict);
-
-                                                        let postState = response[0].PostOffice[0]
-                                                            .State;
-                                                        console.log(postState);
-                                                        $('#state').val(postState);
-
-                                                        let postCountry = response[0].PostOffice[0]
-                                                            .Country;
-                                                        console.log(postCountry);
-                                                        $('#country').val(postCountry);
-                                                    }
-                                                });
-                                            });
-                                            </script>
-
-
-                                            <h2>Social Media Information</h2>
-
-
-                                            <div class="form-group">
-                                                <div class="form-row form-row-1">
-                                                    <input inputmode="text" name="instagram_username" type="text"
-                                                        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text" placeholder="Instagram"
-                                                        required autocomplete="off">
-                                                </div>
-
-                                                <div class="form-row form-row-2">
-                                                    <input inputmode="text" name="facebook_username" type="text"
-                                                        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text" placeholder="Facebook"
-                                                        required autocomplete="off">
-                                                </div>
-
-                                                <div class="form-row form-row-2">
-                                                    <input inputmode="text" name="website_url" type="text"
-                                                        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text"
-                                                        placeholder="Enter your website" required autocomplete="off">
-                                                </div>
-
-                                            </div>
-
-                                            <div class="form-group">
-                                                <div class="form-row form-row-1">
-                                                    <input inputmode="text" name="twitter_username" type="text"
-                                                        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text" placeholder="Twitter"
-                                                        required autocomplete="off">
-                                                </div>
-
-                                                <div class="form-row form-row-2">
-                                                    <input inputmode="text" name="github_url" type="text"
-                                                        pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
-                                                         class="input-text" placeholder="Github"
-                                                        required autocomplete="off">
-                                                </div>
-
-                                            </div>
-
-
-                                            <div class="col-12 d-flex justify-content-center">
-                                                <button class="btn btn-lg bg-btn-submit mr-4 mb-4 hover-success" 
-                                                    type="submit" name="Submit" value="Submit"
-                                                    >Submit</button>
-
-
-
-                                                <button type="reset"
-                                                    class="btn btn-lg bg-btn-clr mr-4 mb-4 hover-primary">Reset</button>
-                                            </div>
-
-                                            <br>
-
-
-                                        </div>
-                                    </form>
-                                </div>
+                    <div class="grid lg:grid-cols-2 mt-12 gap-8">
+                        
+                        <div class="bg-white rounded-md lg:shadow-md shadow col-span-2 lg:mx-16">
+            
+                          <div class="grid grid-cols-2 gap-3 lg:p-6 p-4">
+                            <div>
+                                <label for=""> First name</label>
+                                <input type="text"   name="first_name" placeholder="" class="shadow-none with-border">
+                                @error('first_name')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                             </div>
-
+                            <div>
+                                <label for=""> Last name</label>
+                                <input type="text"   name="last_name" placeholder="" class="shadow-none with-border">
+                                @error('last_name')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                             </div>
+                             <div class="col-span-2">
+                                 <label for=""> Email</label>
+                                 <input type="email"   name="email"
+                                 pattern="[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})"
+                                 placeholder="" class="shadow-none with-border">
+                                 @error('email')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                             </div>
+                             <div class="col-span-2">
+                              <label for=""> Contact Number</label>
+                              <input  name="contact_number" type="number" pattern="[0-9]*"  placeholder="" class="shadow-none with-border">
+                              @error('contact_number')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                            </div>
+                             <div class="col-span-2">
+                                 <label for="about">About me</label>  
+                                 <textarea id="about" name="about_me"  rows="3" class="with-border"></textarea>
+                                 @error('about_me')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                             </div> 
+                             
+                             <div>
+                              <label for=""> Pincode</label>
+                              <input type="number" name="pincode"  pattern="[0-9]*"  id="zipcode" placeholder="" class="shadow-none with-border">
+                              @error('pincode')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                            </div>
+                          <div>
+                              <label for=""> City</label>
+                              <input type="text" id="District"  name="district" placeholder="" class="shadow-none with-border">
+                              @error('pincode')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                          
+                            </div>
+                           <div class="col-span-2">
+                            <label for=""> State</label>
+                            <input type="text" id="State"  name="state" placeholder="" class="shadow-none with-border">
+                        
+                            @error('state')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
                         </div>
-                    </section>
-                </div>
-                <!--                 
-        <button onclick="swalelement">submit</button>
 
-        <script>
+                             <div>
+                                <label for=""> Working at</label>
+                                <input type="text" name="occupation" placeholder="" name="working_at"  class="shadow-none with-border">
+                             
+                                @error('occupation')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                            </div> 
+                             <div>
+                                
+                                <label for=""> Gender </label>
+                                <select id="gender" name="gender" class="shadow-none selectpicker with-border" tabindex="-98">
+                                  <option value="Male">Male</option>
+                                  <option value="Female">Female</option>
+                                  <option value="Rather Not Say">Rather Not Say</option>
+                               </select></div>
 
-            swal("Here's the title!", "...and here's the text!");
-        </script> -->
+                               @error('gender')
+                                        <span class="invalid-feedback" style="color: #ff5b5b;" role="alert">
+                                            <strong>{{ $message }}</strong>
+                                        </span>
+                                        @enderror
+                             </div>
 
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p> <span id="current-year">2023</span> © Vanshavali</p>
+                             <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
+                              <button class="p-2 px-4 rounded bg-gray-50 text-red-500"> Cancel </button>
+                              <button  type="submit" name="Submit" value="Submit" class="button bg-blue-700"> Save </button>
+                          </div>
                         </div>
-
+         
+                        </form>
+         
+                         </div>
+        
+                      
+        
+                        </div>
+        
                     </div>
-                </footer>
-            </div>
-        </div>
-
-
-        <script src="./vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>
-        <script src="./js/bootstrap.bundle.min.js"></script>
-        <script src="./js/main.js"></script>
-
-
-
-
-        <script>
-        // Get the current year
-        var currentYear = new Date().getFullYear();
-
-        // Set the current year in the HTML element with the specified ID
-        var currentYearElement = document.getElementById('current-year');
-        currentYearElement.textContent = currentYear.toString();
-        </script>
-
-        <script type="text/javascript">
-        function DateSelectionChanged() {
-            var today = new Date();
-
-            var dob = new Date(document.getElementById('dob').value);
-            var months = (today.getMonth() - dob.getMonth() + (12 * (today.getFullYear() - dob.getFullYear())));
-
-            let findDate = Math.round(months / 12);
-            let donorName = document.getElementById('full_name').value;
-            console.log(donorName);
-
-            if (findDate >= 18 && findDate < 55) {
-                document.getElementById('age').value = ("AGE : " + "" + findDate);
-            } else {
-                alert('Age Restricted' + ' ' + `Sorry! ${donorName} you are not allowed to vanshavali`);
-
-            }
-
-        }
-
     
+                </div>
+            </div>
+            
+        </div>
+    
+    
+    
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
+        
+    
+     
+        <script>
+          $('#zipcode').change(function() {
+            var zipcode = $(this).val();
+            $.ajax({
+              url: 'https://api.postalpincode.in/pincode/' + zipcode,
+              type: 'GET',
+              success: function(response) { 
+                
+                    
+                  let postDistrict = response[0].PostOffice[0].District;
+                  console.log(postDistrict);
+                  $('#District').val(postDistrict);
+      
+                let postState = response[0].PostOffice[0].State;
+                  console.log(postState);
+                  $('#State').val(postState);
+              }
+            });
+          });
         </script>
+     
+        
+        <!-- For Night mode -->
+        <script>
+            (function (window, document, undefined) {
+                'use strict';
+                if (!('localStorage' in window)) return;
+                var nightMode = localStorage.getItem('gmtNightMode');
+                if (nightMode) {
+                    document.documentElement.className += ' night-mode';
+                }
+            })(window, document);
+        
+            (function (window, document, undefined) {
+        
+                'use strict';
+        
+                // Feature test
+                if (!('localStorage' in window)) return;
+        
+                // Get our newly insert toggle
+                var nightMode = document.querySelector('#night-mode');
+                if (!nightMode) return;
+        
+                // When clicked, toggle night mode on or off
+                nightMode.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    document.documentElement.classList.toggle('dark');
+                    if (document.documentElement.classList.contains('dark')) {
+                        localStorage.setItem('gmtNightMode', true);
+                        return;
+                    }
+                    localStorage.removeItem('gmtNightMode');
+                }, false);
+        
+            })(window, document);
+        </script>
+      
+        <!-- Javascript
+        ================================================== -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{{ asset('newdesign/forum/assets/js/tippy.all.min.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/uikit.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/simplebar.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/custom.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/bootstrap-select.min.js') }}"></script>
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+    
+    </body>
 
 
-
-
-
-</body>
 
 
 </html>

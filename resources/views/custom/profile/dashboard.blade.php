@@ -1,433 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8">
+	
+		<!-- For IE -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<!-- For Resposive Device -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!-- For Window Tab Color -->
+		<!-- Chrome, Firefox OS and Opera -->
+		<meta name="theme-color" content="#1d2b40">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" integrity="sha512-ZnR2wlLbSbr8/c9AgLg3jQPAattCUImNsae6NHYnS9KrIwRdcY9DxFotXhNAKIKbAXlRnujIqUWoXXwqyFOeIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile - Dashboard - Vanshavali</title>
+		<!-- Windows Phone -->
+		<meta name="msapplication-navbutton-color" content="#1d2b40">
+		<!-- iOS Safari -->
+		<meta name="apple-mobile-web-app-status-bar-style" content="#1d2b40">
+	
 
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/gh/iamraghavan/Vanshavali@main/css/ishulove.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/css/bootstrap.css') }}">
+            <!-- Basic Page Needs
+        ================================================== -->
+    <title> {{ucfirst(Auth::user()->name) }} - Vanshavali - Profile </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <!-- icons
+    ================================================== -->
+    <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/icons.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/vendors/iconly/bold.css') }}">
+    <!-- CSS 
+    ================================================== --> 
+ 
+    <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/uikit.css') }}">
+    <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/tailwind.css') }}">
 
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/vendors/perfect-scrollbar/perfect-scrollbar.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/vendors/bootstrap-icons/bootstrap-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom/profile/css/app.css') }}">
-    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
-    <!-- <script src="jquery.js"></script>  -->
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+			*{
+				
+				font-family: 'Comic Neue', cursive;
 
-</head>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+			}
+		</style>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+		
+			.header-logo-text {
+			  font-family: 'Mouse Memoirs', sans-serif !important;
+              font-size: 2rem;
+			}
+		  </style>
 
-.header-logo-text {
-    font-family: 'Mouse Memoirs', sans-serif;
-    color: #FFF;
-}
-</style>
 
-<body>
-    <div id="app">
-        <div id="sidebar" class="active">
-            <div class="sidebar-wrapper active">
-                <div class="sidebar-header">
-                    <div class="d-flex justify-content-between">
-                        <div class="logo">
-                            <h3 class="header-logo-text">Vanshavali</h3>
+<script>
+  
+	// Get user geolocation details without asking for permission
+	function getUserGeolocation() {
+	  if ("geolocation" in navigator) {
+		navigator.geolocation.getCurrentPosition(
+		  position => {
+			const latitude = position.coords.latitude;
+			const longitude = position.coords.longitude;
+  
+			// Fetch the accurate city based on latitude and longitude using reverse geocoding
+			const geocodeAPI = `https://geocode.xyz/${latitude},${longitude}?json=1`;
+			fetch(geocodeAPI)
+			  .then(response => response.json())
+			  .then(data => {
+				const city = data.region;
+				console.log("City:", city);
+				console.log("Latitude:", latitude);
+				console.log("Longitude:", longitude);
+
+  console.log(city);
+				// Call the saveLocation function with the geolocation details
+				saveLocation(latitude, longitude, cityName);
+			  })
+			  .catch(error => {
+				console.error("Error fetching geolocation details:", error);
+			  });
+		  },
+		  error => {
+			console.error("Error retrieving geolocation:", error);
+		  }
+		);
+	  } else {
+		console.error("Geolocation is not supported by this browser.");
+	  }
+	}
+  
+	// Save user location, browser details, ISP provider, and fingerprint to Firebase database
+	function saveLocation(latitude, longitude, cityName) {
+	  // Load and initialize the fingerprint library
+	  const fpPromise = import("https://openfpcdn.io/fingerprintjs/v3").then(
+		FingerprintJS => FingerprintJS.load()
+	  );
+  
+	  fpPromise
+		.then(fp => fp.get())
+		.then(result => {
+		  // This is the visitor identifier (browser fingerprint)
+		  const visitorId = result.visitorId;
+		  console.log(visitorId);
+  
+		  // Get browser details
+		  const browserDetails = {
+			userAgent: navigator.userAgent,
+			language: navigator.language,
+			vendor: navigator.vendor,
+			fingerprint: visitorId
+		  };
+  
+		  // Get ISP provider information
+		  const ipAPI = "https://ipapi.co/json/";
+		  axios
+			.get(ipAPI)
+			.then(response => {
+			  const ispProvider = response.data.org;
+			  console.log(ispProvider);
+  
+			  // Get current date and time
+			  const currentDate = new Date().toLocaleDateString();
+			  const currentTime = new Date().toLocaleTimeString();
+			 
+			})
+			.catch(error => {
+			  console.error("Error fetching ISP provider information:", error);
+			});
+		})
+		.catch(error => {
+		  console.error("Error:", error);
+		});
+	}
+  
+	// Call the getUserGeolocation function
+	getUserGeolocation();
+  
+	// Additional script for weather fetching
+	function fetchWeather(cityName) {
+	  var apiKey = "bce6e2bc48a4404593b32107233006"; // Replace with your free weather API key
+  
+	  var weatherContainer = document.getElementById("weather-container");
+	  weatherContainer.innerHTML = "";
+  
+	//   var weatherContainer2 = document.getElementById("weather-container2");
+	//   weatherContainer2.innerHTML = "";
+  
+	  var weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityName}`;
+  
+	  fetch(weatherUrl)
+		.then(response => response.json())
+		.then(data => {
+		  var weather = data.current.condition.text;
+		  var temperature = data.current.temp_c;
+  
+		  weatherContainer.innerHTML = `
+			<b><i class="bi bi-globe-asia-australia"></i> ${cityName} | <i class="bi bi-thermometer-sun"></i> ${temperature}°C  </b>
+		  `;
+  
+            //   weatherContainer2.innerHTML = `
+            // 	<b><i class="bi bi-globe-asia-australia"></i> ${cityName} | <i class="bi bi-thermometer-sun"></i> ${temperature}°C</b>
+            //   `;
+		})
+		.catch(error => {
+		  console.log("Error:", error);
+		  weatherContainer.innerHTML = "Failed to fetch weather information";
+		});
+	}
+  
+	function fetchCity(latitude, longitude) {
+	  var apiKey = "bce6e2bc48a4404593b32107233006"; // Replace with your free weather API key
+  
+	  var cityUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
+  
+	  fetch(cityUrl)
+		.then(response => response.json())
+		.then(data => {
+		  var cityName = data.location.name;
+		  console.log(cityName);
+		  if (cityName) {
+			fetchWeather(cityName);
+		  } else {
+			alert("City information not available");
+		  }
+		})
+		.catch(error => {
+		  console.log("Error:", error);
+		  alert("Failed to fetch city information");
+		});
+	}
+  
+	function showPosition(position) {
+	  var latitudeElement = document.getElementById("latitude");
+	  var longitudeElement = document.getElementById("longitude");
+  
+	  var latitude = position.coords.latitude;
+	  var longitude = position.coords.longitude;
+  
+	  fetchCity(latitude, longitude);
+	}
+  
+	if (navigator.geolocation) {
+	  navigator.geolocation.getCurrentPosition(showPosition);
+	} else {
+	  alert("Geolocation is not supported by this browser.");
+	}
+  </script>
+	</head>
+
+
+    <body>
+   
+    
+
+
+        <div id="wrapper">
+    
+            <!-- Header -->
+            <header>
+                <div class="header_wrap">
+                    <div class="header_inner mcontainer">
+                        <div class="left_side">
+                            
+                            <span class="slide_menu" uk-toggle="target: #wrapper ; cls: is-collapse is-active">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 4h18v2H3V4zm0 7h12v2H3v-2zm0 7h18v2H3v-2z" fill="currentColor"></path></svg>
+                            </span>
+    
+                            <div id="logo">
+                                <a class="logo" href="javascript:void(0)">
+                                    <h2 class="header-logo-text">Vanshavali</h2>
+                                  </a>
+                            </div>
                         </div>
-                        <div class="toggler">
-                            <a href="#" class="sidebar-hide d-xl-none d-block"><i class="bi bi-x bi-middle"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="sidebar-menu">
-                    <ul class="menu">
-                        <li class="sidebar-title">Menu</li>
-
-                        <li class="sidebar-item  ">
-                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
-                                <i class="bi bi-person-circle"></i>
-                                <span>Profile</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item  ">
-                            <a href="{{ route('dashboard') }}" class='sidebar-link'>
-                                <i class="bi bi-chat-quote-fill"></i>
-                                <span>Foreroom</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item  ">
-                            <a href="{{ url('/create-chart') }}" class='sidebar-link'>
-                                <i class="bi bi-option"></i>
-                                <span>Family Tree</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item  ">
-                            <a href="{{ url('/familyTree') }}" class='sidebar-link'>
-                                <i class="bi bi-option"></i>
-                                <span> Manage Chart</span>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>
-            </div>
-        </div>
-        <div id="main" class='layout-navbar'>
-            <header class='mb-3'>
-                <nav class="navbar navbar-expand navbar-light ">
-                    <div class="container-fluid">
-                        <a href="#" class="burger-btn d-block">
-                            <i class="bi bi-justify fs-3"></i>
-                        </a>
-
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                        </button>
-                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-
-                                <li class="nav-item dropdown me-3">
-                                    <a class="nav-link active dropdown-toggle" href="#" data-bs-toggle="dropdown"
-                                        aria-expanded="false">
-                                        <i class='bi bi-bell bi-sub fs-4 text-gray-600'></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                        <li>
-                                            <h6 class="dropdown-header">Notifications</h6>
-                                        </li>
-                                        <li><a class="dropdown-item">No notification available</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
-                            <div class="dropdown">
-                                <a href="#" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <div class="user-menu d-flex">
-                                        <div class="user-name text-end me-3">
-                                            <h6 class="mb-0 text-gray-600">Hello, {{ Auth::user()->name }}</h6>
-                                            <p class="mb-0 text-sm text-gray-600"><span id="user" class="message">
-                                                    <email-id>{{ Auth::user()->email }}</Email-id>
-                                                </span></p>
-                                        </div>
-                                        <div class="user-img d-flex align-items-center">
-                                            <div class="avatar avatar-md">
-                                                <img src="https://kurudhi.netlify.app/admin/images/man.png">
-                                            </div>
-                                        </div>
-                                    </div>
+                         
+                      <!-- search icon for mobile -->
+                        <div class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"> </div>
+                       
+        
+                        <div class="right_side">
+        
+                            <div class="header_widgets">
+                                
+                                
+    
+                               
+                          
+        
+             
+                                <div id="weather-container" style="display: inline;"></div>
+                                <a href="#">
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                                    <li>
-                                        <h6 class="dropdown-header">Hello, {{ Auth::user()->name }}</h6>
-                                    </li>
-                                    <li><a class="dropdown-item" href="{{ route('dashboard') }}">
-                                            <i class="icon-mid bi bi-chat-quote-fill me-2"></i>
-                                            Foreroom
-                                        </a>
-                                    </li>
-                                    <li><a class="dropdown-item" href="{{ url('/create-chart') }}"><i
-                                                class="icon-mid bi bi-option me-2"></i>
-                                            Family Tree</a></li>
-                                    <li><a class="dropdown-item" href="{{ url('/familyTree') }}"><i
-                                                class="icon-mid bi bi-option me-2"></i>
-                                            Manage Chart</a></li>
-
-                                    <hr class="dropdown-divider">
-                                    </li>
-                                    <li><a class="dropdown-item"  href="{{ route('logout') }}" onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();"><i
-                                                class="icon-mid bi bi-box-arrow-left me-2"></i> Logout</a>
-                                            
-
+                                <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
+    
+                                    <a href="javascript:void(0)" class="user">
+                                        <div class="user_avatar">
+                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" alt="">
+                                        </div>
+                                        <div class="user_name">
+                                            <div> {{ Auth::user()->name }} </div>
+                                            <span> {{$userProfile->email ?? ""}} </span>
+                                        </div>
+                                    </a>
+                                    
+                                
+                                    <a href="#" id="night-mode" class="btn-night-mode">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                                          </svg>
+                                         Night mode
+                                        <span class="btn-night-mode-switch">
+                                            <span class="uk-switch-button"></span>
+                                        </span>
+                                    </a>
+                                    <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                        </path>
+                                    </svg>
+                                    Log Out
+                                </a>
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                            
-                        
-                        </li>
-                                </ul>
-                            </div>
+                                    </a>
+    
+                                    
+                                </div>
+    
+                                </div>
+                                
                         </div>
                     </div>
-                </nav>
+                </div>
             </header>
-            <div id="main-content">
+    
+            <!-- sidebar -->
+            <div class="sidebar">
+            
+                <div class="sidebar_inner" data-simplebar>
+            
+                    <ul>
+                        <li><a href="{{ route('dashboard') }}"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
+                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                            </svg>
+                            <span> Profile </span> </a> 
+                        </li>
 
-                <div class="">
+                        <li id="more-veiw"><a href=" {{ url('/forum') }}"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
+                                <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+                                <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+                            </svg>
+                           <span> forum</span> </a> 
+                        </li>
+                       
+                        <li><a href="{{  url('/create-chart') }}"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-green-500">
+                                <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                            </svg>  <span>  Create Family Tree </span></a> 
+                        </li> 
+                        
+                            
+                        <li id="more-veiw"><a href="{{ url('/familyTree') }}"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
+                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                              </svg>
+                            <span>  Manage Family Tree </span></a> 
+                        </li> 
+                    </ul>
+    
+                   
+                    
+                  
+        
+                    <ul class="side_links" data-sub-title="Pages">
+    
+                       
+                        <li><a href="javascript:void(0)"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
+                            <ul>
+                                <li><a href="{{ route('editprofile') }}">Profile Settings</a></li>
+                                <li><a href="javascript:void(0)">Gendral Settings</a></li>
+                            </ul>
+                        </li>
+                       
+                    
+
+                        
+                    </ul>
+
+                    <ul class="side_links">
+    
+                       
+                        <div class="footer-links">
+                            <a href="#">About</a>
+                            <a href="#">Blog </a>
+                            <a href="#">Contact Us </a>
+                            <a href="#">Terms of service</a>
+                        </div>
+                       
+                    
+
+                        
+                    </ul>
+    
+                    
+     
+                </div>
+    
+                <!-- sidebar overly for mobile -->
+                <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
+    
+            </div> 
+    
+            <!-- Main Contents -->
+            <div class="main_content">
+                <div class="mcontainer">
+    
+                    <!-- Profile cover -->  
+                    <div class="profile user-profile">
+      
+                        <div class="profiles_banner">
+
+                            <img src="{{ asset('newdesign/forum/assets/1280x720.jpg') }}" alt="">
+                        
+                        </div>
+                        <div class="profiles_content">
+    
+                            <div class="profile_avatar">
+                                <div class="profile_avatar_holder"> 
+                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" alt="">
+                                </div>
+                                <div class="user_status status_online"></div>
+                                <div class="icon_change_photo" hidden> <ion-icon name="camera" class="text-xl"></ion-icon> </div>
+                            </div>
+    
+                            <div class="profile_info">
+                                @if ($userProfile) 
+                                <h1>Name : {{ $userProfile->first_name}} {{ $userProfile->last_name}} </h1>
+                                @endif   
+
+                                @if (!$userProfile) 
+                                <h1>Name : {{ Auth::user()->name ?? ""}} </h1>
+                                @endif   
+                                <p class="text-secondary mb-1"><b>Email : </b> {{$userProfile->email ?? Auth::user()->email}}</p>
+                                @if ($userProfile) 
+                                <p class="text-muted font-size-sm"><b>Address :</b>  {{$userProfile->district ?? ""}} ,{{$userProfile->state ?? ""}},{{$userProfile->pincode ?? ""}}
+                                                                </p>
+                                @endif                                
+                            </div>
+    
+                        </div>
+    
+                       
+    
+                    </div>
+
+                    <div class="w-full space-y-6">
                     @if (session('success'))
                     <div class="alert alert-success" role="alert">
                         {{ session('success') }}
                     </div>
                     @endif
-                    @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
+                    @if ($userProfile)   
+                    
+                      <div class="widget card p-5">
+                          <h4 class="text-lg font-semibold"> About </h4>
+                          <ul class="text-gray-600 space-y-3 mt-3">
+                              <li class="flex items-center space-x-2"> 
+                                  <ion-icon name="home-sharp" class="rounded-full bg-gray-200 text-xl p-1 mr-3 md hydrated" role="img" aria-label="home sharp"></ion-icon>
+                                  Live In <strong> {{$userProfile->district ?? ""}} ,{{$userProfile->state ?? ""}},{{$userProfile->pincode ?? ""}}  </strong>
+                              </li>
+                              <li class="flex items-center space-x-2"> 
+                                  <ion-icon name="mail" class="rounded-full bg-gray-200 text-xl p-1 mr-3 md hydrated" role="img" aria-label="globe"></ion-icon>
+                                  Email <strong> {{$userProfile->email ?? ""}}  </strong>
+                              </li>
+                              <li class="flex items-center space-x-2"> 
+                                  <ion-icon name="call" class="rounded-full bg-gray-200 text-xl p-1 mr-3 md hydrated" role="img" aria-label="heart sharp"></ion-icon>
+                                  Contact <strong>  {{$userProfile->contact_number ?? ""}}   </strong>
+                              </li>
+                              <li class="flex items-center space-x-2"> 
+                                  <ion-icon name="briefcase" class="rounded-full bg-gray-200 text-xl p-1 mr-3 md hydrated" role="img" aria-label="logo rss"></ion-icon>
+                                  Work <strong> Freelancer </strong>
+                              </li>                                
+                          </ul>
+                          <div class="gap-3 grid grid-cols-3 mt-4">
+                            <img src="assets/images/avatars/avatar-lg-2.jpg" alt="" class="object-cover rounded-lg col-span-full">
+                            <img src="assets/images/avatars/avatar-2.jpg" alt="" class="rounded-lg">
+                            <img src="assets/images/avatars/avatar-4.jpg" alt="" class="rounded-lg">
+                            <img src="assets/images/avatars/avatar-5.jpg" alt="" class="rounded-lg"> 
+                        </div>
+                        <a href="{{ url('/editprofile') }}" class="button gray mt-3 w-full"> Edit </a>
+                      </div>
                     @endif
-                    <div class="collapse-tabs new-property-step">
-                        <div class="tab-content shadow-none p-0">
-                            <div class="container">
-                                <div class="main-body">
-                                    @if (!$userProfile)
-                                    <div class="card">
-                                        <div class="card-body">
-                                            <div class="d-flex flex-column align-items-center text-center">
-                                                <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                                                    alt="Admin" class="rounded-circle" width="150">
-                                                <div class="mt-3">
-                                                    <h4>{{ Auth::user()->name }}</h4>
-                                                    <p class="text-secondary mb-1">{{ Auth::user()->email }}</p>
-                                                    <a class="btn btn-info " target="__blank"
-                                                        href="{{ url('/addprofile') }}">
-                                                        Add More details  <i class="bi bi-pencil"></i> </a>
 
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @endif
+                    @if (!$userProfile)   
+                    <div class="widget card p-5">
+                          <h4 class="text-lg font-semibold"> About </h4>
 
-                                    @if ($userProfile)
-                                    <div class="row gutters-sm">
-                                        <div class="col-md-4 mb-3">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="d-flex flex-column align-items-center text-center">
-                                                        <img src="https://bootdey.com/img/Content/avatar/avatar7.png"
-                                                            alt="Admin" class="rounded-circle" width="150">
-                                                        <div class="mt-3">
-                                                            <h4>{{$userProfile->full_name}}</h4>
-                                                            <p class="text-secondary mb-1">{{$userProfile->email}}</p>
-                                                            <p class="text-muted font-size-sm">{{$userProfile->area}},{{$userProfile->state}},{{$userProfile->country}}
-                                                                CA</p>
+                        <a href="{{ url('/addprofile') }}" class="button gray mt-3 w-full"> Add More Details </a>
+                      </div>
 
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="card mt-3">
-                                                <ul class="list-group list-group-flush">
-                                                @if ($userProfile->website_url)
-                                                    <li
-                                                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-globe mr-2 icon-inline">
-                                                                <circle cx="12" cy="12" r="10"></circle>
-                                                                <line x1="2" y1="12" x2="22" y2="12"></line>
-                                                                <path
-                                                                    d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z">
-                                                                </path>
-                                                            </svg> Website</h6>
-                                                        <span class="text-secondary">{{$userProfile->website_url}}</span>
-                                                    </li>
-                                                @endif
-                                                @if ($userProfile->github_url)
-                                                    <li
-                                                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-github mr-2 icon-inline">
-                                                                <path
-                                                                    d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
-                                                                </path>
-                                                            </svg> Github</h6>
-                                                        <span class="text-secondary">{{$userProfile->github_url}}</span>
-                                                    </li>
-                                                @endif
-                                                @if ($userProfile->twitter_username)
-                                                    <li
-                                                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-twitter mr-2 icon-inline text-info">
-                                                                <path
-                                                                    d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z">
-                                                                </path>
-                                                            </svg> Twitter</h6>
-                                                        <span class="text-secondary">{{$userProfile->twitter_username}}</span>
-                                                    </li>
-                                                @endif
-                                                @if ($userProfile->instagram_username)
-                                                    <li
-                                                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-instagram mr-2 icon-inline text-danger">
-                                                                <rect x="2" y="2" width="20" height="20" rx="5" ry="5">
-                                                                </rect>
-                                                                <path
-                                                                    d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z">
-                                                                </path>
-                                                                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                                                            </svg> Instagram</h6>
-                                                        <span class="text-secondary">{{$userProfile->instagram_username}}</span>
-                                                    </li>
-                                                    @endif
-                                                    @if ($userProfile->facebook_username)
-                                                    <li
-                                                        class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-                                                        <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-facebook mr-2 icon-inline text-primary">
-                                                                <path
-                                                                    d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z">
-                                                                </path>
-                                                            </svg> Facebook</h6>
-                                                        <span class="text-secondary">{{$userProfile->facebook_username}}</span>
-                                                    </li>
-                                                    @endif
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card mb-3">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0"> Name</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            {{$userProfile->full_name}}
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Email</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            {{$userProfile->email}}
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Phone</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            {{$userProfile->contact_number}}
-                                                        </div>
-                                                    </div>
-
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Address</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                        {{$userProfile->door_number}}, {{$userProfile->street_name}}
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">State</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            {{$userProfile->state}}
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Area</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            {{$userProfile->area}}
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row">
-                                                        <div class="col-sm-3">
-                                                            <h6 class="mb-0">Pincode</h6>
-                                                        </div>
-                                                        <div class="col-sm-9 text-secondary">
-                                                            {{$userProfile->pincode}}
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="row">
-                                                        <div class="col-sm-12">
-                                                            <a class="btn btn-info " target="__blank"
-                                                                href="{{ url('/editprofile') }}">
-                                                                Edit your profile <i class="bi bi-pencil"></i></a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                      @endif
+                  </div>
+                    
+                
                 </div>
-
-                <footer>
-                    <div class="footer clearfix mb-0 text-muted">
-                        <div class="float-start">
-                            <p> <span id="current-year"></span> &copy; Vanshavali</p>
-                        </div>
-
-                    </div>
-                </footer>
             </div>
+            
         </div>
-    </div>
+    
+    
+    
 
-    <script src="{{ asset('js/customjs/profilejs/js/main.js') }}"></script>
-    <script src="{{ asset('js/customjs/profilejs/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/customjs/profilejs/vendors/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
-    <script>
-    // Get the current year
-    var currentYear = new Date().getFullYear();
-    // Set the current year in the HTML element with the specified ID
-    var currentYearElement = document.getElementById('current-year');
-    currentYearElement.textContent = currentYear.toString();
+        
+    
+     
+        
+     
+        
+        <!-- For Night mode -->
+        <script>
+            (function (window, document, undefined) {
+                'use strict';
+                if (!('localStorage' in window)) return;
+                var nightMode = localStorage.getItem('gmtNightMode');
+                if (nightMode) {
+                    document.documentElement.className += ' night-mode';
+                }
+            })(window, document);
+        
+            (function (window, document, undefined) {
+        
+                'use strict';
+        
+                // Feature test
+                if (!('localStorage' in window)) return;
+        
+                // Get our newly insert toggle
+                var nightMode = document.querySelector('#night-mode');
+                if (!nightMode) return;
+        
+                // When clicked, toggle night mode on or off
+                nightMode.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    document.documentElement.classList.toggle('dark');
+                    if (document.documentElement.classList.contains('dark')) {
+                        localStorage.setItem('gmtNightMode', true);
+                        return;
+                    }
+                    localStorage.removeItem('gmtNightMode');
+                }, false);
+        
+            })(window, document);
+        </script>
+      
+        <!-- Javascript
+        ================================================== -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{{ asset('newdesign/forum/assets/js/tippy.all.min.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/uikit.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/simplebar.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/custom.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/bootstrap-select.min.js') }}"></script>
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+    
+    </body>
 
-    function DateSelectionChanged() {
-        var today = new Date();
 
-        var dob = new Date(document.getElementById('dob').value);
-        var months = (today.getMonth() - dob.getMonth() + (12 * (today.getFullYear() - dob.getFullYear())));
 
-        let findDate = Math.round(months / 12);
-        let donorName = document.getElementById('age').value;
-        console.log(donorName);
-
-        if (findDate >= 18 && findDate < 55) {
-            document.getElementById('age').value = (findDate);
-        } else {
-            alert('Age Restricted' + ' ' + `Sorry! ${donorName} you are not allowed to vanshavali`);
-
-        }
-
-    }
-    </script>
-</body>
 
 </html>

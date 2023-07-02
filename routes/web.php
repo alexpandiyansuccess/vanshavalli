@@ -43,6 +43,14 @@ Route::get('/familyTree', [App\Http\Controllers\UserDetailController::class, 'fa
 Route::POST('/onUpdateNodeData', [App\Http\Controllers\UserDetailController::class, 'onUpdateNodeData'])->name('onUpdateNodeData');
 Route::get('/manageTree', [App\Http\Controllers\UserDetailController::class, 'manageTree'])->name('manageTree');
 Route::get('/deletetree', [App\Http\Controllers\UserDetailController::class, 'deletetree'])->name('deletetree');
+Route::get('/forum', [App\Http\Controllers\ForumController::class, 'forum'])->name('forum');
+Route::POST('/create-forum', [App\Http\Controllers\ForumController::class, 'createForum'])->name('create-forum');
+Route::get('/delete-post/{id}', [App\Http\Controllers\ForumController::class, 'deletePost'])->name('delete-post');
+Route::get('/like/{id}', [App\Http\Controllers\ForumController::class, 'like'])->name('like');
+
+
+
+
 
 
 

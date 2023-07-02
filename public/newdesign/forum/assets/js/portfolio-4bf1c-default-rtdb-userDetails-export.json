@@ -1,0 +1,21 @@
+{
+  "cd81425323baf2e43839b19f04d1bda2_6": {
+    "30": {
+      "2023": {
+        "browserDetails": {
+          "fingerprint": "cd81425323baf2e43839b19f04d1bda2",
+          "language": "en-US",
+          "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          "vendor": "Google Inc."
+        },
+        "city": "Karaikal",
+        "entryDate": "6/30/2023",
+        "entryTime": "2:08:37 PM",
+        "ispProvider": "National Internet Backbone",
+        "latitude": 10.9314048,
+        "longitude": 79.839232,
+        "visitCount": 1
+      }
+    }
+  }
+}

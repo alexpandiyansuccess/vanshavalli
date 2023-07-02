@@ -86,7 +86,7 @@
             </div>
         </nav>
 
-        <div class="alert alert-success" role="alert">
+        <div class="alert alert-success" style="margin-bottom:0px !important" role="alert">
                        <b>Note : </b> If anything went wrong, please delete and create a new!
         </div>
 
@@ -106,6 +106,7 @@
 
 
 @section('scripts')
+
 
 
 <script>
@@ -150,7 +151,14 @@
 
   family.load(data)
 </script>
-
+<style>
+    svg.tommy .node.male>rect {
+      fill: #039be5;
+    }  
+      svg.tommy .node.female>rect {
+      fill: #FF46A3;
+    } 
+</style>
 
 <script>
 let color = $("#color").val();
