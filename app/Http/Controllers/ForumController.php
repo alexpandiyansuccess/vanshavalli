@@ -15,8 +15,23 @@ class ForumController extends Controller
 {
     
     public function forum(){
-        $getAllForm = Forum::where("is_active","1")->orderByDesc('created_at')->with('user')->paginate(10);
+       if(auth()->user()){
+        $getAllForm = Forum::where("is_active","1")->orderByDesc('created_at')->with('user','likeForum')->paginate(2);
+        foreach($getAllForm as $getForm){
+            $timeElapsed = $getForm->created_at->diffForHumans();
+            $getForm->posted_at =  $timeElapsed;
+            $getForm->likes_by_user =  $getForm->likeForum->count();
+            $getAllForumLikes = $getForm->likeForum;
+            foreach($getAllForumLikes as $getFormLike){
+               if($getFormLike->user_id == auth()->user()->id){
+                  $getForm->user_liked = 1;
+               }
+            }
+        }
         return view('custom.profile.forum',compact('getAllForm'));
+       }else{
+        return redirect('/');
+       }
     }
 
     public function createForum(Request $request)

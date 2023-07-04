@@ -267,9 +267,9 @@
                                             alt="">
                                     </div>
                                     <div class="user_name">
-                                        <div> Name of User </div>
-                                        <span> @username</span>
-                                    </div>
+                                            <div> {{ Auth::user()->name }} </div>
+                                            <span> {{Auth::user()->email  ?? $userProfile->email}} </span>
+                                        </div>
                                 </a>
 
 

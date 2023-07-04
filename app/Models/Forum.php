@@ -14,4 +14,9 @@ class Forum extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function likeForum()
+    {
+        return $this->hasMany(Like::class,'post_id','id');
+    }
 }

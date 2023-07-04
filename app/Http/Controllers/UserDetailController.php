@@ -55,13 +55,18 @@ class UserDetailController extends Controller
     }
 
     public function editprofile(){
-      $getUserId = auth()->user()->id;
-      $userProfile = UserDetail::where("user_id",$getUserId)->first();
-      if($userProfile){
-        return view('custom.profile.editprofile',compact('userProfile'));
-      }else{
-        return redirect('dashboard')->withSuccess('create profile then proceed successfully !');
-      }
+        if(auth()->user()){
+            $getUserId = auth()->user()->id;
+            $userProfile = UserDetail::where("user_id",$getUserId)->first();
+            if($userProfile){
+              return view('custom.profile.editprofile',compact('userProfile'));
+            }else{
+              return redirect('dashboard')->withSuccess('create profile then proceed successfully !');
+            }
+        }else{
+            return redirect('/');
+        }
+     
     }
 
     public function updateprofile(Request $request){
@@ -87,10 +92,18 @@ class UserDetailController extends Controller
 
 
     public function addprofile(){
-        return view('custom.profile.create-profile');
+        if(auth()->user()){
+            return view('custom.profile.create-profile');
+           }else{
+            return redirect('/');
+           }
+
       }
 
       public function familyTree(){
+        if(!auth()->user()){
+            return redirect('/');
+        }
         $getUserId = auth()->user()->id;
         $fileContents = Nodes::where("user_id",$getUserId)->first();
         if($fileContents){
@@ -201,7 +214,11 @@ class UserDetailController extends Controller
     }
 
     public function manageTree(){
-        return view('custom.profile.create-profile');
+        if(auth()->user()){
+            return view('custom.profile.create-profile');
+           }else{
+            return redirect('/');
+           }
       }
 
       public function deletetree(){

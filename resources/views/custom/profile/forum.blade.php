@@ -58,6 +58,35 @@
         font-family: 'Mouse Memoirs', sans-serif !important;
         font-size: 2rem;
     }
+    .pointer {cursor: pointer;}
+    .pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.pagination li {
+  margin-right: 5px;
+}
+
+.pagination li a,
+.pagination li span {
+  display: inline-block;
+  padding: 5px 10px;
+  text-decoration: none;
+  border: 1px solid #ccc;
+  color: #333;
+  border-radius: 3px;
+}
+
+.pagination li.active span {
+  background-color: #333;
+  color: #fff;
+}
+
     </style>
 
 
@@ -270,9 +299,9 @@
                                             alt="">
                                     </div>
                                     <div class="user_name">
-                                        <div> Name of User </div>
-                                        <span> @username</span>
-                                    </div>
+                                            <div> {{ Auth::user()->name }} </div>
+                                            <span> {{Auth::user()->email  ?? $userProfile->email}} </span>
+                                        </div>
                                 </a>
 
 
@@ -472,9 +501,9 @@
                                 </a>
                                 <div class="flex-1 font-semibold capitalize">
                                     <a href="#" class="text-black dark:text-gray-100"> {{$getForm->user->name}} </a>
-                                    <div class="text-gray-700 flex items-center space-x-2"> 5 <span> hrs </span>
-                                        <ion-icon name="people" role="img" class="md hydrated" aria-label="people">
-                                        </ion-icon>
+                                    <div class="text-gray-700 flex items-center space-x-2"><span>{{$getForm->posted_at}}<span> 
+                                        <!-- <ion-icon name="people" role="img" class="md hydrated" aria-label="people">
+                                        </ion-icon> -->
                                     </div>
                                 </div>
                             </div>
@@ -489,17 +518,15 @@
 
                                     <ul class="space-y-1">
 
-                                        <li>
+                                        <!-- <li>
                                             <a href="#"
                                                 class="flex items-center px-3 py-2 hover:bg-gray-200 hover:text-gray-800 rounded-md dark:hover:bg-gray-800">
                                                 <i class="bi bi-pencil mr-1"></i> Edit Post
                                             </a>
-                                        </li>
+                                        </li> -->
 
 
-                                        <li>
-                                            <hr class="-mx-2 my-2 dark:border-gray-800">
-                                        </li>
+                                      
                                         <li>
                                             <a href="{{ route('delete-post',['id' => $getForm->id]) }}"
                                                 class="flex items-center px-3 py-2 text-red-500 hover:bg-red-100 hover:text-red-500 rounded-md dark:hover:bg-red-600">
@@ -517,7 +544,7 @@
                         <div class="p-5 pt-0 border-b dark:border-gray-700">
 
                             @if($getForm->file_type == 'video')
-                            <video controls>
+                            <video controls style="width: -webkit-fill-available;">
                                 <source src="{{ asset('post_images') }}/{{$getForm->image_link}}" type="video/mp4">
                                 <source src="{{ asset('post_images') }}/{{$getForm->image_link}}" type="video/ogg">
                                 Your browser does not support the video tag.
@@ -535,9 +562,23 @@
                         </div>
 
 
-                        <div class="p-4 space-y-3">
+                        <div class="p-4 space-y-3 likeButton pointer" id="{{$getForm->id}}">
                           <input hidden id="like_hidden" value="{{$getForm->id}}">
-                            <div class="flex space-x-4 lg:font-bold" id="likeButton">
+                            <div class="flex space-x-4 lg:font-bold">
+                                @if($getForm->user_liked)
+                                <a   class="flex items-center space-x-2">
+                                    <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600 ">
+                                        <svg class="{{$getForm->id}}" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="yellow"
+                                            width="22" height="22" class="dark:text-gray-100">
+                                            <path
+                                                d="M2 10.5a1.5 1.5 0 113 0v6a1.5 1.5 0 01-3 0v-6zM6 10.333v5.43a2 2 0 001.106 1.79l.05.025A4 4 0 008.943 18h5.416a2 2 0 001.962-1.608l1.2-6A2 2 0 0015.56 8H12V4a2 2 0 00-2-2 1 1 0 00-1 1v.667a4 4 0 01-.8 2.4L6.8 7.933a4 4 0 00-.8 2.4z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    <div  > Like ({{$getForm->likes_by_user}})</div>
+                                </a>
+                                @endif
+                                @if(!$getForm->user_liked)
                                 <a   class="flex items-center space-x-2">
                                     <div class="p-2 rounded-full  text-black lg:bg-gray-100 dark:bg-gray-600 ">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
@@ -547,16 +588,16 @@
                                             </path>
                                         </svg>
                                     </div>
-                                    <div > Like</div>
+                                    <div  > Like ({{$getForm->likes_by_user}})</div>
                                 </a>
-
-
+                                @endif
                             </div>
                         </div>
                     </div>
+                <hr>
                     @endforeach
-
                     {{ $getAllForm->links() }}
+                    <br>
                 </div>
 
 
@@ -579,14 +620,15 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script>
 
-$('#likeButton').click(function() {
-        var getLikeHidden = $("#like_hidden").val();
+$('.likeButton').click(function() {
+    debugger
+        var getLikeHidden = $(this).attr('id');
         $.ajax({
             url: '/like/'+getLikeHidden, // Replace with the actual API endpoint URL
             method: 'GET', // Replace with the appropriate HTTP method
             success: function(response) {
-                // Handle the successful API response
-                console.log(response);
+                let getClass = "."+getLikeHidden
+                $(getClass).attr('fill', 'yellow');
             },
             error: function(xhr, status, error) {
                 // Handle the API call error
