@@ -47,7 +47,10 @@ Route::get('/forum', [App\Http\Controllers\ForumController::class, 'forum'])->na
 Route::POST('/create-forum', [App\Http\Controllers\ForumController::class, 'createForum'])->name('create-forum');
 Route::get('/delete-post/{id}', [App\Http\Controllers\ForumController::class, 'deletePost'])->name('delete-post');
 Route::get('/like/{id}', [App\Http\Controllers\ForumController::class, 'like'])->name('like');
+Route::get('/invite/{id}', [App\Http\Controllers\UserDetailController::class, 'invite'])->name('invite');
 
+
+Route::POST('/onUpdateNodeDataInvite', [App\Http\Controllers\UserDetailController::class, 'onUpdateNodeDataInvite'])->name('onUpdateNodeDataInvite');
 
 
 

@@ -213,6 +213,8 @@ class UserDetailController extends Controller
         return response()->json($getData->node_array);
     }
 
+
+
     public function manageTree(){
         if(auth()->user()){
             return view('custom.profile.create-profile');
@@ -226,6 +228,87 @@ class UserDetailController extends Controller
          Nodes::where('user_id',$getUserId)->delete();
         return redirect('create-chart')->withSuccess('Deleted successfully.Kindly create node then proceed !');    
 
+      }
+
+      public function invite($id){
+        $getUserId = $id;
+        $fileContents = Nodes::where("user_id",$getUserId)->first();
+        if($fileContents){
+            if($fileContents){
+                $jsonData = json_decode($fileContents->node_array);
+                return view('custom.profile.famil-tree-invite',compact('jsonData'));
+            }else{
+                return redirect('create-chart')->withSuccess('Kindly create node then proceed !');
+            }
+        }else{
+            return redirect('/');
+        }
+
+
+      }
+
+      public function onUpdateNodeDataInvite(Request $request)
+      {
+
+        $headers = $request->headers->all();
+        $userId = $request->header('user_id');
+   
+          $jsonFilePath = public_path('json/file.json');
+  
+          // Read the JSON file
+  
+          $getUserId = $userId;
+          $checkIfExist = Nodes::where("user_id",$getUserId)->first();
+          $jsonData = $checkIfExist->node_array;
+  
+          // Parse the JSON data into an array
+          $nodes = json_decode($jsonData, true);
+  
+  
+          // Add nodes from the request
+          foreach ($request->input('addNodesData', []) as $node) {
+              $nodes[] = $node;
+          }
+  
+          // Update nodes from the request
+          foreach ($request->input('updateNodesData', []) as $node) {
+              $index = array_search($node['id'], array_column($nodes, 'id'));
+  
+              if ($index !== false) {
+                  $nodes[$index] = $node;
+              }
+          }
+  
+          // Remove nodes based on the condition
+          $removeNodeId = $request->input('removeNodeId');
+          $nodes = array_filter($nodes, function ($node) use ($removeNodeId) {
+              return $node['id'] !== $removeNodeId;
+          });
+  
+          // Convert the array back to JSON
+          $jsonData = json_encode($nodes);
+  
+          $getUserId = $userId;
+          $checkIfExist = Nodes::where("user_id",$getUserId)->first();
+          
+          if($checkIfExist){
+              if($request->input('removeNodeId')){
+                  $nodeArray = $request->input('updateNodesData');
+              }else{
+                  if($jsonData == "[]"){
+                      $nodeArray =  $request->input('updateNodesData');
+                  }else{
+                      $nodeArray = $jsonData;
+                  }
+              }
+              Nodes::where("user_id",$getUserId)->update([
+                  "node_array"=>$nodeArray
+              ]);
+          }
+  
+          $getData = Nodes::where("user_id",$getUserId)->first();
+  
+          return response()->json($getData->node_array);
       }
 
 }

@@ -32,6 +32,10 @@
                     <li class="nav-item">
                         <a class="nav-link navbtn" href="{{ url('/deletetree') }}"><img class="mt-2 manage-link" src="{{asset('images/nav2.png')}}" alt=""><br>Delete</a>
                     </li>
+                    <li class="nav-item">
+                        <input value="{{ url('/invite') }}/{{Auth::user()->id}}" hidden id="inviteLike">
+                        <a class="nav-link navbtn" onclick="copyToClipboard()"><img class="mt-2 manage-link" src="{{asset('images/nav1.png')}}" alt=""><br>Invite</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                     <li class="nav-item">
@@ -46,6 +50,7 @@
                     <li class="nav-item">
                         <a class="nav-link navbtn2" href="{{ url('/deletetree') }}"><img src="{{asset('images/nav2.png')}}" alt="">&emsp;Delete</a>
                     </li>
+
                 </ul>
 
                 <div class="form-inline my-2 my-lg-0">
@@ -110,12 +115,24 @@
 
 
 <script>
+
+function copyToClipboard() {
+    var getLink = document.getElementById('inviteLike').value;
+        const el = document.createElement('textarea');
+        el.value = getLink;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+        alert('Link copied to clipboard!');
+    }
   
   var response = {!! json_encode($jsonData) !!};
     var data = response;
   let family = new FamilyTree(document.getElementById("tree"), { 
     nodeBinding: {
-      field_0: "name"
+      field_0: "name",
+      img_0: "image",
     },
     nodeMouseClick: FamilyTree.action.edit,
      nodeMenu: {
@@ -124,6 +141,7 @@
      },
     nodeTreeMenu: true,
   });
+  
 
     family.on('click', function(sender, args){
         sender.editUI.show(args.node.id, false); 
