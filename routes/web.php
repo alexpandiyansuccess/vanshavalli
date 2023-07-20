@@ -55,6 +55,6 @@ Route::POST('/onUpdateNodeDataInvite', [App\Http\Controllers\UserDetailControlle
 
 
 
-
+Route::post('/upload-image', [UserDetailController::class, 'uploadImage'])->name('upload.image');
 
 

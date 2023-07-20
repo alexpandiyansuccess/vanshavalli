@@ -249,15 +249,20 @@
         
              
                                 <div id="weather-container" style="display: inline;"></div>
+                                @if(Auth::user()->remember_token)
                                 <a href="#">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
-                                </a>
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="is_avatar" alt="">
+                                 </a>
+                                @endif
+                                @if(!Auth::user()->remember_token)
+                                <a href="#">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
+                                 </a>
+                                @endif
                                 <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
     
                                     <a href="javascript:void(0)" class="user">
-                                        <div class="user_avatar">
-                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" alt="">
-                                        </div>
+
                                         <div class="user_name">
                                         <div> {{ Auth::user()->name ?? ""}} </div>
                                             <span> {{$userProfile->email ?? Auth::user()->email}} </span>

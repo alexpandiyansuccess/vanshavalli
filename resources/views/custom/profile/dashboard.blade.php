@@ -214,7 +214,18 @@
    
     
 
-
+      @if(session('success'))
+      <div class="alert alert-success">
+          {{ session('success') }}
+      </div>
+  @endif
+  
+  @if(session('error'))
+      <div class="alert alert-danger">
+          {{ session('error') }}
+      </div>
+  @endif
+  
         <div id="wrapper">
     
             <!-- Header -->
@@ -249,15 +260,21 @@
         
              
                                 <div id="weather-container" style="display: inline;"></div>
+                                @if(Auth::user()->remember_token)
                                 <a href="#">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
-                                </a>
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="is_avatar" alt="">
+                                 </a>
+                                @endif
+                                @if(!Auth::user()->remember_token)
+                                <a href="#">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
+                                 </a>
+                                @endif
+                               
                                 <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
     
                                     <a href="javascript:void(0)" class="user">
-                                        <div class="user_avatar">
-                                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" alt="">
-                                        </div>
+                                  
                                         <div class="user_name">
                                             <div> {{ Auth::user()->name }} </div>
                                             <span> {{$userProfile->email ?? ""}} </span>
@@ -394,8 +411,13 @@
     
                             <div class="profile_avatar">
                                 <div class="profile_avatar_holder"> 
+                                  @if(Auth::user()->remember_token)
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" alt="">
+                                  @endif
+                                  @if(!Auth::user()->remember_token)
                                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" alt="">
-                                </div>
+                                    @endif
+                                  </div>
                                 <div class="user_status status_online"></div>
                                 <div class="icon_change_photo" hidden> <ion-icon name="camera" class="text-xl"></ion-icon> </div>
                             </div>
@@ -416,10 +438,29 @@
                             </div>
     
                         </div>
-    
+                        <div style="
+                        align-items: center;
+                        justify-content: center;
+                    " class="flex justify-between lg:border-t border-gray-100 flex-col-reverse lg:flex-row pt-2">
+                      
+   
+                          <!-- button actions -->
+                          <div class="flex items-center space-x-1.5 flex-shrink-0 pr-4 mb-2 justify-center order-1 relative">
+                              
+                          
+                             
+                              
+                            <p uk-toggle="target: #create-post-modal" class="flex items-center px-3 py-2 text-green-500  hover:text-black dark:text-white rounded-md ">
+
+                              <ion-icon name="cloud-upload-outline" class="pr-2 text-xl md hydrated" role="img" aria-label="cloud-upload-outline"></ion-icon>  Edit Profile Picture
+                            </p> 
+                          </div>
+  
+                      </div>
                        
     
                     </div>
+
 
                     <div class="w-full space-y-6">
                     @if (session('success'))
@@ -459,6 +500,40 @@
                       </div>
                     @endif
 
+                    
+
+                                        <!-- Upload User Image -->
+    <div id="create-post-modal" class="create-post" uk-modal>
+      <div
+          class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical rounded-lg p-0 lg:w-5/12 relative shadow-2xl uk-animation-slide-bottom-small">
+  
+          <div class="text-center py-4 border-b">
+              <h3 class="text-lg font-semibold"> Edit / Upload New Profile </h3>
+              <button class="uk-modal-close-default bg-gray-100 rounded-full p-2.5 m-1 right-2" type="button" uk-close uk-tooltip="title: Close ; pos: bottom ;offset:7"></button>
+          </div>
+         
+          <div class="bsolute bottom-0 p-4 space-x-4 w-full">
+              <div class="flex bg-gray-50 border border-purple-100 rounded-2xl p-3 shadow-sm items-center">
+                
+                <form method="POST" action="{{ route('upload.image') }}" enctype="multipart/form-data">
+                  @csrf
+                  <input type="file" name="image" id="image">
+              </div>
+          </div>
+          <div class="flex items-center w-full justify-between p-3 border-t">
+  
+              
+  
+              <div class="flex space-x-2">
+                  
+      <button type="submit" class="bg-blue-600 flex h-9 items-center justify-center rounded-md text-white px-5 font-medium">Upload Image</button>
+              </div>
+
+          </div>
+        </form>
+
+      </div>
+  </div>
                     @if (!$userProfile)   
                     <div class="widget card p-5">
                           <h4 class="text-lg font-semibold"> About </h4>

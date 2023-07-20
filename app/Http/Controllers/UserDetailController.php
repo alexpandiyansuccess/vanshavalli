@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\UserDetail;
+use App\Models\User;
 use App\Models\Nodes;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
@@ -310,5 +311,35 @@ class UserDetailController extends Controller
   
           return response()->json($getData->node_array);
       }
+
+      public function uploadImage(Request $request)
+      {
+          if ($request->hasFile('image')) {
+              // Validate the uploaded file (optional)
+              $request->validate([
+                  'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust the validation rules as needed
+              ]);
+  
+              // Save the image to the desired location
+              $image = $request->file('image');
+
+              $imageName = time() . '.' . $image->getClientOriginalExtension();
+              $image->move(public_path('user_images'), $imageName);
+
+               $getUserId = auth()->user()->id;
+      
+                $getUserData = [
+                    "remember_token" => $imageName ?? "",
+                ];
+        
+
+             $userProfile = User::where("id",$getUserId)->update($getUserData);
+
+              return back()->with('success', 'Image uploaded successfully!');
+          }
+  
+          return back()->with('error', 'Please select an image to upload.');
+      }
+  
 
 }

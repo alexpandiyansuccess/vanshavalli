@@ -287,17 +287,20 @@
 
 
 
-                            <a href="#">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s"
-                                    class="is_avatar" alt="">
-                            </a>
+                             @if(Auth::user()->remember_token)
+                                <a href="#">
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="is_avatar" alt="">
+                                 </a>
+                                @endif
+                                @if(!Auth::user()->remember_token)
+                                <a href="#">
+                                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
+                                 </a>
+                                @endif
                             <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
 
                                 <a href="javascript:void(0)" class="user">
-                                    <div class="user_avatar">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s"
-                                            alt="">
-                                    </div>
+
                                     <div class="user_name">
                                             <div> {{ Auth::user()->name }} </div>
                                             <span> {{Auth::user()->email  ?? $userProfile->email}} </span>
@@ -437,8 +440,16 @@
                         @csrf
                         <div class="card lg:mx-0 p-4">
                             <div class="flex space-x-3">
+                                @if(Auth::user()->remember_token)
+                                <a href="#">
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="w-10 h-10 rounded-full" alt="">
+                                 </a>
+                                @endif
+                                @if(!Auth::user()->remember_token)
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s"
-                                    class="w-10 h-10 rounded-full">
+                                class="w-10 h-10 rounded-full">
+                                @endif
+                                
                                 <input id="post-input" name="description" placeholder="What's on your mind?"
                                     class="bg-gray-100 hover:bg-gray-200 flex-1 h-10 px-6 rounded-full">
 
@@ -495,10 +506,18 @@
                         <!-- post header-->
                         <div class="flex justify-between items-center lg:p-4 p-2.5">
                             <div class="flex flex-1 items-center space-x-4">
+
+
+                                @if(Auth::user()->remember_token)
                                 <a href="#">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&amp;s"
-                                        class="bg-gray-200 border border-white rounded-full w-10 h-10">
-                                </a>
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="bg-gray-200 border border-white rounded-full w-10 h-10" alt="">
+                                 </a>
+                                @endif
+                                @if(!Auth::user()->remember_token)
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s"
+                                class="bg-gray-200 border border-white rounded-full w-10 h-10">
+                                @endif
+
                                 <div class="flex-1 font-semibold capitalize">
                                     <a href="#" class="text-black dark:text-gray-100"> {{$getForm->user->name}} </a>
                                     <div class="text-gray-700 flex items-center space-x-2"><span>{{$getForm->posted_at}}<span> 
