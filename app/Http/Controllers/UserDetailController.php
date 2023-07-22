@@ -329,7 +329,7 @@ class UserDetailController extends Controller
                $getUserId = auth()->user()->id;
       
                 $getUserData = [
-                    "remember_token" => $imageName ?? "",
+                    "image_path" => $imageName ?? "",
                 ];
         
 

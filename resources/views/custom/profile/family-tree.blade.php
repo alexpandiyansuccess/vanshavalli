@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('styles')
@@ -132,7 +133,6 @@ function copyToClipboard() {
   let family = new FamilyTree(document.getElementById("tree"), { 
     nodeBinding: {
       field_0: "name",
-      img_0: "image",
     },
     nodeMouseClick: FamilyTree.action.edit,
      nodeMenu: {

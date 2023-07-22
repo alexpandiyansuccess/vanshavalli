@@ -8,7 +8,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Vanshavali - Family tree chart</title>
      <script type="text/javascript">
      (function(window) {
         if (window.location !== window.top.location) {

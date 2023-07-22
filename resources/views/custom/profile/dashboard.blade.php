@@ -260,12 +260,12 @@
         
              
                                 <div id="weather-container" style="display: inline;"></div>
-                                @if(Auth::user()->remember_token)
+                                @if(Auth::user()->image_path)
                                 <a href="#">
-                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="is_avatar" alt="">
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->image_path}}" class="is_avatar" alt="">
                                  </a>
                                 @endif
-                                @if(!Auth::user()->remember_token)
+                                @if(!Auth::user()->image_path)
                                 <a href="#">
                                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
                                  </a>
@@ -411,10 +411,10 @@
     
                             <div class="profile_avatar">
                                 <div class="profile_avatar_holder"> 
-                                  @if(Auth::user()->remember_token)
-                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" alt="">
+                                  @if(Auth::user()->image_path)
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->image_path}}" alt="">
                                   @endif
-                                  @if(!Auth::user()->remember_token)
+                                  @if(!Auth::user()->image_path)
                                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" alt="">
                                     @endif
                                   </div>

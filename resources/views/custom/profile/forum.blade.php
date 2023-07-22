@@ -287,12 +287,12 @@
 
 
 
-                             @if(Auth::user()->remember_token)
+                             @if(Auth::user()->image_path)
                                 <a href="#">
-                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="is_avatar" alt="">
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->image_path}}" class="is_avatar" alt="">
                                  </a>
                                 @endif
-                                @if(!Auth::user()->remember_token)
+                                @if(!Auth::user()->image_path)
                                 <a href="#">
                                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
                                  </a>
@@ -440,12 +440,12 @@
                         @csrf
                         <div class="card lg:mx-0 p-4">
                             <div class="flex space-x-3">
-                                @if(Auth::user()->remember_token)
+                                @if(Auth::user()->image_path)
                                 <a href="#">
-                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="w-10 h-10 rounded-full" alt="">
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->image_path}}" class="w-10 h-10 rounded-full" alt="">
                                  </a>
                                 @endif
-                                @if(!Auth::user()->remember_token)
+                                @if(!Auth::user()->image_path)
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s"
                                 class="w-10 h-10 rounded-full">
                                 @endif
@@ -508,12 +508,12 @@
                             <div class="flex flex-1 items-center space-x-4">
 
 
-                                @if(Auth::user()->remember_token)
+                                @if(Auth::user()->image_path)
                                 <a href="#">
-                                  <img src="{{ asset('user_images') }}/{{Auth::user()->remember_token}}" class="bg-gray-200 border border-white rounded-full w-10 h-10" alt="">
+                                  <img src="{{ asset('user_images') }}/{{Auth::user()->image_path}}" class="bg-gray-200 border border-white rounded-full w-10 h-10" alt="">
                                  </a>
                                 @endif
-                                @if(!Auth::user()->remember_token)
+                                @if(!Auth::user()->image_path)
                                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s"
                                 class="bg-gray-200 border border-white rounded-full w-10 h-10">
                                 @endif
