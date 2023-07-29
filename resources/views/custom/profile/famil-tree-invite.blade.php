@@ -421,6 +421,7 @@ if (navigator.geolocation) {
     
         <div class="messages-container">
           <div class="messages-container-inner">
+            <input value="{{request()->segment(2)}}" id="user_id" hidden>
             <div id="tree"></div>
           </div>
         </div>
@@ -487,7 +488,7 @@ if (navigator.geolocation) {
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
 
-  <script src="https://cdn.jsdelivr.net/gh/iamraghavan/Vanshavali@main/familytree.js"></script>
+  <script src="{{ asset('js/familyTree/FamilyTree.js') }}"></script> 
 
 
   <!-- For Night mode -->
@@ -532,29 +533,28 @@ if (navigator.geolocation) {
 
         <script>
   
-          var response = {!! json_encode($jsonData) !!};
-            var data = response;
-          let family = new FamilyTree(document.getElementById("tree"), { 
-            nodeBinding: {
-              field_0: "name",
-              img_0: "image",
-            },
-            nodeMouseClick: FamilyTree.action.edit,
-             nodeMenu: {
-                details: {text:"Details"},
-                edit: {text:"Edit"}
-             },
-            nodeTreeMenu: true,
-          });
-          
-        
-            family.on('click', function(sender, args){
-                sender.editUI.show(args.node.id, false); 
-                return false; 
-            });
-        
+  var response = {!! json_encode($jsonData) !!};
+                var data = response;
+              let family = new FamilyTree(document.getElementById("tree"), { 
+                nodeBinding: {
+                  field_0: "name",
+                },
+                nodeMouseClick: FamilyTree.action.edit,
+                 nodeMenu: {
+                    details: {text:"Details"},
+                    edit: {text:"Edit"}
+                 },
+                nodeTreeMenu: true,
+              });
+              
+            
+                family.on('click', function(sender, args){
+                    sender.editUI.show(args.node.id, false); 
+                    return false; 
+                });
         
           family.onUpdateNode((args) => {
+            debugger
             var csrfToken = '{{ csrf_token() }}';
             var getUserId = document.getElementById('user_id').value;
             fetch('/onUpdateNodeDataInvite', {

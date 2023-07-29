@@ -495,7 +495,7 @@ if (navigator.geolocation) {
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
 
-  <script src="https://cdn.jsdelivr.net/gh/iamraghavan/Vanshavali@main/familytree.js"></script>
+  <script src="{{ asset('js/familyTree/FamilyTree.js') }}"></script> 
 
 
   <!-- For Night mode -->

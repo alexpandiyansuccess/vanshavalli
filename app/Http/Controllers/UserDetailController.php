@@ -265,8 +265,8 @@ class UserDetailController extends Controller
 
         $headers = $request->headers->all();
         $userId = $request->header('user_id');
-   
-          $jsonFilePath = public_path('json/file.json');
+
+        $jsonFilePath = public_path('json/file.json');
   
           // Read the JSON file
   
