@@ -351,6 +351,8 @@ if (navigator.geolocation) {
             <li><a href="javascript:void(0)"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
                 <ul>
                     <li><a href="{{ route('editprofile') }}">Profile Settings</a></li>
+                    <li><a href="{{ route('invites') }}">Invites</a></li>
+                            <li><a href="{{ route('invitesbyyou') }}">Invited By You</a></li>
                     <li><a href="javascript:void(0)">Gendral Settings</a></li>
                 </ul>
             </li>
@@ -407,32 +409,29 @@ if (navigator.geolocation) {
                 <li><a href="{{ url('/create-chart') }}" class="lg:px-2"> <i class="bi bi-diagram-3 mr-1"></i> Create Chart </a></li>
                 <li><a  href="{{ url('/familyTree') }}" class="lg:px-2"> <i class="bi bi-magic mr-1"></i> Manage Chart </a></li>
                 <li><a href="{{ url('/deletetree') }}" class="lg:px-2"> <i class="bi bi-trash mr-1"></i> Delete </a></li>
-                <li>
-                    <input value="{{ url('/invite') }}/{{Auth::user()->id}}" hidden id="inviteLike">
+                <li uk-toggle="target: #search-username">
+                  
                     
-                    <a onclick="copyToClipboard()" class="lg:px-2"> <i class="bi bi-share mr-1"></i> Invite </a></li>
+                    <a  class="lg:px-2"> <i class="bi bi-share mr-1"></i> Invite </a>
+
+                  </li>
               </ul>
             </nav>
           </div>
 
         </div>
 
+        @if(session('success'))
+        <div class="alert alert-danger bg-green-500 border p-4 relative rounded-md uk-alert">
+            {{ session('success') }}
+        </div>
+    @endif
+    
         <div class="messages-container">
           <div class="messages-container-inner">
-
             <div id="tree"></div>
-
-
           </div>
         </div>
-
-
-
-
-
-
-
-
 
 
       </div>
@@ -440,6 +439,59 @@ if (navigator.geolocation) {
 
   </div>
 
+  <div id="search-username" class="create-post is-story" uk-modal>
+    <div
+        class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical rounded-lg p-0 lg:w-5/12 relative shadow-2xl uk-animation-slide-bottom-small">
+
+        <div class="text-center py-3 border-b">
+            <h3 class="text-lg font-semibold"> Search Family Member </h3>
+
+          <form action="#" class="form-search-banner">
+              <input type="text" name="country"  id="searchInput" name="country" class="form-control" 
+              placeholder="Search Family Member ?" style="color: white;">
+              {{-- <a href="#" class="btn btn-main">Search<i class="fa fa-search ml-2"></i> </a> --}}
+  
+          <div style="cursor: pointer" id="autocompleteResults"></div>
+          </form>
+            
+        </div>
+    </div>
+</div>
+
+
+   <!-- resources/views/search.blade.php -->
+   <script>
+    const searchInput = document.getElementById('searchInput');
+    const autocompleteResults = document.getElementById('autocompleteResults');
+    const selectField = document.getElementById('selectField');
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value;
+        if (query.length >= 2) {
+            fetch(`/search?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let html = '';
+                    data.forEach(suggestion => {
+                        let getAllData = suggestion;
+                            html += `<a href='invite-user?id=${suggestion.id}' style="color: white;">
+                            <span onclick="selectSuggestion('${suggestion.email}')">
+                                ${suggestion.name} - ${suggestion.email} </span>
+                            </a><hr>`;                
+                    });
+                    autocompleteResults.innerHTML = html;
+                });
+        } else {
+            autocompleteResults.innerHTML = '';
+        }
+    });
+
+    function selectSuggestion(suggestion) {
+        searchInput.value = suggestion;
+        autocompleteResults.innerHTML = '';
+        selectField.value = suggestion; // Populate the select field with the selected value
+    }
+</script>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
 

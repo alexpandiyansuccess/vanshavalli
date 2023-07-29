@@ -349,6 +349,8 @@
                     <li><a href="javascript:void(0)"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
                         <ul>
                             <li><a href="{{ route('editprofile') }}">Profile Settings</a></li>
+                            <li><a href="{{ route('invites') }}">Invites</a></li>
+                            <li><a href="{{ route('invitesbyyou') }}">Invited By You</a></li>
                             <li><a href="javascript:void(0)">Gendral Settings</a></li>
                         </ul>
                     </li>

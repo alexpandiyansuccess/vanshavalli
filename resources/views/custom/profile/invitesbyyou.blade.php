@@ -24,13 +24,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     
+
     <!-- icons
     ================================================== -->
     <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/icons.css') }}">
 
     <!-- CSS 
     ================================================== --> 
- 
     <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/uikit.css') }}">
     <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/tailwind.css') }}">
@@ -214,18 +214,7 @@
    
     
 
-      @if(session('success'))
-      <div class="alert alert-success">
-          {{ session('success') }}
-      </div>
-  @endif
-  
-  @if(session('error'))
-      <div class="alert alert-danger">
-          {{ session('error') }}
-      </div>
-  @endif
-  
+
         <div id="wrapper">
     
             <!-- Header -->
@@ -270,14 +259,13 @@
                                   <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
                                  </a>
                                 @endif
-                               
                                 <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
     
                                     <a href="javascript:void(0)" class="user">
-                                  
+
                                         <div class="user_name">
-                                            <div> {{ Auth::user()->name }} </div>
-                                            <span> {{$userProfile->email ?? ""}} </span>
+                                        <div> {{ Auth::user()->name ?? ""}} </div>
+                                            <span> {{$userProfile->email ?? Auth::user()->email}} </span>
                                         </div>
                                     </a>
                                     
@@ -304,7 +292,6 @@
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                     @csrf
                                 </form>
-                                    </a>
     
                                     
                                 </div>
@@ -319,246 +306,179 @@
             <!-- sidebar -->
             <div class="sidebar">
             
-                <div class="sidebar_inner" data-simplebar>
-            
-                    <ul>
-                        <li><a href="{{ route('dashboard') }}"> 
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
-                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                            </svg>
-                            <span> Profile </span> </a> 
-                        </li>
-
-                        <li id="more-veiw"><a href=" {{ url('/forum') }}"> 
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
-                                <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
-                                <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
-                            </svg>
-                           <span> forum</span> </a> 
-                        </li>
-                       
-                        <li><a href="{{  url('/create-chart') }}"> 
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-green-500">
-                                <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
-                            </svg>  <span>  Create Family Tree </span></a> 
-                        </li> 
-                        
-                            
-                        <li id="more-veiw"><a href="{{ url('/familyTree') }}"> 
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
-                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
-                              </svg>
-                            <span>  Manage Family Tree </span></a> 
-                        </li> 
-                    </ul>
-    
-                   
-                    
-                  
+            <div class="sidebar_inner" data-simplebar>
         
-                    <ul class="side_links" data-sub-title="Pages">
-    
-                       
-                        <li><a href="javascript:void(0)"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
-                            <ul>
-                                <li><a href="{{ route('editprofile') }}">Profile Settings</a></li>
-                                <li><a href="{{ route('invites') }}">Invites</a></li>
-                                <li><a href="{{ route('invitesbyyou') }}">Invited By You</a></li>
-                                <li><a href="javascript:void(0)">Gendral Settings</a></li>
-                            </ul>
-                        </li>
-                       
-                    
+                <ul>
+                    <li><a href="{{ route('dashboard') }}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
+                            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                        </svg>
+                        <span> Profile </span> </a> 
+                    </li>
 
+                    <li id="more-veiw"><a href=" {{ url('/forum') }}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
+                            <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+                            <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+                        </svg>
+                       <span> forum</span> </a> 
+                    </li>
+                   
+                    <li><a href="{{  url('/create-chart') }}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-green-500">
+                            <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                        </svg>  <span>  Create Family Tree </span></a> 
+                    </li> 
+                    
                         
-                    </ul>
+                    <li id="more-veiw"><a href="{{ url('/familyTree') }}"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
+                            <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                          </svg>
+                        <span>  Manage Family Tree </span></a> 
+                    </li> 
+                </ul>
 
-                    <ul class="side_links">
+               
+                
+              
     
-                       
-                        <div class="footer-links">
-                            <a href="#">About</a>
-                            <a href="#">Blog </a>
-                            <a href="#">Contact Us </a>
-                            <a href="#">Terms of service</a>
-                        </div>
-                       
-                    
+                <ul class="side_links" data-sub-title="Pages">
+                    <li><a href="javascript:void(0)"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
+                        <ul>
+                            <li><a href="{{ route('editprofile') }}">Profile Settings</a></li>
+                            <li><a href="{{ route('invites') }}">Invites</a></li>
+                            <li><a href="{{ route('invitesbyyou') }}">Invited By You</a></li>
+                            <li><a href="javascript:void(0)">Gendral Settings</a></li>
+                        </ul>
+                    </li>
+                   
+                
 
-                        
-                    </ul>
-    
                     
-     
-                </div>
-    
-                <!-- sidebar overly for mobile -->
-                <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
-    
-            </div> 
+                </ul>
+
+                <ul class="side_links">
+
+                   
+                    <div class="footer-links">
+                        <a href="#">About</a>
+                        <a href="#">Blog </a>
+                        <a href="#">Contact Us </a>
+                        <a href="#">Terms of service</a>
+                    </div>
+                   
+                
+
+                    
+                </ul>
+
+                
+ 
+            </div>
+
+            <!-- sidebar overly for mobile -->
+            <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
+
+        </div> 
     
             <!-- Main Contents -->
             <div class="main_content">
                 <div class="mcontainer">
-    
-                    <!-- Profile cover -->  
-                    <div class="profile user-profile">
+
       
-                        <div class="profiles_banner">
 
-                            <img src="{{ asset('newdesign/forum/assets/1280x720.jpg') }}" alt="">
+
+
+                    <div class="m-auto">  
+             
+                    @if ($getAllInvites->isEmpty())
+                        <p>No data found in the table.</p>
+                    @else
+                      <table class="min-w-full border bg-white">
+                        <thead class="bg-gray-50">
+                          <tr>
+                            <th class="px-6 py-3 border-b border-gray-200 font-semibold text-left">S.No</th>
+                            <th class="px-6 py-3 border-b border-gray-200 font-semibold text-left">Name</th>
+                            <th class="px-6 py-3 border-b border-gray-200 font-semibold text-left">Email</th>
+
+                            <th class="px-6 py-3 border-b border-gray-200 font-semibold text-left">Date of Invite</th>
+                            <th class="px-6 py-3 border-b border-gray-200 font-semibold text-left">Status</th>
+                            <th class="px-6 py-3 border-b border-gray-200 font-semibold text-left">Remove Access</th>
+
+                          </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200">
+                            @forEach($getAllInvites as $invites)
+                          <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">1</td>
+
+                            <td class="px-6 py-4 whitespace-nowrap">{{$invites->user->name}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{$invites->user->email}}</td>
+
+                            <td class="px-6 py-4 whitespace-nowrap">{{$invites->created_at}}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                @if($invites->is_accept == 0)
+                                <span class="px-6 py-4 whitespace-nowrap text-green-500">Progress</span>
+                                @endif
+                                @if($invites->is_accept == 1)
+                                <span class="px-6 py-4 whitespace-nowrap text-green-500">Accepted</span>
+                                @endif
+                                @if($invites->is_accept == 2)
+                                <span class="px-6 py-4 whitespace-nowrap text-red-500">Rejected</span>
+                                @endif
+
+                                @if($invites->is_accept == 3)
+                                <span class="px-6 py-4 whitespace-nowrap text-red-500">Access Removed by Admin</span>
+                                @endif
+                               
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                              <a href="remove-access?invite_id={{$invites->id}}&is_accept=3">
+                                <button class="px-4 py-2 bg-green-500 text-white rounded hover:bg-blue-600">Force Remove Access</button>
+                             </a>
+                            </td>
+                          </tr>
+                          @endforeach
                         
-                        </div>
-                        <div class="profiles_content">
-    
-                            <div class="profile_avatar">
-                                <div class="profile_avatar_holder"> 
-                                  @if(Auth::user()->image_path)
-                                  <img src="{{ asset('user_images') }}/{{Auth::user()->image_path}}" alt="">
-                                  @endif
-                                  @if(!Auth::user()->image_path)
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" alt="">
-                                    @endif
-                                  </div>
-                                <div class="user_status status_online"></div>
-                                <div class="icon_change_photo" hidden> <ion-icon name="camera" class="text-xl"></ion-icon> </div>
-                            </div>
-    
-                            <div class="profile_info">
-                                @if ($userProfile) 
-                                <h1>Name : {{ $userProfile->first_name}} {{ $userProfile->last_name}} </h1>
-                                @endif   
-
-                                @if (!$userProfile) 
-                                <h1>Name : {{ Auth::user()->name ?? ""}} </h1>
-                                @endif   
-                                <p class="text-secondary mb-1"><b>Email : </b> {{$userProfile->email ?? Auth::user()->email}}</p>
-                                @if ($userProfile) 
-                                <p class="text-muted font-size-sm"><b>Address :</b>  {{$userProfile->district ?? ""}} ,{{$userProfile->state ?? ""}},{{$userProfile->pincode ?? ""}}
-                                                                </p>
-                                @endif                                
-                            </div>
-    
-                        </div>
-                        <div style="
-                        align-items: center;
-                        justify-content: center;
-                    " class="flex justify-between lg:border-t border-gray-100 flex-col-reverse lg:flex-row pt-2">
-                      
-   
-                          <!-- button actions -->
-                          <div class="flex items-center space-x-1.5 flex-shrink-0 pr-4 mb-2 justify-center order-1 relative">
-                              
-                          
-                             
-                              
-                            <p uk-toggle="target: #create-post-modal" class="flex items-center px-3 py-2 text-green-500  hover:text-black dark:text-white rounded-md ">
-
-                              <ion-icon name="cloud-upload-outline" class="pr-2 text-xl md hydrated" role="img" aria-label="cloud-upload-outline"></ion-icon>  Edit Profile Picture
-                            </p> 
-                          </div>
-  
-                      </div>
-                       
-    
-                    </div>
-
-
-                    <div class="w-full space-y-6">
-                    @if (session('success'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('success') }}
-                    </div>
+                        </tbody>
+                      </table>
                     @endif
-                    @if ($userProfile)   
-                    
-                      <div class="widget card p-5">
-                          <h4 class="text-lg font-semibold"> About </h4>
-                          <ul class="text-gray-600 space-y-3 mt-3">
-                              <li class="flex items-center space-x-2"> 
-                                  <ion-icon name="home-sharp" class="rounded-full bg-gray-200 text-xl p-1 mr-3 md hydrated" role="img" aria-label="home sharp"></ion-icon>
-                                  Live In <strong> {{$userProfile->district ?? ""}} ,{{$userProfile->state ?? ""}},{{$userProfile->pincode ?? ""}}  </strong>
-                              </li>
-                              <li class="flex items-center space-x-2"> 
-                                  <ion-icon name="mail" class="rounded-full bg-gray-200 text-xl p-1 mr-3 md hydrated" role="img" aria-label="globe"></ion-icon>
-                                  Email <strong> {{$userProfile->email ?? ""}}  </strong>
-                              </li>
-                              <li class="flex items-center space-x-2"> 
-                                  <ion-icon name="call" class="rounded-full bg-gray-200 text-xl p-1 mr-3 md hydrated" role="img" aria-label="heart sharp"></ion-icon>
-                                  Contact <strong>  {{$userProfile->contact_number ?? ""}}   </strong>
-                              </li>
-                              <li class="flex items-center space-x-2"> 
-                                  <ion-icon name="briefcase" class="rounded-full bg-gray-200 text-xl p-1 mr-3 md hydrated" role="img" aria-label="logo rss"></ion-icon>
-                                  Work <strong> Freelancer </strong>
-                              </li>                                
-                          </ul>
-                          <div class="gap-3 grid grid-cols-3 mt-4">
-                            <img src="assets/images/avatars/avatar-lg-2.jpg" alt="" class="object-cover rounded-lg col-span-full">
-                            <img src="assets/images/avatars/avatar-2.jpg" alt="" class="rounded-lg">
-                            <img src="assets/images/avatars/avatar-4.jpg" alt="" class="rounded-lg">
-                            <img src="assets/images/avatars/avatar-5.jpg" alt="" class="rounded-lg"> 
-                        </div>
-                        <a href="{{ url('/editprofile') }}" class="button gray mt-3 w-full"> Edit </a>
-                      </div>
-                    @endif
-
-                    
-
-                                        <!-- Upload User Image -->
-    <div id="create-post-modal" class="create-post" uk-modal>
-      <div
-          class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical rounded-lg p-0 lg:w-5/12 relative shadow-2xl uk-animation-slide-bottom-small">
-  
-          <div class="text-center py-4 border-b">
-              <h3 class="text-lg font-semibold"> Edit / Upload New Profile </h3>
-              <button class="uk-modal-close-default bg-gray-100 rounded-full p-2.5 m-1 right-2" type="button" uk-close uk-tooltip="title: Close ; pos: bottom ;offset:7"></button>
-          </div>
-         
-          <div class="bsolute bottom-0 p-4 space-x-4 w-full">
-              <div class="flex bg-gray-50 border border-purple-100 rounded-2xl p-3 shadow-sm items-center">
-                
-                <form method="POST" action="{{ route('upload.image') }}" enctype="multipart/form-data">
-                  @csrf
-                  <input type="file" name="image" id="image">
-              </div>
-          </div>
-          <div class="flex items-center w-full justify-between p-3 border-t">
-  
-              
-  
-              <div class="flex space-x-2">
-                  
-      <button type="submit" class="bg-blue-600 flex h-9 items-center justify-center rounded-md text-white px-5 font-medium">Upload Image</button>
-              </div>
-
-          </div>
-        </form>
-
-      </div>
-  </div>
-                    @if (!$userProfile)   
-                    <div class="widget card p-5">
-                          <h4 class="text-lg font-semibold"> About </h4>
-
-                        <a href="{{ url('/addprofile') }}" class="button gray mt-3 w-full"> Add More Details </a>
-                      </div>
-
-                      @endif
+                     
+                   
                   </div>
-                    
+            
                 
-                </div>
             </div>
             
         </div>
     
     
     
-
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
         
     
      
-        
+        <script>
+          $('#zipcode').change(function() {
+            var zipcode = $(this).val();
+            $.ajax({
+              url: 'https://api.postalpincode.in/pincode/' + zipcode,
+              type: 'GET',
+              success: function(response) { 
+                
+                    
+                  let postDistrict = response[0].PostOffice[0].District;
+                  console.log(postDistrict);
+                  $('#District').val(postDistrict);
+      
+                let postState = response[0].PostOffice[0].State;
+                  console.log(postState);
+                  $('#State').val(postState);
+              }
+            });
+          });
+        </script>
      
         
         <!-- For Night mode -->

@@ -52,9 +52,24 @@ Route::get('/invite/{id}', [App\Http\Controllers\UserDetailController::class, 'i
 
 Route::POST('/onUpdateNodeDataInvite', [App\Http\Controllers\UserDetailController::class, 'onUpdateNodeDataInvite'])->name('onUpdateNodeDataInvite');
 
-
-
-
 Route::post('/upload-image', [UserDetailController::class, 'uploadImage'])->name('upload.image');
+
+
+
+Route::get('/search', [UserDetailController::class, 'searchUserByMailId'])->name('search');
+
+Route::get('/invite-user', [UserDetailController::class, 'inviteUser'])->name('invite-user');
+
+Route::get('/invites', [UserDetailController::class, 'invites'])->name('invites');
+Route::get('/invitesbyyou', [UserDetailController::class, 'invitesbyyou'])->name('invitesbyyou');
+Route::get('/accept', [UserDetailController::class, 'accept'])->name('accept');
+Route::get('/remove-access', [UserDetailController::class, 'removeAccess'])->name('remove-access');
+
+Route::get('/left-from-family', [UserDetailController::class, 'leftFromFamily'])->name('left-from-family');
+
+
+
+
+
 
 

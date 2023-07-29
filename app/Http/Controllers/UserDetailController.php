@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\UserDetail;
 use App\Models\User;
 use App\Models\Nodes;
+use App\Models\Invite;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\File;
 use Auth;
@@ -106,7 +107,15 @@ class UserDetailController extends Controller
             return redirect('/');
         }
         $getUserId = auth()->user()->id;
-        $fileContents = Nodes::where("user_id",$getUserId)->first();
+
+        $getAllInvites = Invite::where("user_id",$getUserId)->where('is_accept',1)->first();
+
+        if($getAllInvites){
+            return redirect('invite/'.$getAllInvites->invited_by_id);
+        }else{
+            $fileContents = Nodes::where("user_id",$getUserId)->first();
+        }
+        
         if($fileContents){
             $jsonData = json_decode($fileContents->node_array);
             return view('custom.profile.family-tree',compact('jsonData'));
@@ -232,19 +241,22 @@ class UserDetailController extends Controller
       }
 
       public function invite($id){
+        if(auth()->user()){
         $getUserId = $id;
         $fileContents = Nodes::where("user_id",$getUserId)->first();
         if($fileContents){
             if($fileContents){
                 $jsonData = json_decode($fileContents->node_array);
-                return view('custom.profile.famil-tree-invite',compact('jsonData'));
+                return view('custom.profile.famil-tree-invite',compact('jsonData','fileContents'));
             }else{
                 return redirect('create-chart')->withSuccess('Kindly create node then proceed !');
             }
         }else{
             return redirect('/');
         }
-
+    }else{
+        return redirect('/');
+       }
 
       }
 
@@ -340,6 +352,109 @@ class UserDetailController extends Controller
   
           return back()->with('error', 'Please select an image to upload.');
       }
+
+
+      public function searchUserByMailId(Request $request) {
+        $query = $request->query('query');
+        $getUsers = User::where("id","!=",auth()->user()->id)->where("email","like","%$query%")->get();
+        return response()->json($getUsers);
+     }
   
+
+     public function inviteUser(Request $request) {
+        $id = $request->query('id');
+        $getUsers = User::where("id",$id)->first();
+        
+        $getInvitedById = auth()->user()->id;
+        $getFamilyTreeId = Nodes::where("user_id",$getInvitedById)->first();
+
+        $checkAlreadyInvited = Invite::where("user_id",$getUsers->id)->where("family_id",$getFamilyTreeId->id)
+                                            ->where("invited_by_id",auth()->user()->id)->where("is_accept",0)->exists();
+
+        $getUserName = $getUsers->name;
+
+        if($checkAlreadyInvited ){
+            return back()->with('success', ''.$getUserName.' is Already Invited!');
+        }
+                                          
+        $getInviteObj = new Invite();
+
+        $getInviteObj->user_id = $getUsers->id;
+        $getInviteObj->family_id =  $getFamilyTreeId->id ?? "";
+        $getInviteObj->invited_by_id = auth()->user()->id;
+        $getInviteObj->is_accept = 0;
+        $getInviteObj->save();
+        
+        return back()->with('success', ''.$getUserName.' Invited successfully!');
+     }
+  
+
+     public function invites(){
+        if(auth()->user()){
+         $getAllInvites = Invite::where("user_id",auth()->user()->id)->with('invitedBy')->paginate(5);
+         return view('custom.profile.invites',compact('getAllInvites'));
+        }else{
+         return redirect('/');
+        }
+     }
+
+     public function accept(Request $request){
+        if(auth()->user()){
+         $getInviteId = $request->query('invite_id');
+         $getIsAcceptId = $request->query('is_accept');
+
+         if( $getIsAcceptId == 1){
+            $checkUserIsAlreadyAssociated = Invite::where("user_id",auth()->user()->id)->update([
+                    "is_accept"=> 2
+            ]);
+         }
+
+         Invite::where("id",$getInviteId)->update([
+            "is_accept"=> $getIsAcceptId
+         ]);
+         $getAllInvites = Invite::where("user_id",auth()->user()->id)->with('invitedBy')->paginate(5);
+         return view('custom.profile.invites',compact('getAllInvites'));
+        }else{
+         return redirect('/');
+        }
+     }
+
+     public function leftFromFamily(Request $request) {
+        if(auth()->user()){
+        $familyId = $request->query('family_id');
+        $userId = auth()->user()->id;
+         Invite::where("family_id",$familyId)->where("user_id",$userId)->update([
+            "is_accept"=> 2
+         ]);
+
+         $getAllInvites = Invite::where("user_id",auth()->user()->id)->with('invitedBy')->paginate(5);
+         return view('custom.profile.invites',compact('getAllInvites'));
+      }else{
+        return redirect('/');
+       }
+     }
+
+     public function invitesbyyou(){
+        if(auth()->user()){
+         $getAllInvites = Invite::where("invited_by_id",auth()->user()->id)->with('user')->paginate(5);
+         return view('custom.profile.invitesbyyou',compact('getAllInvites'));
+        }else{
+         return redirect('/');
+        }
+     }
+
+     
+     public function removeAccess(Request $request){
+        if(auth()->user()){
+         $getInviteId = $request->query('invite_id');
+         $getIsAcceptId = $request->query('is_accept');
+         Invite::where("id",$getInviteId)->update([
+            "is_accept"=> 3
+         ]);
+         return redirect('/invitesbyyou');
+        }else{
+         return redirect('/');
+        }
+     }
 
 }

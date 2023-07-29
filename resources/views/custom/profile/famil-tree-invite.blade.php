@@ -1,125 +1,693 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('styles')
-<link href="{{ asset('css/index.css') }}" rel="stylesheet">
+<head>
+  <meta charset="UTF-8">
 
-<link href="{{ asset('css/custom.css') }}" rel="stylesheet">
+  <!-- For IE -->
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- For Resposive Device -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- For Window Tab Color -->
+  <!-- Chrome, Firefox OS and Opera -->
+  <meta name="theme-color" content="#1d2b40">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" integrity="sha512-ZnR2wlLbSbr8/c9AgLg3jQPAattCUImNsae6NHYnS9KrIwRdcY9DxFotXhNAKIKbAXlRnujIqUWoXXwqyFOeIQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<link type="text/css" rel="stylesheet" href="{{ asset('css/bcPicker.css') }}" />
-<script src="{{ asset('js/familyTree/FamilyTree.js') }}"></script> 
-@endsection
-
-@section('content')
-
-
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #000000;">
-            <a class="navbar-brand" href="{{ url('/') }}">Vanshavali</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link navbtn" href="{{ url('/dashboard') }}"><img class="mt-1 mb-3" src="{{asset('images/Vector.png')}}" alt=""><br> Home <span class="sr-only"></a>
-                    </li>
-
-                </ul>
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link navbtn2" href="{{ url('/') }}"><img src="{{asset('images/Vector.png')}}" alt="">&emsp;Home <span class="sr-only"></a>
-                    </li>
+  <!-- Windows Phone -->
+  <meta name="msapplication-navbutton-color" content="#1d2b40">
+  <!-- iOS Safari -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="#1d2b40">
 
 
-                </ul>
+          <!-- Basic Page Needs
+      ================================================== -->
+  <title> {{ucfirst(Auth::user()->name) }} - Vanshavali - Profile </title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+
+  <!-- icons
+  ================================================== -->
+  <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/icons.css') }}">
+
+  <!-- CSS 
+  ================================================== --> 
+  <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/uikit.css') }}">
+  <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('newdesign/forum/assets/css/tailwind.css') }}">
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap');
+    *{
+      
+      font-family: 'Comic Neue', cursive;
+
+    }
+  </style>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
+  
+    .header-logo-text {
+      font-family: 'Mouse Memoirs', sans-serif !important;
+            font-size: 2rem;
+    }
+    </style>
 
 
+<script>
+
+// Get user geolocation details without asking for permission
+function getUserGeolocation() {
+  if ("geolocation" in navigator) {
+  navigator.geolocation.getCurrentPosition(
+    position => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    // Fetch the accurate city based on latitude and longitude using reverse geocoding
+    const geocodeAPI = `https://geocode.xyz/${latitude},${longitude}?json=1`;
+    fetch(geocodeAPI)
+      .then(response => response.json())
+      .then(data => {
+      const city = data.region;
+      console.log("City:", city);
+      console.log("Latitude:", latitude);
+      console.log("Longitude:", longitude);
+
+console.log(city);
+      // Call the saveLocation function with the geolocation details
+      saveLocation(latitude, longitude, cityName);
+      })
+      .catch(error => {
+      console.error("Error fetching geolocation details:", error);
+      });
+    },
+    error => {
+    console.error("Error retrieving geolocation:", error);
+    }
+  );
+  } else {
+  console.error("Geolocation is not supported by this browser.");
+  }
+}
+
+// Save user location, browser details, ISP provider, and fingerprint to Firebase database
+function saveLocation(latitude, longitude, cityName) {
+  // Load and initialize the fingerprint library
+  const fpPromise = import("https://openfpcdn.io/fingerprintjs/v3").then(
+  FingerprintJS => FingerprintJS.load()
+  );
+
+  fpPromise
+  .then(fp => fp.get())
+  .then(result => {
+    // This is the visitor identifier (browser fingerprint)
+    const visitorId = result.visitorId;
+    console.log(visitorId);
+
+    // Get browser details
+    const browserDetails = {
+    userAgent: navigator.userAgent,
+    language: navigator.language,
+    vendor: navigator.vendor,
+    fingerprint: visitorId
+    };
+
+    // Get ISP provider information
+    const ipAPI = "https://ipapi.co/json/";
+    axios
+    .get(ipAPI)
+    .then(response => {
+      const ispProvider = response.data.org;
+      console.log(ispProvider);
+
+      // Get current date and time
+      const currentDate = new Date().toLocaleDateString();
+      const currentTime = new Date().toLocaleTimeString();
+     
+    })
+    .catch(error => {
+      console.error("Error fetching ISP provider information:", error);
+    });
+  })
+  .catch(error => {
+    console.error("Error:", error);
+  });
+}
+
+// Call the getUserGeolocation function
+getUserGeolocation();
+
+// Additional script for weather fetching
+function fetchWeather(cityName) {
+  var apiKey = "bce6e2bc48a4404593b32107233006"; // Replace with your free weather API key
+
+  var weatherContainer = document.getElementById("weather-container");
+  weatherContainer.innerHTML = "";
+
+//   var weatherContainer2 = document.getElementById("weather-container2");
+//   weatherContainer2.innerHTML = "";
+
+  var weatherUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${cityName}`;
+
+  fetch(weatherUrl)
+  .then(response => response.json())
+  .then(data => {
+    var weather = data.current.condition.text;
+    var temperature = data.current.temp_c;
+
+    weatherContainer.innerHTML = `
+    <b><i class="bi bi-globe-asia-australia"></i> ${cityName} | <i class="bi bi-thermometer-sun"></i> ${temperature}°C  </b>
+    `;
+
+          //   weatherContainer2.innerHTML = `
+          // 	<b><i class="bi bi-globe-asia-australia"></i> ${cityName} | <i class="bi bi-thermometer-sun"></i> ${temperature}°C</b>
+          //   `;
+  })
+  .catch(error => {
+    console.log("Error:", error);
+    weatherContainer.innerHTML = "Failed to fetch weather information";
+  });
+}
+
+function fetchCity(latitude, longitude) {
+  var apiKey = "bce6e2bc48a4404593b32107233006"; // Replace with your free weather API key
+
+  var cityUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${latitude},${longitude}`;
+
+  fetch(cityUrl)
+  .then(response => response.json())
+  .then(data => {
+    var cityName = data.location.name;
+    console.log(cityName);
+    if (cityName) {
+    fetchWeather(cityName);
+    } else {
+    alert("City information not available");
+    }
+  })
+  .catch(error => {
+    console.log("Error:", error);
+    alert("Failed to fetch city information");
+  });
+}
+
+function showPosition(position) {
+  var latitudeElement = document.getElementById("latitude");
+  var longitudeElement = document.getElementById("longitude");
+
+  var latitude = position.coords.latitude;
+  var longitude = position.coords.longitude;
+
+  fetchCity(latitude, longitude);
+}
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(showPosition);
+} else {
+  alert("Geolocation is not supported by this browser.");
+}
+</script>
+</head>
+
+
+<body>
+
+
+
+
+  <div id="wrapper">
+
+    <!-- Header -->
+       <!-- Header -->
+       <header>
+        <div class="header_wrap">
+            <div class="header_inner mcontainer">
+                <div class="left_side">
+                    
+                    <span class="slide_menu" uk-toggle="target: #wrapper ; cls: is-collapse is-active">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path d="M3 4h18v2H3V4zm0 7h12v2H3v-2zm0 7h18v2H3v-2z" fill="currentColor"></path></svg>
+                    </span>
+
+                    <div id="logo">
+                        <a class="logo" href="javascript:void(0)">
+                            <h2 class="header-logo-text">Vanshavali</h2>
+                          </a>
+                    </div>
+                </div>
+                 
+              <!-- search icon for mobile -->
+                <div class="header-search-icon" uk-toggle="target: #wrapper ; cls: show-searchbox"> </div>
+               
+
+                <div class="right_side">
+
+                    <div class="header_widgets">
+                        
+                        
+
+                       
+                  
+
+     
+                        <div id="weather-container" style="display: inline;"></div>
+                        @if(Auth::user()->image_path)
+                        <a href="#">
+                          <img src="{{ asset('user_images') }}/{{Auth::user()->image_path}}" class="is_avatar" alt="">
+                         </a>
+                        @endif
+                        @if(!Auth::user()->image_path)
+                        <a href="#">
+                          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiwNq38SajDT2OFHZZTMwFa1FmicSLP56STzs2cJA&s" class="is_avatar" alt="">
+                         </a>
+                        @endif
+                        <div uk-drop="mode: click;offset:5" class="header_dropdown profile_dropdown">
+
+                            <a href="javascript:void(0)" class="user">
+
+                                <div class="user_name">
+                                <div> {{ Auth::user()->name ?? ""}} </div>
+                                    <span> {{$userProfile->email ?? Auth::user()->email}} </span>
+                                </div>
+                            </a>
+                            
+                        
+                            <a href="#" id="night-mode" class="btn-night-mode">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                                  </svg>
+                                 Night mode
+                                <span class="btn-night-mode-switch">
+                                    <span class="uk-switch-button"></span>
+                                </span>
+                            </a>
+                            <a href="{{ route('logout') }}" onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                </path>
+                            </svg>
+                            Log Out
+                        </a>
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+
+                            
+                        </div>
+
+                        </div>
+                        
+                </div>
             </div>
-        </nav>
+        </div>
+    </header>
 
-        <div class="alert alert-success" style="margin-bottom:0px !important" role="alert">
-                       <b>Note : </b> If anything went wrong, please delete and create a new!
+    <!-- sidebar -->
+    <div class="sidebar">
+
+      <div class="sidebar_inner" data-simplebar>
+
+        <ul>
+            <li><a href="{{ route('dashboard') }}"> 
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-600"> 
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+                <span> Profile </span> </a> 
+            </li>
+
+            <li id="more-veiw"><a href=" {{ url('/forum') }}"> 
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-blue-500">
+                    <path d="M2 5a2 2 0 012-2h7a2 2 0 012 2v4a2 2 0 01-2 2H9l-3 3v-3H4a2 2 0 01-2-2V5z" />
+                    <path d="M15 7v2a4 4 0 01-4 4H9.828l-1.766 1.767c.28.149.599.233.938.233h2l3 3v-3h2a2 2 0 002-2V9a2 2 0 00-2-2h-1z" />
+                </svg>
+               <span> forum</span> </a> 
+            </li>
+           
+            <li><a href="{{  url('/create-chart') }}"> 
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-green-500">
+                    <path d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+                </svg>  <span>  Create Family Tree </span></a> 
+            </li> 
+            
+                
+            <li id="more-veiw"><a href="{{ url('/familyTree') }}"> 
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="text-yellow-500">
+                    <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path>
+                  </svg>
+                <span>  Manage Family Tree </span></a> 
+            </li> 
+        </ul>
+
+
+
+
+
+        <ul class="side_links" data-sub-title="Pages">
+
+
+            <li><a href="javascript:void(0)"> <ion-icon name="settings-outline" class="side-icon"></ion-icon>  <span> Setting   </span> </a> 
+                <ul>
+                    <li><a href="{{ route('editprofile') }}">Profile Settings</a></li>
+                    <li><a href="{{ route('invites') }}">Invites</a></li>
+                            <li><a href="{{ route('invitesbyyou') }}">Invited By You</a></li>
+                    <li><a href="javascript:void(0)">Gendral Settings</a></li>
+                </ul>
+            </li>
+
+
+
+
+        </ul>
+
+        <ul class="side_links">
+
+
+          <div class="footer-links">
+            <a href="#">About</a>
+            <a href="#">Blog </a>
+            <a href="#">Contact Us </a>
+            <a href="#">Terms of service</a>
+          </div>
+
+
+
+
+        </ul>
+
+
+
+      </div>
+
+      <!-- sidebar overly for mobile -->
+      <div class="side_overly" uk-toggle="target: #wrapper ; cls: is-collapse is-active"></div>
+
+    </div>
+
+    <!-- Main Contents -->
+    <div class="main_content">
+      <div class="mcontainer">
+
+        <div class="flex justify-between items-center relative md:mb-4 mb-3">
+          <div class="flex-1">
+            <div class="bg-green-500 border p-4 relative rounded-md uk-alert" uk-alert="">
+              <button
+                class="uk-alert-close absolute bg-gray-100 bg-opacity-20 m-5 p-0.5 pb-0 right-0 rounded text-gray-200 text-xl top-0">
+                <i class="icon-feather-x"></i>
+              </button>
+              <h3 class="text-lg font-semibold text-white">Notice</h3>
+              <p class="text-white text-opacity-75">If anything went wrong, please delete and create a
+                new!</p>
+            </div>
+
+            <nav class="responsive-nav md:m-0 -mx-4 style-3">
+              <ul>
+
+                <li><a href="{{ url('/dashboard') }}" class="lg:px-2"> <i class="bi bi-house mr-1"></i> Home </a></li>
+                <li><a href="{{ route('left-from-family') }}/?family_id={{$fileContents->id}}" class="lg:px-2"> <i class="bi bi-diagram-3 mr-1"></i> Left From this Family </a></li>
+              </ul>
+            </nav>
+          </div>
+
         </div>
 
-        <input value="{{request()->segment(2)}}" id="user_id" hidden> 
+        @if(session('success'))
+        <div class="alert alert-danger bg-green-500 border p-4 relative rounded-md uk-alert">
+            {{ session('success') }}
+        </div>
+    @endif
     
-<div id="tree"></div>
+        <div class="messages-container">
+          <div class="messages-container-inner">
+            <div id="tree"></div>
+          </div>
+        </div>
 
 
-@endsection
+      </div>
+    </div>
 
+  </div>
 
-@section('scripts')
+  <div id="search-username" class="create-post is-story" uk-modal>
+    <div
+        class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical rounded-lg p-0 lg:w-5/12 relative shadow-2xl uk-animation-slide-bottom-small">
 
+        <div class="text-center py-3 border-b">
+            <h3 class="text-lg font-semibold"> Search Family Member </h3>
 
-<script>
+          <form action="#" class="form-search-banner">
+              <input type="text" name="country"  id="searchInput" name="country" class="form-control" 
+              placeholder="Search Family Member ?" style="color: white;">
+              {{-- <a href="#" class="btn btn-main">Search<i class="fa fa-search ml-2"></i> </a> --}}
   
-  var response = {!! json_encode($jsonData) !!};
-    var data = response;
-  let family = new FamilyTree(document.getElementById("tree"), { 
-    nodeBinding: {
-      field_0: "name",
-      img_0: "image",
-    },
-    nodeMouseClick: FamilyTree.action.edit,
-     nodeMenu: {
-        details: {text:"Details"},
-        edit: {text:"Edit"}
-     },
-    nodeTreeMenu: true,
-  });
-  
+          <div style="cursor: pointer" id="autocompleteResults"></div>
+          </form>
+            
+        </div>
+    </div>
+</div>
 
-    family.on('click', function(sender, args){
-        sender.editUI.show(args.node.id, false); 
-        return false; 
+
+   <!-- resources/views/search.blade.php -->
+   <script>
+    const searchInput = document.getElementById('searchInput');
+    const autocompleteResults = document.getElementById('autocompleteResults');
+    const selectField = document.getElementById('selectField');
+
+    searchInput.addEventListener('input', function() {
+        const query = this.value;
+        if (query.length >= 2) {
+            fetch(`/search?query=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    let html = '';
+                    data.forEach(suggestion => {
+                        let getAllData = suggestion;
+                            html += `<a href='invite-user?id=${suggestion.id}' style="color: white;">
+                            <span onclick="selectSuggestion('${suggestion.email}')">
+                                ${suggestion.name} - ${suggestion.email} </span>
+                            </a><hr>`;                
+                    });
+                    autocompleteResults.innerHTML = html;
+                });
+        } else {
+            autocompleteResults.innerHTML = '';
+        }
     });
 
-
-  family.onUpdateNode((args) => {
-    var csrfToken = '{{ csrf_token() }}';
-    var getUserId = document.getElementById('user_id').value;
-    fetch('/onUpdateNodeDataInvite', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': csrfToken,
-        'user_id':getUserId
-      },
-      body: JSON.stringify(args)
-    })
-    .then(response => response.json())
-    .then(data => console.log(data))
-    .catch(error => console.error(error));
-  //return false; to cancel the operation
-
-  });
-
-
-  family.load(data)
-</script>
-<style>
-    svg.tommy .node.male>rect {
-      fill: #039be5;
-    }  
-      svg.tommy .node.female>rect {
-      fill: #FF46A3;
-    } 
-</style>
-
-<script>
-let color = $("#color").val();
+    function selectSuggestion(suggestion) {
+        searchInput.value = suggestion;
+        autocompleteResults.innerHTML = '';
+        selectField.value = suggestion; // Populate the select field with the selected value
+    }
 </script>
 
-<script type="text/javascript" src="{{ asset('js/bcPicker.js') }}"></script>
-<script>
-    $('#bcPicker1').bcPicker();
-    $('.bcPicker-palette').on('click', '.bcPicker-color', function() {
-        var color = $(this).css('background-color');
-        $(this).parent().parent().next().children().text(toHex(color));
-        $(this).parent().parent().next().next().children().text(color);
-        $('#color').val(toHex(color));
-    })
-</script>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" ></script>
 
-@endsection
+  <script src="https://cdn.jsdelivr.net/gh/iamraghavan/Vanshavali@main/familytree.js"></script>
+
+
+  <!-- For Night mode -->
+  <script>
+    (function (window, document, undefined) {
+      'use strict';
+      if (!('localStorage' in window)) return;
+      var nightMode = localStorage.getItem('gmtNightMode');
+      if (nightMode) {
+        document.documentElement.className += ' night-mode';
+      }
+    })(window, document);
+
+    (function (window, document, undefined) {
+
+      'use strict';
+
+      // Feature test
+      if (!('localStorage' in window)) return;
+
+      // Get our newly insert toggle
+      var nightMode = document.querySelector('#night-mode');
+      if (!nightMode) return;
+
+      // When clicked, toggle night mode on or off
+      nightMode.addEventListener('click', function (event) {
+        event.preventDefault();
+        document.documentElement.classList.toggle('dark');
+        if (document.documentElement.classList.contains('dark')) {
+          localStorage.setItem('gmtNightMode', true);
+          return;
+        }
+        localStorage.removeItem('gmtNightMode');
+      }, false);
+
+    })(window, document);
+  </script>
+
+  <!-- Javascript
+        ================================================== -->
+
+
+        <script>
+  
+          var response = {!! json_encode($jsonData) !!};
+            var data = response;
+          let family = new FamilyTree(document.getElementById("tree"), { 
+            nodeBinding: {
+              field_0: "name",
+              img_0: "image",
+            },
+            nodeMouseClick: FamilyTree.action.edit,
+             nodeMenu: {
+                details: {text:"Details"},
+                edit: {text:"Edit"}
+             },
+            nodeTreeMenu: true,
+          });
+          
+        
+            family.on('click', function(sender, args){
+                sender.editUI.show(args.node.id, false); 
+                return false; 
+            });
+        
+        
+          family.onUpdateNode((args) => {
+            var csrfToken = '{{ csrf_token() }}';
+            var getUserId = document.getElementById('user_id').value;
+            fetch('/onUpdateNodeDataInvite', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'user_id':getUserId
+              },
+              body: JSON.stringify(args)
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+          //return false; to cancel the operation
+        
+          });
+        
+        
+          family.load(data)
+        </script>
+        <style>
+            svg.tommy .node.male>rect {
+              fill: #039be5;
+            }  
+              svg.tommy .node.female>rect {
+              fill: #FF46A3;
+            } 
+        </style>
+        
+        <script>
+        let color = $("#color").val();
+        </script>
+        
+        <script type="text/javascript" src="{{ asset('js/bcPicker.js') }}"></script>
+        <script>
+            $('#bcPicker1').bcPicker();
+            $('.bcPicker-palette').on('click', '.bcPicker-color', function() {
+                var color = $(this).css('background-color');
+                $(this).parent().parent().next().children().text(toHex(color));
+                $(this).parent().parent().next().next().children().text(color);
+                $('#color').val(toHex(color));
+            })
+        </script>
+            
+            <script type="text/javascript" src="{{ asset('js/bcPicker.js') }}"></script>
+            <script>
+                $('#bcPicker1').bcPicker();
+                $('.bcPicker-palette').on('click', '.bcPicker-color', function() {
+                    var color = $(this).css('background-color');
+                    $(this).parent().parent().next().children().text(toHex(color));
+                    $(this).parent().parent().next().next().children().text(color);
+                    $('#color').val(toHex(color));
+                })
+            </script>
+
+
+
+     
+        
+    
+     
+        <script>
+          $('#zipcode').change(function() {
+            var zipcode = $(this).val();
+            $.ajax({
+              url: 'https://api.postalpincode.in/pincode/' + zipcode,
+              type: 'GET',
+              success: function(response) { 
+                
+                    
+                  let postDistrict = response[0].PostOffice[0].District;
+                  console.log(postDistrict);
+                  $('#District').val(postDistrict);
+      
+                let postState = response[0].PostOffice[0].State;
+                  console.log(postState);
+                  $('#State').val(postState);
+              }
+            });
+          });
+        </script>
+     
+        
+        <!-- For Night mode -->
+        <script>
+            (function (window, document, undefined) {
+                'use strict';
+                if (!('localStorage' in window)) return;
+                var nightMode = localStorage.getItem('gmtNightMode');
+                if (nightMode) {
+                    document.documentElement.className += ' night-mode';
+                }
+            })(window, document);
+        
+            (function (window, document, undefined) {
+        
+                'use strict';
+        
+                // Feature test
+                if (!('localStorage' in window)) return;
+        
+                // Get our newly insert toggle
+                var nightMode = document.querySelector('#night-mode');
+                if (!nightMode) return;
+        
+                // When clicked, toggle night mode on or off
+                nightMode.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    document.documentElement.classList.toggle('dark');
+                    if (document.documentElement.classList.contains('dark')) {
+                        localStorage.setItem('gmtNightMode', true);
+                        return;
+                    }
+                    localStorage.removeItem('gmtNightMode');
+                }, false);
+        
+            })(window, document);
+        </script>
+      
+        <!-- Javascript
+        ================================================== -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="{{ asset('newdesign/forum/assets/js/tippy.all.min.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/uikit.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/simplebar.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/custom.js') }}"></script>
+    <script rel="stylesheet" src="{{ asset('newdesign/forum/assets/js/bootstrap-select.min.js') }}"></script>
+    <script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>
+
+</body>
+
+
+
+
+</html>
